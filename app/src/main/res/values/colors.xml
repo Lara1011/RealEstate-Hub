@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="very_light_beige">#E8DDCC</color>
+    <color name="light_beige">#dec9b1</color>
+    <color name="beige">#d4cbae</color>
+    <color name="dark_beige">#e6c1a9</color>
+    <color name="oily">#919b93</color>
+
+    <color name="very_light_blue">#ADD9D8</color>
+    <color name="light_blue">#37CAEC</color>
+    <color name="blue">#2A93D5</color>
+    <color name="dark_blue">#125488</color>
+    <color name="cyan">#3DD9D6</color>
+    <color name="blue_logo">#5BC1E6</color>
+</resources>
