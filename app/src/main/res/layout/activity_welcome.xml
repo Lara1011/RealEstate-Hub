@@ -55,7 +55,8 @@
         android:gravity="center"
         android:text="@string/welcomeInfoText"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
 
     <Button
         android:id="@+id/welcomeButton"
@@ -74,7 +75,8 @@
         android:fontFamily="@font/opensans_regular"
         android:textStyle="bold"
         android:text="@string/startButtonText"
-        />
+        android:textColor="@color/white"
+    />
 
 
 </RelativeLayout>
