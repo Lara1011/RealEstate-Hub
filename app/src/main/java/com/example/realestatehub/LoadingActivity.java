@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.Firebase;
 
 public class LoadingActivity extends AppCompatActivity {
     private ImageView loadingImageView;
