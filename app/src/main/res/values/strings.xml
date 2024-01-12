@@ -3,4 +3,9 @@
     <string name="welcomeText">Welcome to RealEstate Hub!</string>
     <string name="welcomeInfoText">The best application to buy, sell and invest in real estate</string>
     <string name="startButtonText">Get Started!</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="lets_you_in">Let\'s you in</string>
+    <string name="forgot_password">Forgot Password?</string>
 </resources>
