@@ -1,5 +1,6 @@
 package com.example.realestatehub;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,5 +21,12 @@ public class logInActivity extends AppCompatActivity {
     }
 
     private void initUI() {
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, WelcomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

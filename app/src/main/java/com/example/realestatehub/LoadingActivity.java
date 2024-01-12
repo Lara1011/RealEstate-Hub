@@ -14,7 +14,7 @@ import com.google.firebase.Firebase;
 
 public class LoadingActivity extends AppCompatActivity {
     private ImageView loadingImageView;
-    private final int delay = 5000;
+    private final int delay = 2000;
     private Handler handler = new Handler();
 
     @Override
@@ -32,7 +32,7 @@ public class LoadingActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Start the next activity or move to the next layout here
-                startActivity(new Intent(LoadingActivity.this, WelcomeActivity.class));
+                startActivity(new Intent(LoadingActivity.this, logInActivity.class));
                 finish();
             }
         }, delay);

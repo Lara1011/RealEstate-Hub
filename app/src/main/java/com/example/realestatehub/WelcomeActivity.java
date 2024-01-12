@@ -22,7 +22,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     private TextView welcome_info_text;
     private Button welcome_button;
     private Handler handler = new Handler();
-    private final int delay = 700;
+    private final int delay = 500;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
