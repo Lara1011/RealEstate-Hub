@@ -7,7 +7,7 @@
     tools:context=".LoadingActivity">
 
     <ImageView
-        android:id="@+id/logoRoundedImageView"
+        android:id="@+id/loginSecurityImageView"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_centerInParent="true"
@@ -17,7 +17,7 @@
         android:id="@+id/loadingBarImageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_below="@+id/logoRoundedImageView"
+        android:layout_below="@+id/loginSecurityImageView"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
