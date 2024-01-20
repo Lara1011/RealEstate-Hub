@@ -10,7 +10,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.Firebase;
 
 public class LoadingActivity extends AppCompatActivity {
     private ImageView loadingImageView;
@@ -32,7 +31,7 @@ public class LoadingActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Start the next activity or move to the next layout here
-                startActivity(new Intent(LoadingActivity.this, logInActivity.class));
+                startActivity(new Intent(LoadingActivity.this, LogInActivity.class));
                 finish();
             }
         }, delay);

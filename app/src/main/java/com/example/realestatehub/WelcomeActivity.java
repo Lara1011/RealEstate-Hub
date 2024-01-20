@@ -71,7 +71,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void run() {
                     // Start the next activity or move to the next layout here
-                    startActivity(new Intent(WelcomeActivity.this, logInActivity.class));
+                    startActivity(new Intent(WelcomeActivity.this, LogInActivity.class));
                     finish();
                 }
             }, delay);

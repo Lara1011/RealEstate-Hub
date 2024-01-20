@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -29,7 +31,13 @@
             android:name=".LoadingActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".logInActivity"
+            android:name=".LogInActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".SignUpActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".SetIntentActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 
