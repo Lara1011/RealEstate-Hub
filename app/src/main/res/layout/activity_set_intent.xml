@@ -51,7 +51,7 @@
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/opensans_regular"
         android:gravity="center"
-        android:text="Please choose your purpose using RealEstate Hub"
+        android:text="Please choose your purpose using Real Estate Hub"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold" />

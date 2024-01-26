@@ -1,21 +1,34 @@
 package com.example.realestatehub;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.hbb20.CountryCodePicker;
 
 import org.json.JSONArray;
@@ -35,6 +48,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private Button backButton;
     private ImageView userImageView;
     private Button editImageView;
+    private Button continueButton;
     private EditText firstNameEditText;
     private EditText lastNameEditText;
     private EditText emailEditText;
@@ -43,15 +57,18 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private EditText birthdayEditText;
     private EditText phoneNumberEditText;
     private CountryCodePicker cpp;
+    private RadioGroup genderRadioGroup;
+    private RadioButton genderRadioButton;
     private AutoCompleteTextView autoCompleteTextView;
     private ArrayAdapter<String> adapter;
     private Handler handler;
     private String currentQuery = "";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fill_in);
+        setContentView(R.layout.activity_sign_up);
         // In your activity or fragment
         autoCompleteTextView = findViewById(R.id.addressAutoCompleteTextView);
 
@@ -59,7 +76,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, new ArrayList<>());
         autoCompleteTextView.setAdapter(adapter);
-
+        initUI();
         // Set up text change listener
         autoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -145,8 +162,126 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    private void initUI() {
+        firstNameEditText = findViewById(R.id.firstNameEditText);
+        lastNameEditText = findViewById(R.id.lastNameEditText);
+        emailEditText = findViewById(R.id.emailEditText);
+        passwordEditText = findViewById(R.id.passwordEditText);
+        confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
+        birthdayEditText = findViewById(R.id.birthdayEditText);
+        phoneNumberEditText = findViewById(R.id.phoneNumberEditText);
+        genderRadioGroup = findViewById(R.id.genderRadioGroup);
+        autoCompleteTextView = findViewById(R.id.addressAutoCompleteTextView);
+        backButton = findViewById(R.id.backButton);
+        editImageView = findViewById(R.id.editImageView);
+        userImageView = findViewById(R.id.userImageView);
+        continueButton = findViewById(R.id.continueButton);
+        continueButton.setOnClickListener(this);
+
+
+    }
+
     @Override
     public void onClick(View v) {
+        if (v.getId() == R.id.continueButton) {
+            obtainData();
+        }
+    }
+
+    private void obtainData() {
+        int genderRadioId = genderRadioGroup.getCheckedRadioButtonId();
+        genderRadioButton = findViewById(genderRadioId);
+
+        String firstName = firstNameEditText.getText().toString();
+        String lastName = lastNameEditText.getText().toString();
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        String confirmPassword = confirmPasswordEditText.getText().toString();
+        String birthday = birthdayEditText.getText().toString();
+        String phoneNumber = phoneNumberEditText.getText().toString();
+        String address = autoCompleteTextView.getText().toString();
+        String gender;
+
+        if (TextUtils.isEmpty(firstName)) {
+            Toast.makeText(this, "Please enter your first name", Toast.LENGTH_SHORT).show();
+            firstNameEditText.setError("First name is required");
+            firstNameEditText.requestFocus();
+        } else if (TextUtils.isEmpty(lastName)) {
+            Toast.makeText(this, "Please enter your last name", Toast.LENGTH_SHORT).show();
+            lastNameEditText.setError("Last name is required");
+            lastNameEditText.requestFocus();
+        } else if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show();
+            emailEditText.setError("Email is required");
+            emailEditText.requestFocus();
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Please re-enter your email", Toast.LENGTH_SHORT).show();
+            emailEditText.setError("Valid email is required");
+            emailEditText.requestFocus();
+        } else if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter your password", Toast.LENGTH_SHORT).show();
+            passwordEditText.setError("Password is required");
+            passwordEditText.requestFocus();
+        } else if (TextUtils.isEmpty(confirmPassword)) {
+            Toast.makeText(this, "Please confirm your password", Toast.LENGTH_SHORT).show();
+            confirmPasswordEditText.setError("Confirm password is required");
+            confirmPasswordEditText.requestFocus();
+        } else if (TextUtils.isEmpty(birthday)) {
+            Toast.makeText(this, "Please enter your birthday", Toast.LENGTH_SHORT).show();
+            birthdayEditText.setError("Birthday is required");
+            birthdayEditText.requestFocus();
+        } else if (TextUtils.isEmpty(phoneNumber)) {
+            Toast.makeText(this, "Please enter your phone number", Toast.LENGTH_SHORT).show();
+            phoneNumberEditText.setError("Phone number is required");
+            phoneNumberEditText.requestFocus();
+        } else if (TextUtils.isEmpty(birthday)) {
+            Toast.makeText(this, "Please enter your birthday", Toast.LENGTH_SHORT).show();
+            birthdayEditText.setError("Birthday is required");
+            birthdayEditText.requestFocus();
+        } else if (genderRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, "Please select your gender", Toast.LENGTH_SHORT).show();
+            genderRadioButton.setError("Gender is required");
+            genderRadioButton.requestFocus();
+        } else if (TextUtils.isEmpty(address)) {
+            Toast.makeText(this, "Please enter your address", Toast.LENGTH_SHORT).show();
+            autoCompleteTextView.setError("Address is required");
+            autoCompleteTextView.requestFocus();
+        } else if (phoneNumber.length() != 10) {
+            Toast.makeText(this, "Please re-enter your phone number", Toast.LENGTH_SHORT).show();
+            phoneNumberEditText.setError("Valid phone number is required");
+            phoneNumberEditText.requestFocus();
+        } else if (password.length() < 6) {
+            Toast.makeText(this, "Password should be at least 6 digits", Toast.LENGTH_SHORT).show();
+            passwordEditText.setError("Password too short");
+            passwordEditText.requestFocus();
+        } else if (!password.equals(confirmPassword)) {
+            Toast.makeText(this, "Password does not match", Toast.LENGTH_SHORT).show();
+            confirmPasswordEditText.setError("Password Confirmation is required");
+            confirmPasswordEditText.requestFocus();
+        } else {
+            gender = genderRadioButton.getText().toString();
+            registerUser(firstName, lastName, email, password, birthday, phoneNumber, gender, address);
+        }
+
+    }
+
+    private void registerUser(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String gender, String address) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if (task.isSuccessful()) {
+                    Toast.makeText(SignUpActivity.this, "User has been registered successfully", Toast.LENGTH_SHORT).show();
+                    FirebaseUser firebaseUser = auth.getCurrentUser();
+                    firebaseUser.sendEmailVerification();
+                    Intent intent = new Intent(SignUpActivity.this, LoadingActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
 
     }
 }

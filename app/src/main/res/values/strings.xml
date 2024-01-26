@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">RealEstate Hub</string>
-    <string name="welcomeText">Welcome to RealEstate Hub!</string>
+    <string name="app_name">Real Estate Hub</string>
+    <string name="welcomeText">Welcome to Real Estate Hub!</string>
     <string name="welcomeInfoText">The best application to buy, sell and invest in real estate</string>
     <string name="startButtonText">Get Started!</string>
     <string name="email">Email</string>

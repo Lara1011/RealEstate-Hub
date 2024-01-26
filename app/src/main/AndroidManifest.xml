@@ -31,7 +31,7 @@
             android:name=".LoadingActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".LogInActivity"
+            android:name=".ConnectingActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SignUpActivity"
