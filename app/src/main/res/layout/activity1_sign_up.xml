@@ -189,7 +189,8 @@
                     android:inputType="date"
                     android:padding="12dp"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:focusable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

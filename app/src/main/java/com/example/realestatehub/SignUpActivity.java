@@ -1,5 +1,7 @@
 package com.example.realestatehub;
 
+import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,10 +16,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,10 +29,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hbb20.CountryCodePicker;
 
 import org.json.JSONArray;
@@ -42,6 +51,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
@@ -63,12 +73,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayAdapter<String> adapter;
     private Handler handler;
     private String currentQuery = "";
+    private static final String TAG = "SignUpActivity";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity1_sign_up);
         // In your activity or fragment
         autoCompleteTextView = findViewById(R.id.addressAutoCompleteTextView);
 
@@ -163,6 +174,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initUI() {
+        cpp = findViewById(R.id.countryCodeSpinner);
         firstNameEditText = findViewById(R.id.firstNameEditText);
         lastNameEditText = findViewById(R.id.lastNameEditText);
         emailEditText = findViewById(R.id.emailEditText);
@@ -177,21 +189,76 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         userImageView = findViewById(R.id.userImageView);
         continueButton = findViewById(R.id.continueButton);
         continueButton.setOnClickListener(this);
+        birthdayEditText.setOnClickListener(this);
+        userImageView.setOnClickListener(this);
+        editImageView.setOnClickListener(this);
+        birthdayEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used, but required for implementation
+            }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // Not used, but required for implementation
+            }
 
+            @Override
+            public void afterTextChanged(Editable editable) {
+                formatBirthdayText(editable);
+            }
+        });
+
+    }
+
+    private void formatBirthdayText(Editable editable) {
+        String input = editable.toString();
+        if (input.length() == 2 || input.length() == 5) {
+            editable.append(',');
+        }
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.continueButton) {
+        int viewId = v.getId();
+        if (viewId== R.id.continueButton) {
             obtainData();
+        } else if (viewId == R.id.birthdayEditText) {
+            pickBirthday();
         }
+//        } else if (viewId == R.id.userImageView || viewId == R.id.editImageView) {
+//            Intent photoIntent = new Intent(Intent.ACTION_PICK);
+//            photoIntent.setType("image/*");
+//            startActivityForResult(photoIntent, 1);
+//            uploadImage();
+//        }
+    }
+
+//    private void uploadImage() {
+//        ProgressDialog progressDialog = new ProgressDialog(this);
+//        progressDialog.setTitle("Uploading...");
+//        progressDialog.show();
+//        FirebaseStorage storage = FirebaseStorage.getInstance();
+//    }
+
+    private void pickBirthday() {
+        final Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                birthdayEditText.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+            }
+        }, year, month, day);
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        datePickerDialog.show();
     }
 
     private void obtainData() {
         int genderRadioId = genderRadioGroup.getCheckedRadioButtonId();
         genderRadioButton = findViewById(genderRadioId);
-
         String firstName = firstNameEditText.getText().toString();
         String lastName = lastNameEditText.getText().toString();
         String email = emailEditText.getText().toString();
@@ -206,11 +273,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             Toast.makeText(this, "Please enter your first name", Toast.LENGTH_SHORT).show();
             firstNameEditText.setError("First name is required");
             firstNameEditText.requestFocus();
-        } else if (TextUtils.isEmpty(lastName)) {
+        }
+        if (TextUtils.isEmpty(lastName)) {
             Toast.makeText(this, "Please enter your last name", Toast.LENGTH_SHORT).show();
             lastNameEditText.setError("Last name is required");
             lastNameEditText.requestFocus();
-        } else if (TextUtils.isEmpty(email)) {
+
+        }
+        if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show();
             emailEditText.setError("Email is required");
             emailEditText.requestFocus();
@@ -218,38 +288,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             Toast.makeText(this, "Please re-enter your email", Toast.LENGTH_SHORT).show();
             emailEditText.setError("Valid email is required");
             emailEditText.requestFocus();
-        } else if (TextUtils.isEmpty(password)) {
+
+        }
+        if (TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Please enter your password", Toast.LENGTH_SHORT).show();
             passwordEditText.setError("Password is required");
             passwordEditText.requestFocus();
-        } else if (TextUtils.isEmpty(confirmPassword)) {
+        }
+        if (TextUtils.isEmpty(confirmPassword)) {
             Toast.makeText(this, "Please confirm your password", Toast.LENGTH_SHORT).show();
             confirmPasswordEditText.setError("Confirm password is required");
             confirmPasswordEditText.requestFocus();
-        } else if (TextUtils.isEmpty(birthday)) {
-            Toast.makeText(this, "Please enter your birthday", Toast.LENGTH_SHORT).show();
-            birthdayEditText.setError("Birthday is required");
-            birthdayEditText.requestFocus();
-        } else if (TextUtils.isEmpty(phoneNumber)) {
-            Toast.makeText(this, "Please enter your phone number", Toast.LENGTH_SHORT).show();
-            phoneNumberEditText.setError("Phone number is required");
-            phoneNumberEditText.requestFocus();
-        } else if (TextUtils.isEmpty(birthday)) {
-            Toast.makeText(this, "Please enter your birthday", Toast.LENGTH_SHORT).show();
-            birthdayEditText.setError("Birthday is required");
-            birthdayEditText.requestFocus();
-        } else if (genderRadioGroup.getCheckedRadioButtonId() == -1) {
-            Toast.makeText(this, "Please select your gender", Toast.LENGTH_SHORT).show();
-            genderRadioButton.setError("Gender is required");
-            genderRadioButton.requestFocus();
-        } else if (TextUtils.isEmpty(address)) {
-            Toast.makeText(this, "Please enter your address", Toast.LENGTH_SHORT).show();
-            autoCompleteTextView.setError("Address is required");
-            autoCompleteTextView.requestFocus();
-        } else if (phoneNumber.length() != 10) {
-            Toast.makeText(this, "Please re-enter your phone number", Toast.LENGTH_SHORT).show();
-            phoneNumberEditText.setError("Valid phone number is required");
-            phoneNumberEditText.requestFocus();
         } else if (password.length() < 6) {
             Toast.makeText(this, "Password should be at least 6 digits", Toast.LENGTH_SHORT).show();
             passwordEditText.setError("Password too short");
@@ -258,6 +307,28 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             Toast.makeText(this, "Password does not match", Toast.LENGTH_SHORT).show();
             confirmPasswordEditText.setError("Password Confirmation is required");
             confirmPasswordEditText.requestFocus();
+        }
+
+        if (TextUtils.isEmpty(birthday)) {
+            Toast.makeText(this, "Please enter your birthday", Toast.LENGTH_SHORT).show();
+            birthdayEditText.setError("Birthday is required");
+            birthdayEditText.requestFocus();
+        } else if (TextUtils.isEmpty(birthday)) {
+            Toast.makeText(this, "Please enter your birthday", Toast.LENGTH_SHORT).show();
+            birthdayEditText.setError("Birthday is required");
+            birthdayEditText.requestFocus();
+        } else if (phoneNumber.length() != 10) {
+            Toast.makeText(this, "Please re-enter your phone number", Toast.LENGTH_SHORT).show();
+            phoneNumberEditText.setError("Valid phone number is required");
+            phoneNumberEditText.requestFocus();
+        } else if (TextUtils.isEmpty(address)) {
+            Toast.makeText(this, "Please enter your address", Toast.LENGTH_SHORT).show();
+            autoCompleteTextView.setError("Address is required");
+            autoCompleteTextView.requestFocus();
+        } else if (genderRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, "Please select your gender", Toast.LENGTH_SHORT).show();
+            genderRadioButton.setError("Gender is required");
+            genderRadioButton.requestFocus();
         } else {
             gender = genderRadioButton.getText().toString();
             registerUser(firstName, lastName, email, password, birthday, phoneNumber, gender, address);
@@ -267,6 +338,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private void registerUser(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String gender, String address) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
+
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -274,14 +346,60 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 if (task.isSuccessful()) {
                     Toast.makeText(SignUpActivity.this, "User has been registered successfully", Toast.LENGTH_SHORT).show();
                     FirebaseUser firebaseUser = auth.getCurrentUser();
-                    firebaseUser.sendEmailVerification();
-                    Intent intent = new Intent(SignUpActivity.this, LoadingActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        });
+                    UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(firstName + " " + lastName).build();
+                    firebaseUser.updateProfile(profileChangeRequest);
 
+                    //Enter User data into the firebase Realtime Database
+                    ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails();
+                    writeUserDetails.setFirstName(firstName);
+                    writeUserDetails.setLastName(lastName);
+                    writeUserDetails.setEmail(email);
+                    writeUserDetails.setPassword(password);
+                    writeUserDetails.setBirthday(birthday);
+                    writeUserDetails.setPhoneNumber(phoneNumber);
+                    writeUserDetails.setAddress(address);
+                    writeUserDetails.setGender(gender);
+
+                    //Extracting User reference from Database from "Registered Users"
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Registered Users");
+                    reference.child(firebaseUser.getUid()).setValue(writeUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                firebaseUser.sendEmailVerification();
+                                Toast.makeText(SignUpActivity.this, "User registered successfully. Please verify your Email", Toast.LENGTH_LONG).show();
+
+                                Intent intent = new Intent(SignUpActivity.this, HomePageActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast.makeText(SignUpActivity.this, "User registration failed. Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                } else {
+                    try {
+                        throw task.getException();
+                    } catch (FirebaseAuthWeakPasswordException e) {
+                        passwordEditText.setError("Your password should be at least 6 digits");
+                        passwordEditText.requestFocus();
+                    } catch (FirebaseAuthInvalidCredentialsException e) {
+                        emailEditText.setError("Valid email is required or already in use");
+                        emailEditText.requestFocus();
+                    } catch (FirebaseAuthUserCollisionException e) {
+                        emailEditText.setError("Email is already registered");
+                        emailEditText.requestFocus();
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage());
+                        Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+
+        });
     }
+
 }
