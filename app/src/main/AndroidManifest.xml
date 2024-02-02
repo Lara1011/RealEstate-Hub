@@ -44,6 +44,9 @@
         <activity
             android:name=".SetIntentActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".HomePageActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -23,7 +23,7 @@ public class SetIntentActivity extends AppCompatActivity implements View.OnClick
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.white));
 
-        setContentView(R.layout.activity_set_intent);
+        setContentView(R.layout.activity1_set_intent);
         initUI();
     }
 

@@ -11,4 +11,10 @@
     <string name="continue_with">or continue with</string>
     <string name="no_account">Don\'t have an account?</string>
     <string name="sign_up">Sign up</string>
+
+    <string name="open_nav">Open Navigation Drawer</string>
+    <string name="close_nav">Close Navigation Drawer</string>
+    <string name="default_web_client_id" translatable="false">63950315535-c6fg3l7cu7h4bbgr921i7poherailqul.apps.googleusercontent.com</string>
+    <string name="via_sms">via SMS</string>
+    <string name="via_email">via Email</string>
 </resources>

@@ -6,13 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -27,7 +25,7 @@ public class SetNewPasswordActivity extends AppCompatActivity {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.white));
-        setContentView(R.layout.activity_set_new_password);
+        setContentView(R.layout.activity1_set_new_password);
 
         initUI();
     }
@@ -43,7 +41,7 @@ public class SetNewPasswordActivity extends AppCompatActivity {
     }
 
     private void showCongratulationDialog(){
-        View view = getLayoutInflater().inflate(R.layout.congratulation_dialog_layout,null);
+        View view = getLayoutInflater().inflate(R.layout.activity1_congratulation_dialog_layout,null);
         ImageView loadingImageView = view.findViewById(R.id.dialog_loading);
         Glide.with(this).asGif().load(R.drawable.loading2).into(loadingImageView);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

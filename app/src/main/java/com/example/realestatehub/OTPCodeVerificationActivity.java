@@ -20,7 +20,7 @@ public class OTPCodeVerificationActivity extends AppCompatActivity {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.white));
-        setContentView(R.layout.activity_otpcode_verification);
+        setContentView(R.layout.activity1_otpcode_verification);
 
         initUI();
     }

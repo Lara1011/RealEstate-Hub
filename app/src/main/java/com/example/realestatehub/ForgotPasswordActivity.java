@@ -22,7 +22,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.white));
-        setContentView(R.layout.activity_forgot_password);
+        setContentView(R.layout.activity1_forgot_password);
         initUI();
     }
 

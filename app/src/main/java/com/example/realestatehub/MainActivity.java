@@ -1,3 +1,4 @@
+
 package com.example.realestatehub;
 
 import android.content.Context;
@@ -15,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
+        setContentView(R.layout.activity1_welcome);
         // Check if it's the first launch
         if (isFirstLaunch()) {
             // Show the Welcome layout

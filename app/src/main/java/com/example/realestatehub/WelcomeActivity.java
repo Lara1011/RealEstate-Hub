@@ -33,7 +33,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.white));
 
-        setContentView(R.layout.activity_welcome);
+        setContentView(R.layout.activity1_welcome);
         initUI();
     }
 
