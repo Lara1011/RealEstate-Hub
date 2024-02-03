@@ -47,6 +47,8 @@
         <activity
             android:name=".HomePageActivity"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".AddPostActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
