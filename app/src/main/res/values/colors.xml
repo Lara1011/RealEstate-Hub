@@ -17,6 +17,8 @@
     <color name="dark_blue">#125488</color>
     <color name="cyan">#3DD9D6</color>
     <color name="blue_logo">#5BC1E6</color>
+    <color name="back_ground_theme">#00FFFFFF</color>
+    <color name="icon">#9A9A9A</color>
 
 
     <color name="lavender">#8692f7</color>

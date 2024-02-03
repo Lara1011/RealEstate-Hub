@@ -26,7 +26,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="10dp"
-                android:background="@drawable/back_icon" />
+                android:background="@drawable/icon_back" />
 
             <TextView
                 android:id="@+id/pageNametextView"
@@ -52,7 +52,7 @@
                 android:id="@+id/userImageView"
                 android:layout_width="170dp"
                 android:layout_height="170dp"
-                android:background="@drawable/empty_profile_logo" />
+                android:background="@drawable/img_empty_profile" />
 
             <Button
                 android:id="@+id/editImageView"

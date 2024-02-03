@@ -20,7 +20,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
-            android:background="@drawable/back_icon" />
+            android:background="@drawable/icon_back" />
 
         <TextView
             android:id="@+id/pageNameTextView"
@@ -112,7 +112,7 @@
             android:id="@+id/buyerLogoImageView"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/buyer_logo" />
+            android:src="@drawable/logo_buyer" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/buyerSwitch"
