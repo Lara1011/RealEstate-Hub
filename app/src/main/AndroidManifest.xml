@@ -49,6 +49,9 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name=".AddPostActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
