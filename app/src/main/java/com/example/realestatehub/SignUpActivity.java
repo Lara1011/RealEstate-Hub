@@ -281,12 +281,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         }
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter your Email", Toast.LENGTH_SHORT).show();
             emailEditText.setError("Email is required");
             emailEditText.requestFocus();
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Please re-enter your email", Toast.LENGTH_SHORT).show();
-            emailEditText.setError("Valid email is required");
+            Toast.makeText(this, "Please re-enter your Email", Toast.LENGTH_SHORT).show();
+            emailEditText.setError("Valid Email is required");
             emailEditText.requestFocus();
 
         }

@@ -47,6 +47,9 @@
         <activity
             android:name=".HomePageActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
