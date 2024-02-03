@@ -22,7 +22,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.white));
 
-        setContentView(R.layout.activity_connecting);
+        setContentView(R.layout.activity1_connecting);
         initUI();
     }
 
