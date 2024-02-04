@@ -2,10 +2,14 @@ package com.example.realestatehub;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,11 +22,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,6 +37,8 @@ import java.util.Objects;
 import javax.annotation.Nullable;
 
 public class ConnectingActivity extends AppCompatActivity implements View.OnClickListener {
+    private EditText emailEditText;
+    private EditText passwordEditText;
     private Button signInButton;
     private Button forgotPasswordButton;
     private Button facebookButton;
@@ -44,6 +50,7 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
     private FirebaseDatabase database;
     private GoogleSignInClient GoogleSignInClient;
     int RC_SIGN_IN = 20;
+    private static final String TAG = "ConnectingActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +67,11 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
     private void initUI() {
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         GoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        emailEditText = findViewById(R.id.emailEditText);
+        passwordEditText = findViewById(R.id.passwordEditText);
         signInButton = findViewById(R.id.signInButton);
         forgotPasswordButton = findViewById(R.id.forgotPasswordButton);
         facebookButton = findViewById(R.id.facebookButton);
@@ -84,35 +90,68 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        intent = new Intent(this, WelcomeActivity.class);
-        startActivity(intent);
-        finish();
+        finishAffinity();
     }
-
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.signInButton) {
-            regularSignIn();
-        }
-        else if (id == R.id.forgotPasswordButton) {
+            regularLogIn();
+        } else if (id == R.id.forgotPasswordButton) {
             intent = new Intent(this, ForgotPasswordActivity.class);
             startActivity(intent);
             finish();
-        }
-        else if (id == R.id.googleButton) {
+        } else if (id == R.id.googleButton) {
             googleSignIn();
-        }
-        else if (id == R.id.signUpButton) {
+        } else if (id == R.id.signUpButton) {
             intent = new Intent(this, SignUpActivity.class);
             startActivity(intent);
             finish();
         }
     }
 
-    private void regularSignIn() {
+    private void regularLogIn() {
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
 
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Please enter your Email", Toast.LENGTH_SHORT).show();
+            emailEditText.setError("Email is required");
+            emailEditText.requestFocus();
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Please re-enter your Email", Toast.LENGTH_SHORT).show();
+            emailEditText.setError("Valid Email is required");
+            emailEditText.requestFocus();
+        } else if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter your password", Toast.LENGTH_SHORT).show();
+            passwordEditText.setError("Password is required");
+            passwordEditText.requestFocus();
+        } else {
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        intent = new Intent(ConnectingActivity.this, HomePageActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        try {
+                            throw task.getException();
+                        } catch (FirebaseAuthInvalidUserException e) {
+                            emailEditText.setError("Email doesn't exist. Please register again.");
+                            emailEditText.requestFocus();
+                        } catch (FirebaseAuthInvalidCredentialsException e) {
+                            passwordEditText.setError("Email and password doesn't match. Please re-enter again.");
+                            passwordEditText.requestFocus();
+                        } catch (Exception e) {
+                            Log.e(TAG, e.getMessage());
+                            Toast.makeText(ConnectingActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            });
+        }
     }
 
     private void googleSignIn() {

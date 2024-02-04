@@ -40,10 +40,10 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     private Button continueButton;
     private ImageView loadingImageView;
     private FirebaseAuth auth;
-    private final int delay = 3000;
+    private final int delay = 4000;
     private Handler handler = new Handler();
+    private Intent intent;
     private final static String TAG = "ForgotPasswordActivity";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,14 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
         backButton.setOnClickListener(this);
         continueButton.setOnClickListener(this);
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        intent = new Intent(this, ConnectingActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -116,6 +123,13 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     changeVisibilities();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            startActivity(new Intent(ForgotPasswordActivity.this, ConnectingActivity.class));
+                                            finish();
+                                        }
+                                    }, delay);
                                 } else {
                                     try {
                                         throw task.getException();
@@ -131,7 +145,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                         });
                     } else {
                         // Email is not in our Database
-                        emailEditText.setError("This Email doesn't exist");
+                        emailEditText.setError("Email doesn't exist");
                     }
                 }
 
