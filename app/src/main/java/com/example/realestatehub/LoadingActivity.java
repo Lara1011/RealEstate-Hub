@@ -10,10 +10,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoadingActivity extends AppCompatActivity {
     private ImageView loadingImageView;
-    private final int delay = 2000;
+    private final int delay = 2500;
     private Handler handler = new Handler();
 
     @Override
@@ -27,14 +29,6 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
         initUI();
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Start the next activity or move to the next layout here
-                startActivity(new Intent(LoadingActivity.this, ConnectingActivity.class));
-                finish();
-            }
-        }, delay);
     }
 
     private void initUI() {
@@ -42,5 +36,28 @@ public class LoadingActivity extends AppCompatActivity {
         // Load and animate the GIF using Glide
         Glide.with(this).asGif().load(R.drawable.loading2).into(loadingImageView);
     }
+
+    @Override
+    protected void onStart() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        super.onStart();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (auth.getCurrentUser() != null) {
+                    Intent intent = new Intent(LoadingActivity.this, HomePageActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(LoadingActivity.this, ConnectingActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }, delay);
+
+    }
+
 
 }
