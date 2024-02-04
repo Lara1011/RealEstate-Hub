@@ -1,5 +1,6 @@
 package com.example.realestatehub;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -132,9 +134,7 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        intent = new Intent(ConnectingActivity.this, HomePageActivity.class);
-                        startActivity(intent);
-                        finish();
+                        checkVerification();
                     } else {
                         try {
                             throw task.getException();
@@ -208,5 +208,35 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
                 }
             }
         });
+    }
+
+    private void checkVerification() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user.isEmailVerified()) {
+            intent = new Intent(ConnectingActivity.this, HomePageActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            user.sendEmailVerification();
+            auth.signOut();
+            showAlertDialog();
+        }
+    }
+
+    private void showAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Email Verification");
+        builder.setMessage("Please check your email and verify your account in order to log in.");
+        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_APP_EMAIL);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
