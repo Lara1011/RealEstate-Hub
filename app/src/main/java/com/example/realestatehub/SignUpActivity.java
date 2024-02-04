@@ -312,14 +312,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_APP_EMAIL);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent = new Intent(SignUpActivity.this, ConnectingActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+
     }
 
     private void addressInit() {
