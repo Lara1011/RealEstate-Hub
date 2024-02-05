@@ -1,7 +1,6 @@
 package com.example.realestatehub;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -76,6 +75,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private String currentQuery = "";
     private static final String TAG = "SignUpActivity";
     private Intent intent;
+    private FirebaseAuth auth;
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initUI() {
+        auth = FirebaseAuth.getInstance();
+
         cpp = findViewById(R.id.countryCodeSpinner);
         firstNameEditText = findViewById(R.id.firstNameEditText);
         lastNameEditText = findViewById(R.id.lastNameEditText);
@@ -147,12 +150,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 //            startActivityForResult(photoIntent, 1);
 //            uploadImage();
         }
-    }
-
-    private void uploadImage() {
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Uploading...");
-        progressDialog.show();
     }
 
     private void formatBirthdayText(Editable editable) {
@@ -226,9 +223,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if (TextUtils.isEmpty(birthday)) {
             birthdayEditText.setError("Birthday is required");
             birthdayEditText.requestFocus();
-        } else if (TextUtils.isEmpty(birthday)) {
-            birthdayEditText.setError("Birthday is required");
-            birthdayEditText.requestFocus();
         } else if (phoneNumber.length() != 10) {
             phoneNumberEditText.setError("Valid phone number is required");
             phoneNumberEditText.requestFocus();
@@ -245,15 +239,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void registerUser(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String gender, String address) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if (task.isSuccessful()) {
                     Toast.makeText(SignUpActivity.this, "User has been registered successfully", Toast.LENGTH_SHORT).show();
-                    FirebaseUser firebaseUser = auth.getCurrentUser();
+                    firebaseUser = auth.getCurrentUser();
                     UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(firstName + " " + lastName).build();
                     firebaseUser.updateProfile(profileChangeRequest);
 

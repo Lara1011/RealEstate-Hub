@@ -31,7 +31,6 @@ public class HomePageActivity extends AppCompatActivity {
 
         // Find views using findViewById
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        FloatingActionButton fab = findViewById(R.id.fab);
 
         bottomNavigationView.setBackground(null);
         bottomNavigationView.setOnItemSelectedListener(item -> {

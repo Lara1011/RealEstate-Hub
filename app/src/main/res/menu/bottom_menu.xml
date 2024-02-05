@@ -11,7 +11,9 @@
         android:title="Search" />
 
     <item
-        android:title="" />
+        android:id="@+id/add"
+        android:icon="@drawable/icon_add"
+        android:title="Add" />
 
     <item
         android:id="@+id/favorite"

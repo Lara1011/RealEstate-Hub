@@ -21,8 +21,5 @@ public class HomeActivity extends AppCompatActivity {
 
         List<String> imageUrls = new ArrayList<>();
         // Add your image URLs to the list
-
-        HorizontalFeaturedAdapter adapter = new HorizontalFeaturedAdapter(this, imageUrls);
-        recyclerView.setAdapter(adapter);
     }
 }
