@@ -72,9 +72,8 @@ public class PropertyAdPlan extends AppCompatActivity implements View.OnClickLis
 
     private void clickedFreeAd(){
         firebaseUser = auth.getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Posts").child(firebaseUser.getUid()).child(readWritePostDetails.getAdID());
-        DatabaseReference childReference = reference.child(firebaseUser.getUid()).child(readWritePostDetails.getAdID());
-        childReference.setValue(readWritePostDetails.getPostDetails(readWritePostDetails.getAdID())).addOnCompleteListener(new OnCompleteListener<Void>() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Posts").child(firebaseUser.getUid()).child(readWritePostDetails.getAdID()).child("Property Details");
+        reference.setValue(readWritePostDetails.getPostDetails(readWritePostDetails.getAdID())).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){

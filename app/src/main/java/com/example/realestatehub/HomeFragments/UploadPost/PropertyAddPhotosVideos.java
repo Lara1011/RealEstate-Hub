@@ -111,18 +111,19 @@ public class PropertyAddPhotosVideos extends AppCompatActivity implements View.O
             final ProgressDialog dialog = new ProgressDialog(this);
             dialog.setTitle("Uploading...");
             dialog.show();
-
-            StorageReference fileRef = storageReference.child(auth.getCurrentUser().getUid() + "." + getFileExtension(uriImage));
-            fileRef.putFile(uriImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            storageReference.putFile(uriImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             Uri downloadUri = uri;
                             firebaseUser = auth.getCurrentUser();
                             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setPhotoUri(downloadUri).build();
                             firebaseUser.updateProfile(profileChangeRequest);
+
+                            String upload = databaseReference.push().getKey();
+                            databaseReference.child(upload).setValue(downloadUri.toString());
 
                             // Dismiss the dialog here
                             dialog.dismiss();
