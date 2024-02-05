@@ -39,7 +39,7 @@ public class AddPostActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity2_property_address);
         setSpinners();
         initUI();
-        // Load saved data when the activity is created
+        readWritePostDetails.setAdID();
         loadSavedData();
     }
 
@@ -154,7 +154,7 @@ public class AddPostActivity extends AppCompatActivity implements View.OnClickLi
             streetNameTextView.setError("Street name of property is required");
             streetNameTextView.requestFocus();
         } else {
-            readWritePostDetails.addPost("1", postName, propertyLocation, streetName, propertyFloor, totalFloors, homeNumber, propertyType, view);
+            readWritePostDetails.addPost(readWritePostDetails.getAdID(), postName, propertyLocation, streetName, propertyFloor, totalFloors, homeNumber, propertyType, view);
             intent = new Intent(AddPostActivity.this, PropertyFillInformation.class);
             startActivity(intent);
             finish();
@@ -163,7 +163,7 @@ public class AddPostActivity extends AppCompatActivity implements View.OnClickLi
 
     private void loadSavedData() {
         // Load saved data from ReadWritePostDetails
-        HashMap<String, String> postDetails = readWritePostDetails.getPostDetails("1");
+        HashMap<String, String> postDetails = readWritePostDetails.getPostDetails(readWritePostDetails.getAdID());
 
         if (postDetails != null) {
             postNameEditText.setText(getSafeValue(postDetails, "name"));
