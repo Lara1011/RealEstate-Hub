@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/opensans_regular"
-                android:text="Fill Your Property Address"
+                android:text="Fill Your Property Information"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -46,6 +46,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp">
         </RelativeLayout>
+
         <!-- Main -->
         <LinearLayout
             android:id="@+id/mainLinearLayout"
@@ -59,81 +60,10 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Post Name">
-
-                <EditText
-                    android:id="@+id/postNameEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="emailAddress"
-                    android:background="@drawable/background_for_text"
-                    android:ems="10"
-                    android:fontFamily="@font/opensans_regular"
-                    android:inputType="textPersonName"
-                    android:padding="12dp"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/background_for_text"
-                >
-
-                <TextView
-                    android:id="@+id/propertyTypeTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Select Property Type"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"/>
-
-                <Spinner
-                    android:id="@+id/propertyTypeSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="12dp"
-                    android:gravity="center"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/background_for_text">
-                <TextView
-                    android:id="@+id/openViewTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Select view"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"/>
-
-                <Spinner
-                    android:id="@+id/openViewSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="12dp"
-                    android:gravity="center"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="What is the property location?">
-
+                android:hint="Number of rooms">
                 <EditText
-                    android:id="@+id/propertyLocationEditText"
+                    android:id="@+id/numberOfRoomsEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="emailAddress"
@@ -149,85 +79,182 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:hint="Street">
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_for_text">
 
-                <AutoCompleteTextView
-                    android:id="@+id/streetNameTextView"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/showerNumberTitle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="12dp"
+                    android:text="Select number of showers"
                     android:textSize="14sp"
-                    android:background="@drawable/background_for_text"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"/>
+
+                <Spinner
+                    android:id="@+id/showerNumberSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="12dp"
+                    android:gravity="center"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:hint="Floor Number">
-
-                <EditText
-                    android:id="@+id/propertyFloorEditText"
-                    android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_for_text">
+                <TextView
+                    android:id="@+id/numberOfParkingTitle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:autofillHints="emailAddress"
-                    android:background="@drawable/background_for_text"
-                    android:ems="10"
-                    android:fontFamily="@font/opensans_regular"
-                    android:inputType="number"
-                    android:padding="12dp"
+                    android:text="Select number of parking"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"/>
+                <Spinner
+                    android:id="@+id/numberOfParkingSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="12dp"
+                    android:gravity="center"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:hint="Total floors in the building">
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_for_text">
+                <TextView
+                    android:id="@+id/numberOfBalconiesTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select number of balconies"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"/>
+                <Spinner
+                    android:id="@+id/numberOfBalconiesSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="12dp"
+                    android:gravity="center"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_for_text">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Property Characteristics"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/ElevatorsCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Elevators" />
+
+                        <CheckBox
+                            android:id="@+id/airConditionerCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tornado air conditioner" />
+
+                        <CheckBox
+                            android:id="@+id/kosherkitchenCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Kosher kitchen" />
+
+                        <CheckBox
+                            android:id="@+id/StorageCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Storage" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/waterHeaterCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Water Heater" />
+
+                        <CheckBox
+                            android:id="@+id/RenovatedCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Renovated" />
+
+                        <CheckBox
+                            android:id="@+id/accessForDisabledCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Access for disabled" />
+
+                        <CheckBox
+                            android:id="@+id/FurnitureCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Furniture" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_for_text"
+                android:hint="What is important to you about the property?"
+                >
+
 
                 <EditText
-                    android:id="@+id/totalFloorsEditText"
+                    android:id="@+id/additionalInformationEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints="emailAddress"
                     android:background="@drawable/background_for_text"
-                    android:ems="10"
                     android:fontFamily="@font/opensans_regular"
-                    android:inputType="date"
+                    android:inputType="textMultiLine"
                     android:padding="12dp"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                   />
+                    android:gravity="center"/>
             </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="No. Home">
-
-                    <EditText
-                        android:id="@+id/homeNumberEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:autofillHints="emailAddress"
-                        android:background="@drawable/background_for_text"
-                        android:ems="10"
-                        android:fontFamily="@font/opensans_regular"
-                        android:inputType="number"
-                        android:padding="12dp"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
 
             <Button
                 android:id="@+id/continueButton"

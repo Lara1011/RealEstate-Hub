@@ -76,27 +76,6 @@
         android:paddingRight="10dp"
         android:paddingBottom="30dp">
 
-        <RadioGroup
-            android:id="@+id/postRadioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/freeRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="Free post" />
-
-            <RadioButton
-                android:id="@+id/sponsoredRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sponsored post" />
-
-        </RadioGroup>
-
     </LinearLayout>
 
 </LinearLayout>

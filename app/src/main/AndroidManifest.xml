@@ -52,6 +52,15 @@
         <activity
             android:name=".ForgotPasswordActivity"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".PropertyFillInformation"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".PropertyPriceAndSize"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".PropertyAddPhotosVideos"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".PropertyAdPlan"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
