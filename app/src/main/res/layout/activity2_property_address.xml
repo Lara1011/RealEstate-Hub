@@ -82,6 +82,16 @@
                 android:background="@drawable/background_for_text"
                 >
 
+                <TextView
+                    android:id="@+id/propertyTypeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select Property Type"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"/>
+
                 <Spinner
                     android:id="@+id/propertyTypeSpinner"
                     android:layout_width="match_parent"
@@ -97,6 +107,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/background_for_text">
+                <TextView
+                    android:id="@+id/openViewTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select view"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"/>
 
                 <Spinner
                     android:id="@+id/openViewSpinner"
@@ -157,7 +176,7 @@
                     android:background="@drawable/background_for_text"
                     android:ems="10"
                     android:fontFamily="@font/opensans_regular"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:padding="12dp"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -181,7 +200,7 @@
                     android:padding="12dp"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:focusable="false"/>
+                   />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

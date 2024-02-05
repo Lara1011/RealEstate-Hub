@@ -81,6 +81,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/background_for_text">
+
+                <TextView
+                    android:id="@+id/showerNumberTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select number of showers"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"/>
+
                 <Spinner
                     android:id="@+id/showerNumberSpinner"
                     android:layout_width="match_parent"
@@ -95,6 +106,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/background_for_text">
+                <TextView
+                    android:id="@+id/numberOfParkingTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select number of parking"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"/>
                 <Spinner
                     android:id="@+id/numberOfParkingSpinner"
                     android:layout_width="match_parent"
@@ -109,6 +129,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/background_for_text">
+                <TextView
+                    android:id="@+id/numberOfBalconiesTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select number of balconies"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"/>
                 <Spinner
                     android:id="@+id/numberOfBalconiesSpinner"
                     android:layout_width="match_parent"
