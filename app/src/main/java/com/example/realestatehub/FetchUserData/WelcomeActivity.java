@@ -1,4 +1,4 @@
-package com.example.realestatehub;
+package com.example.realestatehub.FetchUserData;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -14,6 +14,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.realestatehub.LogIn.ConnectingActivity;
+import com.example.realestatehub.R;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView welcome_popup_ImageView;

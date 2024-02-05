@@ -1,4 +1,4 @@
-package com.example.realestatehub;
+package com.example.realestatehub.LogIn;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -27,6 +27,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.realestatehub.R;
+import com.example.realestatehub.FillDetails.ReadWriteUserDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

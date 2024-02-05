@@ -1,4 +1,4 @@
-package com.example.realestatehub;
+package com.example.realestatehub.HomeFragments.UploadPost;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.realestatehub.FillDetails.ReadWritePostDetails;
+import com.example.realestatehub.HomeFragments.HomeBottomNavigation;
+import com.example.realestatehub.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.HashMap;
@@ -100,7 +103,7 @@ public class AddPostActivity extends AppCompatActivity implements View.OnClickLi
         if (viewId == R.id.continueButton) {
             obtainData();
         } else if (viewId == R.id.backButton) {
-            intent = new Intent(this, HomePageActivity.class);
+            intent = new Intent(this, HomeBottomNavigation.class);
             startActivity(intent);
             finish();
         }

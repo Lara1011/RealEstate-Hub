@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00FFFFFF"
-    tools:context=".SetIntentActivity">
+    android:background="@color/back_ground_theme"
+    tools:context=".LogIn.SetIntentActivity">
 
     <LinearLayout
         android:id="@+id/firstLinearLayout"

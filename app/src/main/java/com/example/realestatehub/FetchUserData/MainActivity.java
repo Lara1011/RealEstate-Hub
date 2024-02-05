@@ -1,5 +1,5 @@
 
-package com.example.realestatehub;
+package com.example.realestatehub.FetchUserData;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +9,12 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.realestatehub.R;
+
 public class MainActivity extends AppCompatActivity {
     private static final String PREF_NAME = "MyAppPreferences";
     private static final String PREF_KEY_FIRST_LAUNCH = "firstLaunch";
+    private Intent intent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
             showLoginLayout();
         }
     }
-
     private boolean isFirstLaunch() {
         SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getBoolean(PREF_KEY_FIRST_LAUNCH, true);

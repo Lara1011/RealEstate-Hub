@@ -14,13 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RealEstateHub"
         tools:targetApi="31">
-         <activity
+        <activity
             android:windowSoftInputMode="adjustResize|adjustPan"
-            android:name=".HomeActivity"
+            android:name=".HomeFragments.HomeFragment"
             android:exported="false" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".FetchUserData.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -30,36 +30,36 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".FetchUserData.WelcomeActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".LoadingActivity"
+            android:name=".FetchUserData.LoadingActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".ConnectingActivity"
+            android:name=".LogIn.ConnectingActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".SignUpActivity"
+            android:name=".LogIn.SignUpActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".SetIntentActivity"
+            android:name=".LogIn.SetIntentActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".HomePageActivity"
+            android:name=".HomeFragments.HomeBottomNavigation"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".AddPostActivity"
+        <activity android:name=".HomeFragments.UploadPost.AddPostActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".ForgotPasswordActivity"
+            android:name=".LogIn.ForgotPasswordActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".PropertyFillInformation"
+        <activity android:name=".HomeFragments.UploadPost.PropertyFillInformation"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".PropertyPriceAndSize"
+        <activity android:name=".HomeFragments.UploadPost.PropertyPriceAndSize"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".PropertyAddPhotosVideos"
+        <activity android:name=".HomeFragments.UploadPost.PropertyAddPhotosVideos"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".PropertyAdPlan"
+        <activity android:name=".HomeFragments.UploadPost.PropertyAdPlan"
             android:screenOrientation="portrait"></activity>
     </application>
 

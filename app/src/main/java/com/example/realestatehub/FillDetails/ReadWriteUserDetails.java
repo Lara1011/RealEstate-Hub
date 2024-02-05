@@ -1,4 +1,4 @@
-package com.example.realestatehub;
+package com.example.realestatehub.FillDetails;
 
 public class ReadWriteUserDetails {
     private static ReadWriteUserDetails instance;

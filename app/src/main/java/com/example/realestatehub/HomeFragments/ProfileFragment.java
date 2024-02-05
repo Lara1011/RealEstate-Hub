@@ -1,4 +1,4 @@
-package com.example.realestatehub;
+package com.example.realestatehub.HomeFragments;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -20,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.realestatehub.LogIn.ConnectingActivity;
+import com.example.realestatehub.R;
+import com.example.realestatehub.FillDetails.ReadWriteUserDetails;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

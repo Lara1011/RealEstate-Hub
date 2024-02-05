@@ -1,4 +1,4 @@
-package com.example.realestatehub;
+package com.example.realestatehub.FetchUserData;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.realestatehub.HomeFragments.HomeBottomNavigation;
+import com.example.realestatehub.LogIn.ConnectingActivity;
+import com.example.realestatehub.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -47,7 +50,7 @@ public class LoadingActivity extends AppCompatActivity {
             public void run() {
                 FirebaseUser user = auth.getCurrentUser();
                 if (auth.getCurrentUser() != null && user.isEmailVerified()) {
-                    Intent intent = new Intent(LoadingActivity.this, HomePageActivity.class);
+                    Intent intent = new Intent(LoadingActivity.this, HomeBottomNavigation.class);
                     startActivity(intent);
                     finish();
                 } else {

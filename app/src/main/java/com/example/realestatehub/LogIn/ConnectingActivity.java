@@ -1,4 +1,4 @@
-package com.example.realestatehub;
+package com.example.realestatehub.LogIn;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.realestatehub.HomeFragments.HomeBottomNavigation;
+import com.example.realestatehub.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -199,7 +201,7 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
                     if (currTime < dateCreate + epsTime) {
                         intent = new Intent(ConnectingActivity.this, SignUpActivity.class);
                     } else {
-                        intent = new Intent(ConnectingActivity.this, HomePageActivity.class);
+                        intent = new Intent(ConnectingActivity.this, HomeBottomNavigation.class);
                     }
                     startActivity(intent);
                     finish();
@@ -213,7 +215,7 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
     private void checkVerification() {
         FirebaseUser user = auth.getCurrentUser();
         if (user.isEmailVerified()) {
-            intent = new Intent(ConnectingActivity.this, HomePageActivity.class);
+            intent = new Intent(ConnectingActivity.this, HomeBottomNavigation.class);
             startActivity(intent);
             finish();
         } else {

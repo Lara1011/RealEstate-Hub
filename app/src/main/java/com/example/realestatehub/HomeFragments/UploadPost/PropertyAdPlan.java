@@ -1,4 +1,4 @@
-package com.example.realestatehub;
+package com.example.realestatehub.HomeFragments.UploadPost;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.realestatehub.FillDetails.ReadWritePostDetails;
+import com.example.realestatehub.HomeFragments.HomeBottomNavigation;
+import com.example.realestatehub.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -75,7 +78,7 @@ public class PropertyAdPlan extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    intent = new Intent(PropertyAdPlan.this, HomePageActivity.class);
+                    intent = new Intent(PropertyAdPlan.this, HomeBottomNavigation.class);
                     startActivity(intent);
                     finish();
                 }
@@ -90,7 +93,7 @@ public class PropertyAdPlan extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    intent = new Intent(PropertyAdPlan.this, HomePageActivity.class);
+                    intent = new Intent(PropertyAdPlan.this, HomeBottomNavigation.class);
                     startActivity(intent);
                     finish();
                 }

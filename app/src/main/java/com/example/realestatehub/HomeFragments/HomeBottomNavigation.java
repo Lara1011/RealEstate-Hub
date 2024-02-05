@@ -1,4 +1,4 @@
-package com.example.realestatehub;
+package com.example.realestatehub.HomeFragments;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -15,13 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import com.example.realestatehub.HomeFragments.UploadPost.AddPostActivity;
+import com.example.realestatehub.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
-public class HomePageActivity extends AppCompatActivity {
+public class HomeBottomNavigation extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +63,7 @@ public class HomePageActivity extends AppCompatActivity {
         rentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomePageActivity.this, AddPostActivity.class);
+                Intent intent = new Intent(HomeBottomNavigation.this, AddPostActivity.class);
                 dialog.dismiss();
                 startActivity(intent);
 
@@ -76,7 +76,7 @@ public class HomePageActivity extends AppCompatActivity {
         sellLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomePageActivity.this, AddPostActivity.class);
+                Intent intent = new Intent(HomeBottomNavigation.this, AddPostActivity.class);
                 dialog.dismiss();
                 startActivity(intent);
 

@@ -1,4 +1,4 @@
-package com.example.realestatehub;
+package com.example.realestatehub.HomeFragments.UploadPost;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.realestatehub.FillDetails.ReadWritePostDetails;
+import com.example.realestatehub.R;
 
 import java.util.HashMap;
 
