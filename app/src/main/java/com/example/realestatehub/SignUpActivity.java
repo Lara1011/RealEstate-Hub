@@ -141,9 +141,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         } else if (viewId == R.id.birthdayEditText) {
             pickBirthday();
         } else if (viewId == R.id.backButton) {
-            intent = new Intent(this, ConnectingActivity.class);
-            startActivity(intent);
-            finish();
+            onBackPressed();
         } else if (viewId == R.id.userImageView || viewId == R.id.editImageView) {
 //            Intent photoIntent = new Intent(Intent.ACTION_PICK);
 //            photoIntent.setType("image/*");
@@ -250,7 +248,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     firebaseUser.updateProfile(profileChangeRequest);
 
                     //Enter User data into the firebase Realtime Database
-                    ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails();
+                    ReadWriteUserDetails writeUserDetails = ReadWriteUserDetails.getInstance();
                     writeUserDetails.setFirstName(firstName);
                     writeUserDetails.setLastName(lastName);
                     writeUserDetails.setEmail(email);
@@ -304,7 +302,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                intent = new Intent(SignUpActivity.this, ConnectingActivity.class);
+                intent = new Intent(SignUpActivity.this, SetIntentActivity.class);
                 startActivity(intent);
                 finish();
             }

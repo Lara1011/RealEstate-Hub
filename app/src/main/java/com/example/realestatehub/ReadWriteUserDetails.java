@@ -1,6 +1,7 @@
 package com.example.realestatehub;
 
 public class ReadWriteUserDetails {
+    private static ReadWriteUserDetails instance;
     private String firstName;
     private String lastName;
     private String email;
@@ -9,6 +10,7 @@ public class ReadWriteUserDetails {
     private String phoneNumber;
     private String address;
     private String gender;
+    private String purpose;
 
     public ReadWriteUserDetails() {
         firstName = "";
@@ -19,9 +21,10 @@ public class ReadWriteUserDetails {
         phoneNumber = "";
         address = "";
         gender = "";
+        purpose = "";
     }
 
-    public ReadWriteUserDetails(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String address, String gender) {
+    public ReadWriteUserDetails(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String address, String gender, String purpose) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -30,6 +33,14 @@ public class ReadWriteUserDetails {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.gender = gender;
+        this.purpose = purpose;
+    }
+
+    public static synchronized ReadWriteUserDetails getInstance() {
+        if (instance == null) {
+            instance = new ReadWriteUserDetails();
+        }
+        return instance;
     }
 
     public String getFirstName() {
@@ -94,5 +105,13 @@ public class ReadWriteUserDetails {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
     }
 }

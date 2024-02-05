@@ -45,7 +45,8 @@ public class LoadingActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (auth.getCurrentUser() != null) {
+                FirebaseUser user = auth.getCurrentUser();
+                if (auth.getCurrentUser() != null && user.isEmailVerified()) {
                     Intent intent = new Intent(LoadingActivity.this, HomePageActivity.class);
                     startActivity(intent);
                     finish();
@@ -58,6 +59,4 @@ public class LoadingActivity extends AppCompatActivity {
         }, delay);
 
     }
-
-
 }

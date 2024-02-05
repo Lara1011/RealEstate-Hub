@@ -39,8 +39,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
-    private TextView textView_show_full_name, textView_show_email, textView_show_dob, textView_show_gender, textView_show_mobile, textView_show_register_date, textView_show_welcome;
-    private String name, email, dob, gender, mobile;
+    private TextView textView_seller_or_buyer, textView_show_email, textView_show_dob, textView_show_gender, textView_show_mobile, textView_show_register_date, textView_show_welcome;
+    private String purpose, email, dob, gender, mobile;
     private Button editImageView,signOutButton;
     private ImageView userImageView;
     private View view;
@@ -69,7 +69,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
         storageReference = FirebaseStorage.getInstance().getReference("User Profile Images");
         userImageView = view.findViewById(R.id.userImageView);
-        textView_show_full_name = view.findViewById(R.id.textView_show_full_name);
+        textView_seller_or_buyer = view.findViewById(R.id.textView_seller_or_buyer);
         textView_show_email = view.findViewById(R.id.textView_show_email);
         textView_show_dob = view.findViewById(R.id.textView_show_dob);
         textView_show_gender = view.findViewById(R.id.textView_show_gender);
@@ -96,12 +96,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 ReadWriteUserDetails readWriteUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
                 if (readWriteUserDetails != null) {
                     textView_show_welcome.setText(String.format("Welcome " + readWriteUserDetails.getFirstName()));
-                    name = readWriteUserDetails.getFirstName() + " " + readWriteUserDetails.getLastName();
-                    email = user.getEmail();
+//                    name = readWriteUserDetails.getFirstName() + " " + readWriteUserDetails.getLastName();
+                    email = readWriteUserDetails.getEmail();
                     dob = readWriteUserDetails.getBirthday();
                     gender = readWriteUserDetails.getGender();
                     mobile = readWriteUserDetails.getPhoneNumber();
-                    textView_show_full_name.setText(name);
+                    purpose = readWriteUserDetails.getPurpose();
+                    textView_seller_or_buyer.setText(purpose);
                     textView_show_email.setText(email);
                     textView_show_dob.setText(dob);
                     textView_show_gender.setText(gender);
