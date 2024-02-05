@@ -14,10 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RealEstateHub"
         tools:targetApi="31">
-         <activity
-            android:windowSoftInputMode="adjustResize|adjustPan"
-            android:name=".HomeActivity"
-            android:exported="false" />
+
 
         <activity
             android:name=".MainActivity"
