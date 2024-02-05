@@ -68,7 +68,7 @@ public class PropertyAddPhotosVideos extends AppCompatActivity implements View.O
         //uploadVideosButton.setOnClickListener(this);
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
-        storageReference = FirebaseStorage.getInstance().getReference("Users Posts Pictures");
+        storageReference = FirebaseStorage.getInstance().getReference("Users Posts Pictures").child(firebaseUser.getUid()).child(readWritePostDetails.getAdID());
         databaseReference = FirebaseDatabase.getInstance().getReference("Users Posts").child(firebaseUser.getUid()).child(readWritePostDetails.getAdID()).child("Photos");
     }
 
