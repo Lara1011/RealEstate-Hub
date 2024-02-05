@@ -103,7 +103,7 @@
                         android:contentDescription="@string/app_name" />
 
                     <TextView
-                        android:id="@+id/textView_show_full_name"
+                        android:id="@+id/textView_seller_or_buyer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignStart="@id/ic_profile"
