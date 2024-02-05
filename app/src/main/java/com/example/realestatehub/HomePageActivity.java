@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -43,10 +43,56 @@ public class HomePageActivity extends AppCompatActivity {
                 replaceFragment(new FavoriteFragment());
             } else if (itemId == R.id.profile) {
                 replaceFragment(new ProfileFragment());
+            } else if (itemId == R.id.add) {
+                showBottomDialog();
             }
             return true;
         });
+
     }
+    private void showBottomDialog() {
+
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.activity2_add_post);
+
+        LinearLayout rentLayout = dialog.findViewById(R.id.rent);
+        LinearLayout sellLayout = dialog.findViewById(R.id.sell);
+        LinearLayout postLayout = dialog.findViewById(R.id.layoutPost);
+
+        rentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomePageActivity.this, AddPostActivity.class);
+                dialog.dismiss();
+                startActivity(intent);
+
+                finish();
+                //Toast.makeText(HomePageActivity.this, "Rent is clicked", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        sellLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomePageActivity.this, AddPostActivity.class);
+                dialog.dismiss();
+                startActivity(intent);
+
+                finish();
+                //Toast.makeText(HomePageActivity.this, "Sell is Clicked", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
