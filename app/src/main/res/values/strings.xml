@@ -35,4 +35,18 @@
         <item>To the park</item>
         <item>To the city</item>
     </string-array>
+
+    <string-array name="shower_number">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+
+    <string-array name="number_of_parking_blaconies">
+        <item>without</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>
