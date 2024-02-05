@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LogIn.SignUpActivity"
+    tools:context=".SignUpActivity"
     android:background="@color/back_ground_theme">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".LogIn.SignUpActivity">
+        tools:context=".SignUpActivity">
 
         <LinearLayout
             android:id="@+id/firstLinearLayout"
@@ -32,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/opensans_regular"
-                android:text="Fill Your Property Payments"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />

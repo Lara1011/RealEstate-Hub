@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LogIn.SignUpActivity"
+    tools:context=".HomeFragments.UploadPost.PropertyAddPhotosVideos"
     android:background="@color/back_ground_theme">
 
     <RelativeLayout
@@ -36,15 +36,30 @@
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-        </LinearLayout>
 
+
+        </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/picLinearLayout"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_below="@+id/firstLinearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp">
+        <ImageView
+            android:id="@+id/postImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/img_empty_profile" />
+    </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/picLinearLayout"
+            android:id="@+id/picButtonsLinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/firstLinearLayout"
+            android:layout_below="@+id/picLinearLayout"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="30dp">
 
             <Button
                 android:id="@+id/uploadPhotosButton"
@@ -81,7 +96,7 @@
             android:id="@+id/mainLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/picLinearLayout"
+            android:layout_below="@+id/picButtonsLinearLayout"
             android:layout_centerHorizontal="true"
             android:orientation="vertical"
             android:padding="10dp">
