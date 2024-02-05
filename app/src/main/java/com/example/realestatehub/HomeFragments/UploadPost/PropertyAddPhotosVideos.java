@@ -118,10 +118,6 @@ public class PropertyAddPhotosVideos extends AppCompatActivity implements View.O
                         @Override
                         public void onSuccess(Uri uri) {
                             Uri downloadUri = uri;
-                            firebaseUser = auth.getCurrentUser();
-                            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setPhotoUri(downloadUri).build();
-                            firebaseUser.updateProfile(profileChangeRequest);
-
                             String upload = databaseReference.push().getKey();
                             databaseReference.child(upload).setValue(downloadUri.toString());
 
