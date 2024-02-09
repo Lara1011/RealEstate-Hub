@@ -10,6 +10,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.realestatehub.HomeFragments.UploadPost.PropertyFillInformation;
 import com.example.realestatehub.LogIn.ConnectingActivity;
 import com.example.realestatehub.R;
 import com.example.realestatehub.FillDetails.ReadWriteUserDetails;
@@ -44,7 +47,7 @@ import java.util.Date;
 public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView textView_seller_or_buyer, textView_show_email, textView_show_dob, textView_show_gender, textView_show_mobile, textView_show_register_date, textView_show_welcome;
     private String purpose, email, dob, gender, mobile;
-    private Button editImageView,signOutButton;
+    private Button editImageView, signOutButton;
     private ImageView userImageView;
     private View view;
     private FirebaseAuth auth;
@@ -57,38 +60,47 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_profile2, container, false);
         initUI();
         return view;
     }
 
     private void initUI() {
-        auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) {
-            Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
-        } else {
-            fetchUserDataFromFirebase(user);
-        }
-        storageReference = FirebaseStorage.getInstance().getReference("User Profile Images");
-        userImageView = view.findViewById(R.id.userImageView);
-        textView_seller_or_buyer = view.findViewById(R.id.textView_seller_or_buyer);
-        textView_show_email = view.findViewById(R.id.textView_show_email);
-        textView_show_dob = view.findViewById(R.id.textView_show_dob);
-        textView_show_gender = view.findViewById(R.id.textView_show_gender);
-        textView_show_mobile = view.findViewById(R.id.textView_show_mobile);
-        textView_show_register_date = view.findViewById(R.id.textView_show_register_date);
-        textView_show_welcome = view.findViewById(R.id.textView_show_welcome);
-        editImageView = view.findViewById(R.id.editImageView);
-        signOutButton = view.findViewById(R.id.signOutButton);
-        signOutButton.setOnClickListener(this);
-        editImageView.setOnClickListener(this);
-        userImageView.setOnClickListener(this);
-
-        Uri uri = user.getPhotoUrl();
-        Picasso.get().load(uri).into(userImageView);
+//        Button favoriteButton = view.findViewById(R.id.favoriteButton);
+//        favoriteButton.setOnClickListener(this);
+//        auth = FirebaseAuth.getInstance();
+//        FirebaseUser user = auth.getCurrentUser();
+//        if (user == null) {
+//            Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
+//        } else {
+//            fetchUserDataFromFirebase(user);
+//        }
+//        storageReference = FirebaseStorage.getInstance().getReference("User Profile Images");
+//        userImageView = view.findViewById(R.id.userImageView);
+//        textView_seller_or_buyer = view.findViewById(R.id.textView_seller_or_buyer);
+//        textView_show_email = view.findViewById(R.id.textView_show_email);
+//        textView_show_dob = view.findViewById(R.id.textView_show_dob);
+//        textView_show_gender = view.findViewById(R.id.textView_show_gender);
+//        textView_show_mobile = view.findViewById(R.id.textView_show_mobile);
+//        textView_show_register_date = view.findViewById(R.id.textView_show_register_date);
+//        textView_show_welcome = view.findViewById(R.id.textView_show_welcome);
+//        editImageView = view.findViewById(R.id.editImageView);
+//        signOutButton = view.findViewById(R.id.signOutButton);
+//        signOutButton.setOnClickListener(this);
+//        editImageView.setOnClickListener(this);
+//        userImageView.setOnClickListener(this);
+//
+//        Uri uri = user.getPhotoUrl();
+//        Picasso.get().load(uri).into(userImageView);
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
+
+
+/*
     private void fetchUserDataFromFirebase(FirebaseUser user) {
         String uid = user.getUid();
         reference = FirebaseDatabase.getInstance().getReference("Registered Users");
@@ -186,5 +198,5 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             uriImage = data.getData();
             userImageView.setImageURI(uriImage);
         }
-    }
+    }*/
 }
