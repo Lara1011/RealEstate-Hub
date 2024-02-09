@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/back_ground_theme"
     tools:context=".LogIn.SignUpActivity">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -185,12 +186,12 @@
                     android:autofillHints="date"
                     android:background="@drawable/background_for_text"
                     android:ems="10"
+                    android:focusable="false"
                     android:fontFamily="@font/mazzardsofth_regular"
                     android:inputType="date"
                     android:padding="12dp"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:focusable="false"/>
+                    android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -242,9 +243,9 @@
                     android:id="@+id/addressAutoCompleteTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/background_for_text"
                     android:padding="12dp"
                     android:textSize="14sp"
-                    android:background="@drawable/background_for_text"
                     android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
 
