@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:fontFamily="@font/opensans_regular"
+            android:fontFamily="@font/mazzardsofth_regular"
             android:text="Set Your Interest"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/makingDealImageView"
         android:layout_centerHorizontal="true"
-        android:fontFamily="@font/opensans_regular"
+        android:fontFamily="@font/mazzardsofth_regular"
         android:gravity="center"
         android:text="Please choose your purpose using Real Estate Hub"
         android:textColor="@color/black"
@@ -63,7 +63,7 @@
         android:layout_below="@+id/purposeTextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:fontFamily="@font/opensans_regular"
+        android:fontFamily="@font/mazzardsofth_regular"
         android:gravity="center"
         android:text="You can choose multiple"
         android:textColor="@color/black"
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:fontFamily="@font/opensans_regular"
+            android:fontFamily="@font/mazzardsofth_regular"
             android:text="Seller"
 
             android:textStyle="bold" />
@@ -120,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:fontFamily="@font/opensans_regular"
+            android:fontFamily="@font/mazzardsofth_regular"
             android:text="Buyer"
             android:textStyle="bold" />
     </LinearLayout>
@@ -134,7 +134,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
         android:background="@drawable/welcome_button"
-        android:fontFamily="@font/opensans_regular"
+        android:fontFamily="@font/mazzardsofth_regular"
         android:padding="10dp"
         android:text="Continue"
         android:textColor="@color/white"
