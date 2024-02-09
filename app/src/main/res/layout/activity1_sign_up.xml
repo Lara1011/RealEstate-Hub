@@ -7,11 +7,9 @@
     android:background="@color/back_ground_theme"
     tools:context=".LogIn.SignUpActivity">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".LogIn.SignUpActivity">
 
         <LinearLayout
@@ -35,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/mazzardsofth_regular"
-                android:text="Fill Your Profile"
+                android:text="@string/fill_profile"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -76,7 +74,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="* First Name">
+                android:hint="@string/star_first_name">
 
                 <EditText
                     android:id="@+id/firstNameEditText"
@@ -96,7 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="* Last Name">
+                android:hint="@string/star_last_name">
 
                 <EditText
                     android:id="@+id/lastNameEditText"
@@ -117,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
 
-                android:hint="* Email">
+                android:hint="@string/star_email">
 
                 <EditText
                     android:id="@+id/emailEditText"
@@ -137,7 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="* Password">
+                android:hint="@string/star_password">
 
                 <EditText
                     android:id="@+id/passwordEditText"
@@ -157,7 +155,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="* Confirm Password">
+                android:hint="@string/star_confirm_password">
 
                 <EditText
                     android:id="@+id/confirmPasswordEditText"
@@ -177,7 +175,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="Date of Birth">
+                android:hint="@string/date_of_birth">
 
                 <EditText
                     android:id="@+id/birthdayEditText"
@@ -215,7 +213,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="555 555 555">
+                    android:hint="@string/fake_number">
 
                     <EditText
                         android:id="@+id/phoneNumberEditText"
@@ -237,7 +235,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:autofillHints="address"
-                android:hint="Address">
+                android:hint="@string/address">
 
                 <AutoCompleteTextView
                     android:id="@+id/addressAutoCompleteTextView"
@@ -254,7 +252,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:hint="Gender">
+                android:hint="@string/gender">
 
                 <RadioGroup
                     android:id="@+id/genderRadioGroup"
@@ -267,13 +265,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:text="Male" />
+                        android:text="@string/male" />
 
                     <RadioButton
                         android:id="@+id/femaleRadioButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Female" />
+                        android:text="@string/female" />
 
                 </RadioGroup>
 
@@ -290,7 +288,7 @@
                 android:background="@drawable/welcome_button"
                 android:fontFamily="@font/mazzardsofth_regular"
                 android:padding="10dp"
-                android:text="Continue"
+                android:text="@string/continue_"
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 android:textStyle="bold" />

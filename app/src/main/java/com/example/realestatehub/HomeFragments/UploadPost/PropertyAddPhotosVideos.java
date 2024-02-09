@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.realestatehub.FillDetails.ReadWritePostDetails;
 import com.example.realestatehub.R;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -59,6 +60,7 @@ public class PropertyAddPhotosVideos extends AppCompatActivity implements View.O
         uploadPhotosButton = findViewById(R.id.uploadPhotosButton);
         uploadVideosButton = findViewById(R.id.uploadVideosButton);
         postImageView = findViewById(R.id.postImageView);
+        Glide.with(this).asGif().load(R.drawable.house).into(postImageView);
 
         continueButton.setOnClickListener(this);
         backButton.setOnClickListener(this);

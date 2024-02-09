@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/mazzardsofth_regular"
-            android:text="Set Your Interest"
+            android:text="@string/set_interest"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -51,7 +51,7 @@
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/mazzardsofth_regular"
         android:gravity="center"
-        android:text="Please choose your purpose using Real Estate Hub"
+        android:text="@string/set_intent_main_text"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -65,7 +65,7 @@
         android:layout_marginTop="50dp"
         android:fontFamily="@font/mazzardsofth_regular"
         android:gravity="center"
-        android:text="You can choose multiple"
+        android:text="@string/choose_multiple"
         android:textColor="@color/black"
         android:textSize="15sp" />
 
@@ -92,7 +92,7 @@
             android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:fontFamily="@font/mazzardsofth_regular"
-            android:text="Seller"
+            android:text="@string/seller"
 
             android:textStyle="bold" />
 
@@ -121,7 +121,7 @@
             android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:fontFamily="@font/mazzardsofth_regular"
-            android:text="Buyer"
+            android:text="@string/buyer"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -136,7 +136,7 @@
         android:background="@drawable/welcome_button"
         android:fontFamily="@font/mazzardsofth_regular"
         android:padding="10dp"
-        android:text="Continue"
+        android:text="@string/continue_"
         android:textColor="@color/white"
         android:textSize="10sp"
         android:textStyle="bold" />

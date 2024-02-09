@@ -49,7 +49,7 @@ public class LoadingActivity extends AppCompatActivity {
             @Override
             public void run() {
                 FirebaseUser user = auth.getCurrentUser();
-                if (auth.getCurrentUser() != null && user.isEmailVerified()) {
+                if (user != null && user.isEmailVerified()) {
                     Intent intent = new Intent(LoadingActivity.this, HomeBottomNavigation.class);
                     startActivity(intent);
                     finish();

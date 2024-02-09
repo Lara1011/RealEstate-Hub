@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LogIn.SignUpActivity"
+    tools:context=".HomeFragments.UploadPost.PropertyAdPlan"
     android:background="@color/back_ground_theme">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".LogIn.SignUpActivity">
 
         <LinearLayout
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/mazzardsofth_regular"
-                android:text="Select Your Advertising Route"
+                android:text="@string/select_advertising_route"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -67,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:text="Tap the 'Free Ad' button to post a free advertisement."
+                    android:text="@string/free_ad_description"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"/>
 
@@ -81,7 +81,7 @@
                     android:background="@drawable/welcome_button"
                     android:fontFamily="@font/mazzardsofth_regular"
                     android:padding="12dp"
-                    android:text="Free Ad"
+                    android:text="@string/free_ad"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -98,7 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:text="If you would like your advertisement to show on top of 'Home Page', click on the 'Paid Ad' button."
+                    android:text="@string/paid_app_description"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"/>
                 <Button
@@ -111,7 +111,7 @@
                     android:background="@drawable/welcome_button"
                     android:fontFamily="@font/mazzardsofth_regular"
                     android:padding="12dp"
-                    android:text="Paid Ad"
+                    android:text="@string/paid_ad"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />

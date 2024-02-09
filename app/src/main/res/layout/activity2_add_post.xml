@@ -26,8 +26,8 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:padding="8dp"
-            android:text="Add Post"
-            android:textColor="@color/lavender"
+            android:text="@string/add_post"
+            android:textColor="@color/blue"
             android:textSize="25dp" />
     </LinearLayout>
 
@@ -42,9 +42,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="Rent"
-            android:textColor="@color/lavender"
+            android:layout_marginStart="30dp"
+            android:text="@string/rent"
+            android:textColor="@color/blue"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -59,9 +59,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="Sell"
-            android:textColor="@color/lavender"
+            android:layout_marginStart="30dp"
+            android:text="@string/sell"
+            android:textColor="@color/blue"
             android:textSize="16sp" />
 
     </LinearLayout>

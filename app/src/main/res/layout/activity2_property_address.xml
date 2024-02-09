@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".LogIn.SignUpActivity">
 
         <LinearLayout
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/mazzardsofth_regular"
-                android:text="Fill Your Property Address"
+                android:text="@string/fill_property_address"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -59,7 +59,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Post Name">
+                android:hint="@string/post_name">
 
                 <EditText
                     android:id="@+id/postNameEditText"
@@ -86,7 +86,7 @@
                     android:id="@+id/propertyTypeTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Select Property Type"
+                    android:text="@string/select_property_type"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginStart="10dp"
@@ -111,7 +111,7 @@
                     android:id="@+id/openViewTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Select view"
+                    android:text="@string/select_view"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginStart="10dp"
@@ -130,7 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="What is the property location?">
+                android:hint="@string/property_location">
 
                 <EditText
                     android:id="@+id/propertyLocationEditText"
@@ -150,7 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="Street">
+                android:hint="@string/street">
 
                 <AutoCompleteTextView
                     android:id="@+id/streetNameTextView"
@@ -166,7 +166,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="Floor Number">
+                android:hint="@string/floor_number">
 
                 <EditText
                     android:id="@+id/propertyFloorEditText"
@@ -186,7 +186,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="Total floors in the building">
+                android:hint="@string/total_floors">
 
                 <EditText
                     android:id="@+id/totalFloorsEditText"
@@ -212,7 +212,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="No. Home">
+                    android:hint="@string/no_home">
 
                     <EditText
                         android:id="@+id/homeNumberEditText"
@@ -239,7 +239,7 @@
                 android:background="@drawable/welcome_button"
                 android:fontFamily="@font/mazzardsofth_regular"
                 android:padding="10dp"
-                android:text="Continue"
+                android:text="@string/continue_"
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 android:textStyle="bold" />

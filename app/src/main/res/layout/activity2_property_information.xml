@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LogIn.SignUpActivity"
+    tools:context=".HomeFragments.UploadPost.PropertyFillInformation"
     android:background="@color/back_ground_theme">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".LogIn.SignUpActivity">
 
         <LinearLayout
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/mazzardsofth_regular"
-                android:text="Fill Your Property Information"
+                android:text="@string/fill_property_information"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="Number of rooms">
+                android:hint="@string/no_rooms">
                 <EditText
                     android:id="@+id/numberOfRoomsEditText"
                     android:layout_width="match_parent"
@@ -86,7 +86,7 @@
                     android:id="@+id/showerNumberTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Select number of showers"
+                    android:text="@string/no_showers"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginStart="10dp"
@@ -110,7 +110,7 @@
                     android:id="@+id/numberOfParkingTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Select number of parking"
+                    android:text="@string/no_parking"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginStart="10dp"
@@ -133,7 +133,7 @@
                     android:id="@+id/numberOfBalconiesTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Select number of balconies"
+                    android:text="@string/no_balconies"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginStart="10dp"
@@ -156,7 +156,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Property Characteristics"
+                    android:text="@string/property_characteristics"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:textSize="16sp"
@@ -177,25 +177,25 @@
                             android:id="@+id/ElevatorsCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Elevators" />
+                            android:text="@string/elevators" />
 
                         <CheckBox
                             android:id="@+id/airConditionerCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tornado air conditioner" />
+                            android:text="@string/conditioner" />
 
                         <CheckBox
                             android:id="@+id/kosherkitchenCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Kosher kitchen" />
+                            android:text="@string/kosher_kitchen" />
 
                         <CheckBox
                             android:id="@+id/StorageCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Storage" />
+                            android:text="@string/storage" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -208,25 +208,25 @@
                             android:id="@+id/waterHeaterCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Water Heater" />
+                            android:text="@string/water_heater" />
 
                         <CheckBox
                             android:id="@+id/RenovatedCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Renovated" />
+                            android:text="@string/renovated" />
 
                         <CheckBox
                             android:id="@+id/accessForDisabledCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Access for disabled" />
+                            android:text="@string/access_for_disabled" />
 
                         <CheckBox
                             android:id="@+id/FurnitureCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Furniture" />
+                            android:text="@string/furniture" />
 
                     </LinearLayout>
 
@@ -239,7 +239,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/background_for_text"
-                android:hint="What is important to you about the property?"
+                android:hint="@string/what_important_about_property"
                 >
 
 
@@ -266,7 +266,7 @@
                 android:background="@drawable/welcome_button"
                 android:fontFamily="@font/mazzardsofth_regular"
                 android:padding="10dp"
-                android:text="Continue"
+                android:text="@string/continue_"
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 android:textStyle="bold" />

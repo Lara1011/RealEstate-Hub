@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragments.UploadPost.PropertyAddPhotosVideos"
-    android:background="@color/back_ground_theme">
+    android:background="@color/back_ground_theme"
+    tools:context=".HomeFragments.UploadPost.PropertyAddPhotosVideos">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".LogIn.SignUpActivity">
 
         <LinearLayout
@@ -32,27 +32,40 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/mazzardsofth_regular"
-                android:text="Upload Your Property Pictures/Videos"
+                android:text="@string/upload_property_pictures_videos"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
 
         </LinearLayout>
-    <RelativeLayout
-        android:id="@+id/picLinearLayout"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_below="@+id/firstLinearLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp">
-        <ImageView
-            android:id="@+id/postImageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/img_empty_profile" />
-    </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/picLinearLayout"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_below="@+id/firstLinearLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp">
+
+
+            <ImageView
+                android:id="@+id/postImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/house" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/mazzardsofth_regular"
+                android:text="@string/click_to_upload"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/picButtonsLinearLayout"
             android:layout_width="wrap_content"
@@ -65,30 +78,32 @@
                 android:id="@+id/uploadPhotosButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Upload Photos"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/background_for_text"
                 android:ems="10"
                 android:fontFamily="@font/mazzardsofth_regular"
+                android:onClick="onUploadPhotosClick"
                 android:padding="12dp"
+                android:text="@string/upload_photos"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:onClick="onUploadPhotosClick"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/uploadVideosButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Upload Videos"
-                android:ems="10"
-                android:fontFamily="@font/mazzardsofth_regular"
-                android:padding="12dp"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:background="@drawable/background_for_text"
                 android:layout_below="@+id/uploadPhotosButton"
                 android:layout_marginTop="10dp"
-                android:onClick="onUploadVideosClick"/>
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/background_for_text"
+                android:ems="10"
+                android:fontFamily="@font/mazzardsofth_regular"
+                android:onClick="onUploadVideosClick"
+                android:padding="12dp"
+                android:text="@string/upload_videos"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
         <!-- Main -->
@@ -98,6 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/picButtonsLinearLayout"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -106,12 +122,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginEnd="50dp"
                 android:background="@drawable/welcome_button"
                 android:fontFamily="@font/mazzardsofth_regular"
-                android:padding="10dp"
-                android:text="Continue"
+                android:text="@string/continue_"
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 android:textStyle="bold" />

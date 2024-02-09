@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LogIn.SignUpActivity"
+    tools:context=".HomeFragments.UploadPost.PropertyPriceAndSize"
     android:background="@color/back_ground_theme">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".LogIn.SignUpActivity">
 
         <LinearLayout
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/mazzardsofth_regular"
-                android:text="Fill Your Property Payments"
+                android:text="@string/fill_property_payments"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="Total size in square meters">
+                android:hint="@string/size_square_meters">
                 <EditText
                     android:id="@+id/TotalSizeEditText"
                     android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="Price">
+                android:hint="@string/price">
                 <EditText
                     android:id="@+id/PriceEditText"
                     android:layout_width="match_parent"
@@ -121,19 +121,19 @@
                         android:padding="12dp"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:hint="Entry Date" />
+                        android:hint="@string/entry_date" />
 
                     <CheckBox
                         android:id="@+id/ImmediateCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Immediate" />
+                        android:hint="@string/immediate" />
 
                     <CheckBox
                         android:id="@+id/FlexibleCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Flexible" />
+                        android:hint="@string/flexible" />
                 </LinearLayout>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,7 +148,7 @@
                 android:background="@drawable/welcome_button"
                 android:fontFamily="@font/mazzardsofth_regular"
                 android:padding="10dp"
-                android:text="Continue"
+                android:text="@string/continue_"
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 android:textStyle="bold" />
