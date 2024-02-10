@@ -1,14 +1,12 @@
 package com.example.realestatehub.HomeFragments;
 
-import static android.app.Activity.RESULT_OK;
-
-import android.content.ContentResolver;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,140 +14,144 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.realestatehub.HomeFragments.UploadPost.PropertyFillInformation;
-import com.example.realestatehub.LogIn.ConnectingActivity;
-import com.example.realestatehub.R;
 import com.example.realestatehub.FillDetails.ReadWriteUserDetails;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.InsideProfileFragment;
+import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.LanguageUtils;
+import com.example.realestatehub.LogIn.ConnectingActivity;
+import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.NotificationFragment;
+import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.PaymentsFragment;
+import com.example.realestatehub.R;
+import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.RecentlyReachedFragment;
+import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.RecentlySearchedFragment;
+import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.RecentlyViewedFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class ProfileFragment extends Fragment implements View.OnClickListener {
-    private TextView textView_seller_or_buyer, textView_show_email, textView_show_dob, textView_show_gender, textView_show_mobile, textView_show_register_date, textView_show_welcome;
-    private String purpose, email, dob, gender, mobile;
-    private Button editImageView, signOutButton;
     private ImageView userImageView;
+    private TextView UserFullNameTextView;
+    private RelativeLayout RecentlyViewedLayout, RecentlyReachedLayout, RecentlySearchedLayout,
+            ProfileViewedLayout, PaymentViewedLayout, NotificationLayout,
+            LanguageLayout, InviteFriendsLayout, LogoutViewedLayout;
     private View view;
     private FirebaseAuth auth;
     private DatabaseReference reference;
-    private StorageReference storageReference;
     private FirebaseUser firebaseUser;
     private Uri uriImage;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_profile2, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_profile, container, false);
         initUI();
         return view;
     }
 
-    private void initUI() {
-//        Button favoriteButton = view.findViewById(R.id.favoriteButton);
-//        favoriteButton.setOnClickListener(this);
-//        auth = FirebaseAuth.getInstance();
-//        FirebaseUser user = auth.getCurrentUser();
-//        if (user == null) {
-//            Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
-//        } else {
-//            fetchUserDataFromFirebase(user);
-//        }
-//        storageReference = FirebaseStorage.getInstance().getReference("User Profile Images");
-//        userImageView = view.findViewById(R.id.userImageView);
-//        textView_seller_or_buyer = view.findViewById(R.id.textView_seller_or_buyer);
-//        textView_show_email = view.findViewById(R.id.textView_show_email);
-//        textView_show_dob = view.findViewById(R.id.textView_show_dob);
-//        textView_show_gender = view.findViewById(R.id.textView_show_gender);
-//        textView_show_mobile = view.findViewById(R.id.textView_show_mobile);
-//        textView_show_register_date = view.findViewById(R.id.textView_show_register_date);
-//        textView_show_welcome = view.findViewById(R.id.textView_show_welcome);
-//        editImageView = view.findViewById(R.id.editImageView);
-//        signOutButton = view.findViewById(R.id.signOutButton);
-//        signOutButton.setOnClickListener(this);
-//        editImageView.setOnClickListener(this);
-//        userImageView.setOnClickListener(this);
-//
-//        Uri uri = user.getPhotoUrl();
-//        Picasso.get().load(uri).into(userImageView);
-    }
 
     @Override
-    public void onClick(View v) {
-
-    }
-
-
-/*
-    private void fetchUserDataFromFirebase(FirebaseUser user) {
-        String uid = user.getUid();
-        reference = FirebaseDatabase.getInstance().getReference("Registered Users");
-        reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-
+    public void onStart() {
+        super.onStart();
+        firebaseUser.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ReadWriteUserDetails readWriteUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
-                if (readWriteUserDetails != null) {
-                    textView_show_welcome.setText(String.format("Welcome " + readWriteUserDetails.getFirstName()));
-//                    name = readWriteUserDetails.getFirstName() + " " + readWriteUserDetails.getLastName();
-                    email = readWriteUserDetails.getEmail();
-                    dob = readWriteUserDetails.getBirthday();
-                    gender = readWriteUserDetails.getGender();
-                    mobile = readWriteUserDetails.getPhoneNumber();
-                    purpose = readWriteUserDetails.getPurpose();
-                    textView_seller_or_buyer.setText(purpose);
-                    textView_show_email.setText(email);
-                    textView_show_dob.setText(dob);
-                    textView_show_gender.setText(gender);
-                    textView_show_mobile.setText(mobile);
-
-//                    Uri uri = firebaseUser.getPhotoUrl();
-//                    Picasso.get().load(uri).into(userImageView);
-
-                    long dateLastLogin = user.getMetadata().getLastSignInTimestamp();
-                    DateFormat obj = new SimpleDateFormat("dd MMM yyyy HH:mm");
-                    // we create instance of the Date and pass milliseconds to the constructor
-                    Date res = new Date(dateLastLogin);
-                    textView_show_register_date.setText(String.valueOf(obj.format(res)));
-                }else{
-                    Toast.makeText(getContext(), "SomeThing Went Wrong", Toast.LENGTH_SHORT).show();
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    updateProfileUI();
+                } else {
+                    Toast.makeText(getContext(), "Failed to refresh user profile", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Something Went Wrong2!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private void updateProfileUI() {
+        if (firebaseUser != null) {
+            String uid = firebaseUser.getUid();
+            reference = FirebaseDatabase.getInstance().getReference("Registered Users");
+            reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ReadWriteUserDetails readWriteUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
+                    if (readWriteUserDetails != null) {
+                        UserFullNameTextView.setText(String.format("Welcome\n" + readWriteUserDetails.getFirstName() + " " + readWriteUserDetails.getLastName()));
+                        //userImageView
+                        uriImage = firebaseUser.getPhotoUrl();
+                        Picasso.get().load(uriImage).into(userImageView);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void initUI() {
+        userImageView = view.findViewById(R.id.userImageView);
+        UserFullNameTextView = view.findViewById(R.id.UserFullNameTextView);
+
+        RecentlyViewedLayout = view.findViewById(R.id.RecentlyViewedLayout);
+        RecentlyReachedLayout = view.findViewById(R.id.RecentlyReachedLayout);
+        RecentlySearchedLayout = view.findViewById(R.id.RecentlySearchedLayout);
+        ProfileViewedLayout = view.findViewById(R.id.InsideProfileLayout);
+        PaymentViewedLayout = view.findViewById(R.id.PaymentsLayout);
+        NotificationLayout = view.findViewById(R.id.NotificationLayout);
+        InviteFriendsLayout = view.findViewById(R.id.InviteFriendsLayout);
+        LanguageLayout = view.findViewById(R.id.LanguageLayout);
+        LogoutViewedLayout = view.findViewById(R.id.LogoutLayout);
+
+        RecentlyViewedLayout.setOnClickListener(this);
+        RecentlyReachedLayout.setOnClickListener(this);
+        RecentlySearchedLayout.setOnClickListener(this);
+        ProfileViewedLayout.setOnClickListener(this);
+        PaymentViewedLayout.setOnClickListener(this);
+        NotificationLayout.setOnClickListener(this);
+        InviteFriendsLayout.setOnClickListener(this);
+        LanguageLayout.setOnClickListener(this);
+        LogoutViewedLayout.setOnClickListener(this);
+
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+        if (firebaseUser == null) {
+            Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.userImageView) {
-            openFileChooser();
-        } else if (v.getId() == R.id.editImageView) {
-            uploadPic();
-        } else if(v.getId() == R.id.signOutButton){
+        int id = v.getId();
+
+        if (id == R.id.RecentlyViewedLayout) {
+            replaceFragment(new RecentlyViewedFragment());
+        } else if (id == R.id.RecentlyReachedLayout) {
+            replaceFragment(new RecentlyReachedFragment());
+        } else if (id == R.id.RecentlySearchedLayout) {
+            replaceFragment(new RecentlySearchedFragment());
+        } else if (id == R.id.InsideProfileLayout) {
+            replaceFragment(new InsideProfileFragment());
+        } else if (id == R.id.PaymentsLayout) {
+            replaceFragment(new PaymentsFragment());
+        } else if (id == R.id.NotificationLayout) {
+            replaceFragment(new NotificationFragment());
+        } else if (id == R.id.LanguageLayout) {
+            showChangeLanguage();
+        } else if (id == R.id.InviteFriendsLayout) {
+            showInviteFriends();
+        } else if (id == R.id.LogoutLayout) {
             auth.signOut();
             Intent intent = new Intent(getContext(), ConnectingActivity.class);
             startActivity(intent);
@@ -157,46 +159,40 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void uploadPic() {
-        if (uriImage != null) {
-            StorageReference fileRef = storageReference.child(auth.getCurrentUser().getUid() + "." + getFileExtension(uriImage));
-            fileRef.putFile(uriImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Uri downloadUri = uri;
-                            firebaseUser = auth.getCurrentUser();
-                            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setPhotoUri(downloadUri).build();
-                            firebaseUser.updateProfile(profileChangeRequest);
-                        }
-                    });
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private void showInviteFriends() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Check This App On Play Store - Real Estate Hub");
+        intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.example.realestatehub");
+        startActivity(Intent.createChooser(intent, "Share via"));
+    }
+
+    private void showChangeLanguage() {
+        final String[] listItems = {"English", "Hebrew"};
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
+        mBuilder.setTitle("Choose Language..");
+        mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    LanguageUtils.setLocale(getContext(), "en");
+                    LanguageUtils.recreateActivity(getActivity(), HomeBottomNavigation.class);
+                } else if (which == 1) {
+                    LanguageUtils.setLocale(getContext(), "iw");
+                    LanguageUtils.recreateActivity(getActivity(), HomeBottomNavigation.class);
                 }
-            });
-            Toast.makeText(getContext(), "Upload Success", Toast.LENGTH_SHORT).show();
-        }
+                dialog.dismiss();
+            }
+        });
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
     }
-
-    private String getFileExtension(Uri uri) {
-        ContentResolver contentResolver = getContext().getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-    }
-
-    private void openFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 1);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            uriImage = data.getData();
-            userImageView.setImageURI(uriImage);
-        }
-    }*/
 }

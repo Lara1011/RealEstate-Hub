@@ -17,6 +17,7 @@ import android.view.Window;
 import android.widget.LinearLayout;
 
 import com.example.realestatehub.HomeFragments.UploadPost.AddPostActivity;
+import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.LanguageUtils;
 import com.example.realestatehub.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -26,9 +27,8 @@ public class HomeBottomNavigation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page); // Set the content view directly
-
         replaceFragment(new HomeFragment());
-
+        LanguageUtils.loadLocale(this);
         // Find views using findViewById
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 

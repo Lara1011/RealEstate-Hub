@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.realestatehub.HomeFragments.HomeBottomNavigation;
+import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.LanguageUtils;
 import com.example.realestatehub.LogIn.ConnectingActivity;
 import com.example.realestatehub.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +29,8 @@ public class LoadingActivity extends AppCompatActivity {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.ic_launcher_background));
+
+        LanguageUtils.loadLocale(this);
 
         setContentView(R.layout.activity_loading);
         initUI();

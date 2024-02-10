@@ -1,6 +1,6 @@
 <resources>
     <!--    ================ GENERAL ================-->
-    <string name="app_name">Real Estate Hub</string>
+    <string name="app_name" translatable="false">Real Estate Hub</string>
     <string name="default_web_client_id" translatable="false">63950315535-c6fg3l7cu7h4bbgr921i7poherailqul.apps.googleusercontent.com</string>
 
 
@@ -159,4 +159,8 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
 </resources>
