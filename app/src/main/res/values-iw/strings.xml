@@ -1,0 +1,158 @@
+<resources>
+
+    <!--    ================ WELCOME ACTIVITY ================-->
+    <string name="welcomeText">ברוכים הבאים ל-Estate Hub!</string>
+    <string name="welcomeInfoText">האפליקציה הטובה ביותר לקנייה, מכירה והשקעה בנדל"ן</string>
+    <string name="startButtonText">להתחיל!</string>
+
+
+    <!--    ================ CONNECTING ACTIVITY ================-->
+    <string name="login">התחברות</string>
+    <string name="email">מייל</string>
+    <string name="password">סיסמה</string>
+    <string name="sign_in">להתחבר</string>
+    <string name="lets_you_in">תכניס אותך</string>
+    <string name="forgot_password">שכחתי סיסמה</string>
+    <string name="continue_with">או להתחבר עם</string>
+    <string name="no_account">אין לך חשבון?</string>
+    <string name="sign_up">להרשמה</string>
+
+
+    <!-- ================ FORGOT PASSWORD ACTIVITY ================    -->
+    <string name="forgot_password_main_text">אנא הזן את האימייל שלך כדי לקבל קישור לאיפוס הסיסמה שלך.</string>
+    <string name="continue_">המשך</string>
+
+
+    <!-- ================ SET INTENT ACTIVITY ================ -->
+    <string name="set_intent_main_text">אנא בחר/י את המטרה שלך להשתמש ב- Real Estate Hub</string>
+    <string name="choose_multiple">את/ה יכול/ה לבחור מרובה</string>
+    <string name="seller">מוכר</string>
+    <string name="buyer">משקיע</string>
+    <string name="set_interest">הגדר את העניין שלך</string>
+
+
+    <!-- ================ SIGNUP ACTIVITY ================ -->
+    <string name="fill_profile">מלא את הפרופיל שלך</string>
+    <string name="star_first_name">* שם פרטי</string>
+    <string name="star_last_name">* שם משפחה</string>
+    <string name="star_email">* מייל</string>
+    <string name="star_password">* סיסמה</string>
+    <string name="star_confirm_password">* אשר סיסמה</string>
+    <string name="date_of_birth">תאריך לידה</string>
+    <string name="fake_number">555 555 555</string>
+    <string name="address">כתובת</string>
+    <string name="gender">מִין</string>
+    <string name="male">זכר</string>
+    <string name="female">נקבה</string>
+
+
+    <!--    ================ NAV DRAWER ================    -->
+    <string name="open_nav">פתח את מגירת הניווט</string>
+    <string name="close_nav">סגור את מגירת הניווט</string>
+    <string name="via_sms">באמצעות SMS</string>
+    <string name="via_email">באמצעות Email</string>
+    <string name="loading">טוען ..</string>
+
+
+    <!-- ================ PROFILE FRAGMENT ================ -->
+    <string name="profile">פרופיל</string>
+    <string name="recently_viewed">נראה לאחרונה</string>
+    <string name="recently_reached">יצירת קשר לאחרונה</string>
+    <string name="recently_searched">חיפוש לאחרונה</string>
+    <string name="payments">תשלומים</string>
+    <string name="notification">התראות</string>
+    <string name="language">שפה</string>
+    <string name="english_us">עברית</string>
+    <string name="invite_friends">להזמין חברים</string>
+    <string name="logout">להתנתק</string>
+
+
+    <!-- ================ ADD POST ACTIVITY ================ -->
+    <string name="add_post">Add Post</string>
+    <string name="rent">Rent</string>
+    <string name="sell">Sell</string>
+
+
+    <!-- ================ PROPERTY AD PLAN ACTIVITY ================ -->
+    <string name="select_advertising_route">Select Your Advertising Route</string>
+    <string name="free_ad_description">Tap the \'Free Ad\' button to post a free advertisement.</string>
+    <string name="free_ad">Free Ad</string>
+    <string name="paid_app_description">If you would like your advertisement to show on top of \'Home Page\', click on the \'Paid Ad\' button.</string>
+    <string name="paid_ad">Paid Ad</string>
+
+
+    <!-- ================ PROPERTY ADDRESS ACTIVITY ================ -->
+    <string name="fill_property_address">Fill Your Property Address</string>
+    <string name="post_name">Post Name</string>
+    <string name="select_property_type">Select Property Type</string>
+    <string name="select_view">Select view</string>
+    <string name="property_location">What is the property location?</string>
+    <string name="street">Street</string>
+    <string name="floor_number">Floor Number</string>
+    <string name="total_floors">Total floors in the building</string>
+    <string name="no_home">No. Home</string>
+    <!-- ================ PROPERTY INFORMATION ACTIVITY ================ -->
+    <string name="fill_property_information">Fill Your Property Information</string>
+    <string name="no_rooms">Number of rooms</string>
+    <string name="no_showers">Select number of showers</string>
+    <string name="no_parking">Select number of parking</string>
+    <string name="no_balconies">Select number of balconies</string>
+    <string name="property_characteristics">Property Characteristics</string>
+    <string name="elevators">Elevators</string>
+    <string name="conditioner">Tornado air conditioner</string>
+    <string name="kosher_kitchen">Kosher kitchen</string>
+    <string name="storage">Storage</string>
+    <string name="water_heater">Water Heater</string>
+    <string name="renovated">Renovated</string>
+    <string name="access_for_disabled">Access for disabled</string>
+    <string name="furniture">Furniture</string>
+    <string name="what_important_about_property">What is important to you about the property?</string>
+
+
+    <!-- ================ PROPERTY PHOTOS VIDEOS ACTIVITY ================ -->
+    <string name="upload_property_pictures_videos">Upload Your Property Pictures/Videos</string>
+    <string name="upload_photos">Upload Photos</string>
+    <string name="upload_videos">Upload Videos</string>
+    <string name="click_to_upload">Click here to upload photos</string>
+
+    <!-- ================ PROPERTY PRICE AND SIZE ACTIVITY ================    -->
+    <string name="size_square_meters">Total size in square meters</string>
+    <string name="price">Price</string>
+    <string name="entry_date">Entry Date</string>
+    <string name="immediate">Immediate</string>
+    <string name="flexible">Flexible</string>
+    <string name="fill_property_payments">Fill Your Property Payments</string>
+
+
+    <string-array name="property_types">
+        <item>Apartment</item>
+        <item>Building</item>
+        <item>House</item>
+        <item>Parking</item>
+        <item>Roof/Penthouse</item>
+        <item>Studio/Loft</item>
+        <item>Storage</item>
+        <item>General</item>
+    </string-array>
+
+    <string-array name="open_view">
+        <item>With no</item>
+        <item>To the sea</item>
+        <item>To the park</item>
+        <item>To the city</item>
+    </string-array>
+
+    <string-array name="shower_number">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+
+    <string-array name="number_of_parking_blaconies">
+        <item>without</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+</resources>
