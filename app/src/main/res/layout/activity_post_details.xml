@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Title TextView -->
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:text="Title: Placeholder Title"
+            android:layout_marginBottom="16dp"
+            android:gravity="center" />
+
+        <!-- Image View -->
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/picture_img"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/userNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="User Name" />
+
+        <TextView
+            android:id="@+id/phoneNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Phone Number" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal"
+            android:gravity="end">
+
+
+            <!-- Call Button -->
+            <Button
+                android:id="@+id/callButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_call"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp" />
+
+            <!-- WhatsApp Button -->
+            <Button
+                android:id="@+id/whatsappButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_whatsapp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/homeNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Home Number" />
+
+        <!-- Phone Number TextView -->
+        <TextView
+            android:id="@+id/streetNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:text="streetNameTextView: "
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp" 
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginBottom="8dp"
+            android:gravity="center" />
+
+
+        <!-- Location TextView -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/locationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:gravity="start"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Location"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Call Button -->
+            <Button
+                android:id="@+id/locationButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_map"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp" />
+
+            <!-- WhatsApp Button --> 
+
+        </LinearLayout>
+        
+
+        <!-- Add other TextViews for displaying additional information -->
+
+        <!-- Floor TextView -->
+        <TextView
+            android:id="@+id/floorTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Floor"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Total Floors TextView -->
+        <TextView
+            android:id="@+id/totalFloorsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Total Floors"
+            android:layout_marginBottom="8dp"/>
+
+
+
+        <!-- Type TextView -->
+        <TextView
+            android:id="@+id/typeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Type"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- View TextView -->
+        <TextView
+            android:id="@+id/viewTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="View"
+            android:layout_marginBottom="8dp"/>
+
+
+
+        <!-- Ad Type TextView -->
+        <TextView
+            android:id="@+id/adTypeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Ad Type"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Additional Information TextView -->
+        <TextView
+            android:id="@+id/additionalInformationTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Additional Information"
+            android:layout_marginBottom="8dp"/>
+
+
+
+        <!-- Kosher Kitchen TextView -->
+        <TextView
+            android:id="@+id/propertyCharacteristicsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="start"
+            android:text="  "
+            android:layout_marginBottom="8dp"/>
+
+
+
+    </LinearLayout>
+</ScrollView>
