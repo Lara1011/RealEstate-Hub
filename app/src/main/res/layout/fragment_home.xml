@@ -6,38 +6,50 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".HomeFragments.HomeFragment">
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="16dp"
+        >
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/dummy_image" />
+                android:src="@drawable/dummy_image"
+                />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
-
+                android:orientation="vertical"
+                >
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:fontFamily="@font/mazzardsofth_regular"
+                    android:fontFamily="@font/opensans_regular"
                     android:text="Good Morning"
                     android:textColor="@color/gray"
                     android:textSize="16sp"
@@ -47,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:fontFamily="@font/mazzardsofth_regular"
+                    android:fontFamily="@font/opensans_regular"
                     android:text="Andrew Ainsley"
                     android:textColor="@color/black"
                     android:textSize="18sp"
@@ -58,12 +70,13 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/circle"
-                android:padding="10dp">
-
+                android:padding="10dp"
+                >
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/notification_bell" />
+                    android:src="@drawable/notification_bell"
+                    />
             </RelativeLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -71,10 +84,11 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginTop="16dp"
-            android:background="@drawable/otp_background"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:background="@drawable/otp_background"
+            >
 
             <EditText
                 android:id="@+id/searchEditText"
@@ -82,33 +96,34 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:hint="Search"
-                android:drawableLeft="@drawable/icon_search"
+                android:drawableLeft="@drawable/search"
                 android:background="@android:color/transparent"/>
 
             <ImageView
                 android:id="@+id/filterIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:contentDescription="Filter Icon"
                 android:src="@drawable/filter"
-                app:tint="@color/blue" />
+                android:layout_marginEnd="10dp"
+                app:tint="@color/blue"
+                android:contentDescription="Filter Icon"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp"
+            >
 
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:fontFamily="@font/mazzardsofth_regular"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/opensans_regular"
                 android:text="Featured"
                 android:textColor="@color/black"
                 android:textSize="20sp"
@@ -118,20 +133,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:fontFamily="@font/mazzardsofth_regular"
+                android:fontFamily="@font/opensans_regular"
                 android:text="See All"
                 android:textColor="@color/blue"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/featured_items_recyclerview"
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
             android:layout_weight="1"
-            tools:listitem="@layout/featured_item_row_design" />
+            android:orientation="horizontal"
+            tools:listitem="@layout/post_item_layout"
+            />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
