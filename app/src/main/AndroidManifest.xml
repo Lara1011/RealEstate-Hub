@@ -15,10 +15,12 @@
         android:theme="@style/Theme.RealEstateHub"
         tools:targetApi="31">
         <activity
-            android:windowSoftInputMode="adjustResize|adjustPan"
-            android:name=".HomeFragments.HomeFragment"
+            android:name=".HomeFragments.ReadPost.PostDetailsActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".HomeFragments.HomeFragment"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
             android:name=".FetchUserData.MainActivity"
             android:exported="true"
@@ -31,36 +33,40 @@
         </activity>
         <activity
             android:name=".FetchUserData.WelcomeActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".FetchUserData.LoadingActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LogIn.ConnectingActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LogIn.SignUpActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LogIn.SetIntentActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeFragments.HomeBottomNavigation"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".HomeFragments.UploadPost.AddPostActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeFragments.UploadPost.AddPostActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LogIn.ForgotPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeFragments.UploadPost.PropertyFillInformation"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".HomeFragments.UploadPost.PropertyFillInformation"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".HomeFragments.UploadPost.PropertyPriceAndSize"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".HomeFragments.UploadPost.PropertyAddPhotosVideos"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".HomeFragments.UploadPost.PropertyAdPlan"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".HomeFragments.UploadPost.PropertyPriceAndSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeFragments.UploadPost.PropertyAddPhotosVideos"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeFragments.UploadPost.PropertyAdPlan"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
