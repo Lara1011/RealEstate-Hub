@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class ReadWritePostDetails {
     private static ReadWritePostDetails instance;
-    private HashMap<String, HashMap<String, String>> postDetailsMap;
+    public HashMap<String, HashMap<String, String>> postDetailsMap;
     private String ID;
 
     public ReadWritePostDetails() {
