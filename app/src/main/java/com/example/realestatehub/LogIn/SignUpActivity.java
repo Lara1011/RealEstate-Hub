@@ -175,8 +175,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void obtainData() {
-        boolean isValid = true;
-
         int genderRadioId = genderRadioGroup.getCheckedRadioButtonId();
         genderRadioButton = findViewById(genderRadioId);
         String firstName = firstNameEditText.getText().toString();
@@ -192,69 +190,54 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if (TextUtils.isEmpty(firstName)) {
             firstNameEditText.setError("First name is required");
             firstNameEditText.requestFocus();
-            isValid = false;
         }
         if (TextUtils.isEmpty(lastName)) {
             lastNameEditText.setError("Last name is required");
             lastNameEditText.requestFocus();
-            isValid = false;
+
         }
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, email, Toast.LENGTH_SHORT).show();
             emailEditText.setError("Email is required");
             emailEditText.requestFocus();
-            isValid = false;
-        }
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditText.setError("Valid Email is required");
             emailEditText.requestFocus();
-            isValid = false;
+
         }
         if (TextUtils.isEmpty(password)) {
             passwordEditText.setError("Password is required");
             passwordEditText.requestFocus();
-            isValid = false;
         }
         if (TextUtils.isEmpty(confirmPassword)) {
             confirmPasswordEditText.setError("Confirm password is required");
             confirmPasswordEditText.requestFocus();
-            isValid = false;
-        }
-        else if (password.length() < 6) {
+        } else if (password.length() < 6) {
             passwordEditText.setError("Password too short");
             passwordEditText.requestFocus();
-            isValid = false;
-        }
-        else if (!password.equals(confirmPassword)) {
+        } else if (!password.equals(confirmPassword)) {
             confirmPasswordEditText.setError("Password Confirmation is required");
             confirmPasswordEditText.requestFocus();
-            isValid = false;
         }
+
         if (TextUtils.isEmpty(birthday)) {
             birthdayEditText.setError("Birthday is required");
             birthdayEditText.requestFocus();
-            isValid = false;
-        }
-        else if (phoneNumber.length() != 10) {
+        } else if (phoneNumber.length() != 10) {
             phoneNumberEditText.setError("Valid phone number is required");
             phoneNumberEditText.requestFocus();
-            isValid = false;
-        }
-        else if (TextUtils.isEmpty(address)) {
+        } else if (TextUtils.isEmpty(address)) {
             autoCompleteTextView.setError("Address is required");
             autoCompleteTextView.requestFocus();
-            isValid = false;
-        }
-        else if (genderRadioGroup.getCheckedRadioButtonId() == -1) {
+        } else if (genderRadioGroup.getCheckedRadioButtonId() == -1) {
             genderRadioButton.setError("Gender is required");
             genderRadioButton.requestFocus();
-            isValid = false;
-        }
-        if (isValid) {
+        } else {
             gender = genderRadioButton.getText().toString();
             registerUser(firstName, lastName, email, password, birthday, phoneNumber, gender, address);
         }
     }
+
     private void registerUser(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String gender, String address) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
