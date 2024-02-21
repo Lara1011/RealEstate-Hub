@@ -11,6 +11,12 @@ public class ReadWriteUserDetails {
     private String address;
     private String gender;
     private String purpose;
+    private String[] RecentlyViewed = {""};
+    private String[] RecentlyReached = {""};
+    private String[] RecentlySearched = {""};
+    private static int recentlyViewedCounter = 0;
+    private static int recentlySearchedCounter = 0;
+    private static int recentlyReachedCounter = 0;
 
     public ReadWriteUserDetails() {
         firstName = "";
@@ -42,7 +48,6 @@ public class ReadWriteUserDetails {
         }
         return instance;
     }
-
     public String getFirstName() {
         return firstName;
     }
@@ -113,5 +118,45 @@ public class ReadWriteUserDetails {
 
     public void setPurpose(String purpose) {
         this.purpose = purpose;
+    }
+
+    public static void setInstance(ReadWriteUserDetails instance) {
+        ReadWriteUserDetails.instance = instance;
+    }
+
+    public String[] getRecentlyViewed() {
+        return RecentlyViewed;
+    }
+
+    public String[] getRecentlyReached() {
+        return RecentlyReached;
+    }
+
+    public String[] getRecentlySearched() {
+        return RecentlySearched;
+    }
+
+    public void updateRecentlyViewed(String recentlyViewed) {
+        RecentlyViewed[recentlyViewedCounter] = recentlyViewed;
+    }
+
+    public void updateRecentlyReached(String recentlyReached) {
+        RecentlyReached[recentlyReachedCounter] = recentlyReached;
+    }
+
+    public void updateRecentlySearched(String recentlySearched) {
+        RecentlySearched[recentlySearchedCounter] = recentlySearched;
+    }
+
+    public void updateRecentlyReachedCounter() {
+        recentlyReachedCounter++;
+    }
+
+    public void updateRecentlySearchedCounter() {
+        recentlySearchedCounter++;
+    }
+
+    public void updateRecentlyViewedCounter() {
+        recentlyViewedCounter++;
     }
 }
