@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -123,6 +124,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         InviteFriendsLayout.setOnClickListener(this);
         LanguageLayout.setOnClickListener(this);
         LogoutViewedLayout.setOnClickListener(this);
+
+        ReadWriteUserDetails readWriteUserDetails = ReadWriteUserDetails.getInstance(getContext());
+        if(readWriteUserDetails.getPurpose().equals("Seller")){
+            RecentlyViewedLayout.setVisibility(View.GONE);
+            RecentlySearchedLayout.setVisibility(View.GONE);
+            // Add margin top to RecentlyReachedLayout
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) RecentlyReachedLayout.getLayoutParams();
+            params.setMargins(0, 10, 0, 10); // Set your desired margin value here
+            RecentlyReachedLayout.setLayoutParams(params);
+        }
 
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();

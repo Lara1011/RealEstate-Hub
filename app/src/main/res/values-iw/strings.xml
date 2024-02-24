@@ -155,4 +155,10 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <string name="save">שמור</string>
+    <string name="edit">ערוך</string>
+    <string name="first_name">שם פרטי</string>
+    <string name="last_name">שם משפחה</string>
+    <string name="phone_number">מספר טלפון</string>
+    <string name="hello_blank_fragment">hello blank fragment</string>
 </resources>

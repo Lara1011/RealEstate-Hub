@@ -59,7 +59,7 @@ public class SetIntentActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        ReadWriteUserDetails writeUserDetails = ReadWriteUserDetails.getInstance();
+        ReadWriteUserDetails writeUserDetails = ReadWriteUserDetails.getInstance(this);
         // Set purpose based on switch states
         if (v.getId() == R.id.continueButton) {
             if (sellerSwitch.isChecked() && buyerSwitch.isChecked()) {

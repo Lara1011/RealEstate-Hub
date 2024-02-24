@@ -267,7 +267,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     firebaseUser.updateProfile(profileChangeRequest);
 
                     //Enter User data into the firebase Realtime Database
-                    ReadWriteUserDetails writeUserDetails = ReadWriteUserDetails.getInstance();
+                    ReadWriteUserDetails writeUserDetails = ReadWriteUserDetails.getInstance(SignUpActivity.this);
                     writeUserDetails.setFirstName(firstName);
                     writeUserDetails.setLastName(lastName);
                     writeUserDetails.setEmail(email);

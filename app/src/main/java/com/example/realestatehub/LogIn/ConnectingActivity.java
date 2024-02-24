@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.realestatehub.FillDetails.ReadWriteUserDetails;
 import com.example.realestatehub.HomeFragments.HomeBottomNavigation;
 import com.example.realestatehub.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -33,7 +34,11 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -215,6 +220,7 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
     private void checkVerification() {
         FirebaseUser user = auth.getCurrentUser();
         if (user.isEmailVerified()) {
+            updateReadWriteUserDetails();
             intent = new Intent(ConnectingActivity.this, HomeBottomNavigation.class);
             startActivity(intent);
             finish();
@@ -240,5 +246,43 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private void updateReadWriteUserDetails() {
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+        String uid = firebaseUser.getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Registered Users");
+        reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ReadWriteUserDetails userDetails = snapshot.getValue(ReadWriteUserDetails.class);
+                if (userDetails != null) {
+                    ReadWriteUserDetails readWriteUserDetails = ReadWriteUserDetails.getInstance(ConnectingActivity.this);
+
+                    // Update the fields of the userDetails object
+                    readWriteUserDetails.setFirstName(snapshot.child("firstName").getValue(String.class));
+                    readWriteUserDetails.setLastName(snapshot.child("lastName").getValue(String.class));
+                    readWriteUserDetails.setEmail(snapshot.child("email").getValue(String.class));
+                    readWriteUserDetails.setBirthday(snapshot.child("birthday").getValue(String.class));
+                    readWriteUserDetails.setPhoneNumber(snapshot.child("phoneNumber").getValue(String.class));
+                    readWriteUserDetails.setAddress(snapshot.child("address").getValue(String.class));
+                    readWriteUserDetails.setGender(snapshot.child("gender").getValue(String.class));
+                    readWriteUserDetails.setPassword(snapshot.child("password").getValue(String.class));
+                    readWriteUserDetails.setPurpose(snapshot.child("purpose").getValue(String.class));
+
+                    // Save the updated userDetails object
+                    readWriteUserDetails.saveUserDetails();
+
+
+                }
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ConnectingActivity.this, "Something Went Wrong!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -39,7 +39,7 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
     private Uri imageUri;
     private View view;
     private boolean editing = true;
-    private ReadWriteUserDetails readWriteUserDetails = ReadWriteUserDetails.getInstance();
+    private ReadWriteUserDetails readWriteUserDetails = ReadWriteUserDetails.getInstance(getContext());
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

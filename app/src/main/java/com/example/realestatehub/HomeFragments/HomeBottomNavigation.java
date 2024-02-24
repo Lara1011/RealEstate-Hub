@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 
+import com.example.realestatehub.FillDetails.ReadWriteUserDetails;
 import com.example.realestatehub.HomeFragments.UploadPost.AddPostActivity;
 import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.LanguageUtils;
 import com.example.realestatehub.R;
@@ -31,6 +32,13 @@ public class HomeBottomNavigation extends AppCompatActivity {
         LanguageUtils.loadLocale(this);
         // Find views using findViewById
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        ReadWriteUserDetails readWriteUserDetails = ReadWriteUserDetails.getInstance(this);
+        if(readWriteUserDetails.getPurpose().equals("Buyer")){
+            bottomNavigationView.getMenu().removeItem(R.id.add);
+        }else if(readWriteUserDetails.getPurpose().equals("Seller")){
+            bottomNavigationView.getMenu().removeItem(R.id.favorite);
+            bottomNavigationView.getMenu().removeItem(R.id.search);
+        }
 
         bottomNavigationView.setBackground(null);
         bottomNavigationView.setOnItemSelectedListener(item -> {
