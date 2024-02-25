@@ -1,4 +1,4 @@
-package com.example.realestatehub.FetchUserData;
+package com.example.realestatehub.UserData;
 
 import androidx.appcompat.app.AppCompatActivity;
 

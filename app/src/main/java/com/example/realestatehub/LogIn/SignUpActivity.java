@@ -30,13 +30,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.realestatehub.R;
 import com.example.realestatehub.FillDetails.ReadWriteUserDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -54,6 +58,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
@@ -79,6 +84,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private Intent intent;
     private FirebaseAuth auth;
     private FirebaseUser firebaseUser;
+    private boolean fromGoogle = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +117,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         birthdayEditText.setOnClickListener(this);
         userImageView.setOnClickListener(this);
         editImageView.setOnClickListener(this);
+
+        // Retrieve user data from intent
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("fromGoogle")) {
+            fromGoogle = intent.getBooleanExtra("fromGoogle", true);
+        }
+        if (intent != null && intent.hasExtra("userData")) {
+            HashMap<String, Object> userData = (HashMap<String, Object>) intent.getSerializableExtra("userData");
+            if (userData != null) {
+                firstNameEditText.setText((String) userData.get("firstName"));
+                lastNameEditText.setText((String) userData.get("lastName"));
+                emailEditText.setText((String) userData.get("email"));
+            }
+        }
         birthdayEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
@@ -204,8 +224,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             emailEditText.setError("Email is required");
             emailEditText.requestFocus();
             isValid = false;
-        }
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditText.setError("Valid Email is required");
             emailEditText.requestFocus();
             isValid = false;
@@ -219,13 +238,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             confirmPasswordEditText.setError("Confirm password is required");
             confirmPasswordEditText.requestFocus();
             isValid = false;
-        }
-        else if (password.length() < 6) {
+        } else if (password.length() < 6) {
             passwordEditText.setError("Password too short");
             passwordEditText.requestFocus();
             isValid = false;
-        }
-        else if (!password.equals(confirmPassword)) {
+        } else if (!password.equals(confirmPassword)) {
             confirmPasswordEditText.setError("Password Confirmation is required");
             confirmPasswordEditText.requestFocus();
             isValid = false;
@@ -234,27 +251,71 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             birthdayEditText.setError("Birthday is required");
             birthdayEditText.requestFocus();
             isValid = false;
-        }
-        else if (phoneNumber.length() != 10) {
+        } else if (phoneNumber.length() != 10) {
             phoneNumberEditText.setError("Valid phone number is required");
             phoneNumberEditText.requestFocus();
             isValid = false;
-        }
-        else if (TextUtils.isEmpty(address)) {
+        } else if (TextUtils.isEmpty(address)) {
             autoCompleteTextView.setError("Address is required");
             autoCompleteTextView.requestFocus();
             isValid = false;
-        }
-        else if (genderRadioGroup.getCheckedRadioButtonId() == -1) {
+        } else if (genderRadioGroup.getCheckedRadioButtonId() == -1) {
             genderRadioButton.setError("Gender is required");
             genderRadioButton.requestFocus();
             isValid = false;
         }
         if (isValid) {
             gender = genderRadioButton.getText().toString();
-            registerUser(firstName, lastName, email, password, birthday, phoneNumber, gender, address);
+            if (fromGoogle) {
+                registerUserFromGoogle(firstName, lastName, email, password, birthday, phoneNumber, gender, address);
+            } else {
+                registerUser(firstName, lastName, email, password, birthday, phoneNumber, gender, address);
+            }
         }
     }
+
+    private void registerUserFromGoogle(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String gender, String address) {
+        // Get the current user from Firebase authentication
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            //Enter User data into the firebase Realtime Database
+            ReadWriteUserDetails writeUserDetails = ReadWriteUserDetails.getInstance(SignUpActivity.this);
+            writeUserDetails.setFirstName(firstName);
+            writeUserDetails.setLastName(lastName);
+            writeUserDetails.setEmail(email);
+            writeUserDetails.setPassword(password);
+            writeUserDetails.setBirthday(birthday);
+            writeUserDetails.setPhoneNumber(phoneNumber);
+            writeUserDetails.setAddress(address);
+            writeUserDetails.setGender(gender);
+
+
+            // Store user data into Firebase Realtime Database under "Registered Users" node
+            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Registered Users");
+            usersRef.child(user.getUid()).setValue(writeUserDetails)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            intent = new Intent(SignUpActivity.this, SetIntentActivity.class);
+                            intent.putExtra("fromGoogle", fromGoogle);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Error occurred while storing data, show error message or handle appropriately
+                            Toast.makeText(SignUpActivity.this, "Failed to store user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            // User is null, handle this case if necessary
+            Toast.makeText(SignUpActivity.this, "User is null", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     private void registerUser(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String gender, String address) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override

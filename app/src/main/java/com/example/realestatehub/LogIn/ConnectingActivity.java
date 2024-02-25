@@ -60,6 +60,8 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
     private GoogleSignInClient GoogleSignInClient;
     int RC_SIGN_IN = 20;
     private static final String TAG = "ConnectingActivity";
+    private boolean fromGoogle = false;
+    ReadWriteUserDetails readWriteUserDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +114,7 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
             startActivity(intent);
             finish();
         } else if (id == R.id.googleButton) {
-            googleSignIn();
+            fromGoogle = googleSignIn();
         } else if (id == R.id.signUpButton) {
             intent = new Intent(this, SignUpActivity.class);
             startActivity(intent);
@@ -161,9 +163,10 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void googleSignIn() {
+    private boolean googleSignIn() {
         Intent signInIntent = GoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+        return true;
     }
 
     @Override
@@ -190,22 +193,28 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
                     FirebaseUser user = auth.getCurrentUser();
                     short epsTime = 1000;
                     long dateCreate = Objects.requireNonNull(user.getMetadata()).getCreationTimestamp();
-                    long dateLastLogin = user.getMetadata().getLastSignInTimestamp();
                     long currTime = System.currentTimeMillis();
+
                     HashMap<String, Object> map = new HashMap<>();
-                    map.put("id", user.getUid());
-                    map.put("username", user.getDisplayName());
+                    String[] parts = user.getDisplayName().split(" ");
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 1; i < parts.length; i++) {
+                        sb.append(parts[i]);
+                    }
+                    map.put("firstName", parts[0].toString());
+                    map.put("lastName", sb.toString());
                     map.put("profilePic", user.getPhotoUrl().toString());
                     map.put("email", user.getEmail());
-                    map.put("phoneNumber", user.getPhoneNumber());
-                    map.put("created", dateCreate);
-                    map.put("lastLogin", dateLastLogin);
 
-                    database.getReference().child("Registered Users").child(user.getUid()).setValue(map);
+                    boolean isNewUser = (currTime < dateCreate + epsTime);
+
                     Intent intent;
-                    if (currTime < dateCreate + epsTime) {
+                    if (isNewUser) {
                         intent = new Intent(ConnectingActivity.this, SignUpActivity.class);
+                        intent.putExtra("userData", map);
+                        intent.putExtra("fromGoogle", fromGoogle);
                     } else {
+                        updateReadWriteUserDetails();
                         intent = new Intent(ConnectingActivity.this, HomeBottomNavigation.class);
                     }
                     startActivity(intent);
@@ -258,8 +267,8 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ReadWriteUserDetails userDetails = snapshot.getValue(ReadWriteUserDetails.class);
                 if (userDetails != null) {
-                    ReadWriteUserDetails readWriteUserDetails = ReadWriteUserDetails.getInstance(ConnectingActivity.this);
 
+                    readWriteUserDetails = ReadWriteUserDetails.getInstance(ConnectingActivity.this);
                     // Update the fields of the userDetails object
                     readWriteUserDetails.setFirstName(snapshot.child("firstName").getValue(String.class));
                     readWriteUserDetails.setLastName(snapshot.child("lastName").getValue(String.class));

@@ -22,7 +22,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
-            android:name=".FetchUserData.MainActivity"
+            android:name=".UserData.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -32,10 +32,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FetchUserData.WelcomeActivity"
+            android:name=".UserData.WelcomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".FetchUserData.LoadingActivity"
+            android:name=".UserData.LoadingActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".LogIn.ConnectingActivity"

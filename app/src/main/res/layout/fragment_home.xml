@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".HomeFragments.HomeFragment">
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -16,35 +17,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:padding="16dp"
-        >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            >
+            android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/dummy_image"
-                />
+                android:src="@drawable/dummy_image" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -70,13 +69,12 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/circle"
-                android:padding="10dp"
-                >
+                android:padding="10dp">
+
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/notification_bell"
-                    />
+                    android:src="@drawable/notification_bell" />
             </RelativeLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -84,45 +82,48 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="16dp"
-            android:gravity="center_vertical"
             android:background="@drawable/otp_background"
-            >
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/searchEditText"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="Search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/search"
-                android:background="@android:color/transparent"/>
+                android:hint="Search" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/searchRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
 
             <ImageView
                 android:id="@+id/filterIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/filter"
                 android:layout_marginEnd="10dp"
-                app:tint="@color/blue"
-                android:contentDescription="Filter Icon"/>
+                android:contentDescription="Filter Icon"
+                android:src="@drawable/filter"
+                app:tint="@color/blue" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:layout_marginTop="10dp"
-            >
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginStart="10dp"
+                android:layout_weight="1"
                 android:fontFamily="@font/opensans_regular"
                 android:text="Featured"
                 android:textColor="@color/black"
@@ -137,8 +138,7 @@
                 android:text="See All"
                 android:textColor="@color/blue"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -149,8 +149,7 @@
             android:layout_marginBottom="30dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            tools:listitem="@layout/post_item_layout"
-            />
+            tools:listitem="@layout/post_item_layout" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

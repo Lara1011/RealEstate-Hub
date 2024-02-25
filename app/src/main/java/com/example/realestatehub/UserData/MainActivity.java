@@ -1,5 +1,5 @@
 
-package com.example.realestatehub.FetchUserData;
+package com.example.realestatehub.UserData;
 
 import android.content.Context;
 import android.content.Intent;

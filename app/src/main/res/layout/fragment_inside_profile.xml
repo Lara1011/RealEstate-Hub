@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -55,13 +54,16 @@
                 <LinearLayout
                     android:id="@+id/FullNameWithPicUserLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
                     android:orientation="horizontal">
 
                     <RelativeLayout
                         android:id="@+id/picLinearLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:gravity="center">
 
@@ -69,7 +71,6 @@
                             android:id="@+id/userImageView"
                             android:layout_width="150dp"
                             android:layout_height="150dp"
-                            android:layout_alignParentStart="true"
                             android:background="@drawable/img_empty_profile" />
 
 
@@ -86,7 +87,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="@string/loading">
+                            android:hint="@string/first_name">
 
                             <EditText
                                 android:id="@+id/firstNameEditText"
@@ -98,6 +99,7 @@
                                 android:fontFamily="@font/mazzardsofth_regular"
                                 android:inputType="textPersonName"
                                 android:padding="12dp"
+                                android:text="@string/loading"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -105,7 +107,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="@string/loading">
+                            android:hint="@string/last_name">
 
                             <EditText
                                 android:id="@+id/lastNameEditText"
@@ -117,6 +119,7 @@
                                 android:fontFamily="@font/mazzardsofth_regular"
                                 android:inputType="textPersonName"
                                 android:padding="12dp"
+                                android:text="@string/loading"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -136,7 +139,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
 
-                        android:hint="@string/loading">
+                        android:hint="@string/email">
 
                         <EditText
                             android:id="@+id/emailEditText"
@@ -148,6 +151,7 @@
                             android:fontFamily="@font/mazzardsofth_regular"
                             android:inputType="textEmailAddress"
                             android:padding="12dp"
+                            android:text="@string/loading"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -156,7 +160,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:hint="@string/loading">
+                        android:hint="@string/date_of_birth">
 
                         <EditText
                             android:id="@+id/birthdayEditText"
@@ -168,37 +172,37 @@
                             android:fontFamily="@font/mazzardsofth_regular"
                             android:inputType="date"
                             android:padding="12dp"
+                            android:text="@string/loading"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-
-                            android:hint="@string/loading">
-
-                            <EditText
-                                android:id="@+id/phoneNumberEditText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:autofillHints="emailAddress"
-                                android:background="@drawable/background_for_text"
-                                android:ems="10"
-                                android:fontFamily="@font/mazzardsofth_regular"
-                                android:inputType="phone"
-                                android:padding="12dp"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:autofillHints="address"
-                        android:hint="@string/loading">
+                        android:hint="@string/phone_number">
+
+                        <EditText
+                            android:id="@+id/phoneNumberEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="emailAddress"
+                            android:background="@drawable/background_for_text"
+                            android:ems="10"
+                            android:fontFamily="@font/mazzardsofth_regular"
+                            android:inputType="phone"
+                            android:padding="12dp"
+                            android:text="@string/loading"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:hint="@string/address">
 
                         <EditText
                             android:id="@+id/addressEditText"
@@ -207,8 +211,8 @@
                             android:background="@drawable/background_for_text"
                             android:ems="10"
                             android:fontFamily="@font/mazzardsofth_regular"
-                            android:inputType="phone"
                             android:padding="12dp"
+                            android:text="@string/loading"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </com.google.android.material.textfield.TextInputLayout>

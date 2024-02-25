@@ -57,7 +57,8 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
         birthdayEditText = view.findViewById(R.id.birthdayEditText);
         phoneNumberEditText = view.findViewById(R.id.phoneNumberEditText);
         genderRadioGroup = view.findViewById(R.id.genderRadioGroup);
-        genderRadioButton = view.findViewById(R.id.maleRadioButton);
+        int genderRadioId = genderRadioGroup.getCheckedRadioButtonId();
+        genderRadioButton = view.findViewById(genderRadioId);
         saveOrEditButton = view.findViewById(R.id.saveOrEditButton);
         addressEditText = view.findViewById(R.id.addressEditText);
 
@@ -127,7 +128,7 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ReadWriteUserDetails readWriteUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
+//                ReadWriteUserDetails readWriteUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
                 if (readWriteUserDetails != null) {
                     firstNameEditText.setText(readWriteUserDetails.getFirstName());
                     lastNameEditText.setText(readWriteUserDetails.getLastName());
@@ -135,6 +136,7 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
                     birthdayEditText.setText(readWriteUserDetails.getBirthday());
                     phoneNumberEditText.setText(readWriteUserDetails.getPhoneNumber());
                     addressEditText.setText(readWriteUserDetails.getAddress());
+
                     if (readWriteUserDetails.getGender().equals("Male")) {
                         genderRadioGroup.check(R.id.maleRadioButton);
                     } else {
@@ -161,6 +163,10 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
         String birthday = birthdayEditText.getText().toString();
         String phoneNumber = phoneNumberEditText.getText().toString();
         String address = addressEditText.getText().toString();
+
+        // Get the selected radio button's text for gender
+        int selectedGenderId = genderRadioGroup.getCheckedRadioButtonId();
+        genderRadioButton = view.findViewById(selectedGenderId);
         String gender = genderRadioButton.getText().toString();
 
         readWriteUserDetails.setFirstName(firstName);

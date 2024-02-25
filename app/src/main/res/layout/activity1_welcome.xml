@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/back_ground_theme"
-    tools:context=".FetchUserData.WelcomeActivity">
+    tools:context=".UserData.WelcomeActivity">
 
     <ImageView
         android:id="@+id/welcome_popup_ImageView"
