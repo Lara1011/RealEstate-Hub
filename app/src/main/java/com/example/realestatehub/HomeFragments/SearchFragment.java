@@ -1,5 +1,9 @@
 package com.example.realestatehub.HomeFragments;
 
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,11 +11,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.realestatehub.FillDetails.ReadWritePostDetails;
@@ -28,7 +37,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements View.OnClickListener {
+    private String selectedFilter = "all";
     private View view;
     private RecyclerView recyclerView;
     private HashMap<String, HashMap<String, String>> postList = new HashMap<>();
@@ -37,6 +47,19 @@ public class SearchFragment extends Fragment {
     private DatabaseReference usersReference;
     private DatabaseReference postsReference;
     private SearchView searchView;
+    private TextView filterTextView;
+    private LinearLayout rentLayout;
+    private LinearLayout buyLayout;
+    private LinearLayout allLayout;
+    private LinearLayout apartmentLayout;
+    private LinearLayout buildingLayout;
+    private LinearLayout houseLayout;
+    private LinearLayout parkingLayout;
+    private LinearLayout penthouseLayout;
+    private LinearLayout loftLayout;
+    private LinearLayout storageLayout;
+    private Dialog dialog;
+    private Button continueButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +69,8 @@ public class SearchFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         userList = new ArrayList<>();
+        filterTextView = view.findViewById(R.id.filterTextView);
+        filterTextView.setOnClickListener(this);
 
         // Initialize Firebase references for user and post data
         usersReference = FirebaseDatabase.getInstance().getReference("Registered Users");
@@ -150,8 +175,6 @@ public class SearchFragment extends Fragment {
                         postList.put(postId, postDetails);
                     }
                 }
-                PostAdapter adapter = new PostAdapter(postList);
-                recyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -161,4 +184,120 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    private void showBottomDialog() {
+        dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.activity_search_filter);
+
+        rentLayout = dialog.findViewById(R.id.rentLinearLayout);
+        buyLayout = dialog.findViewById(R.id.buyLinearLayout);
+        allLayout = dialog.findViewById(R.id.allLinearLayout);
+        apartmentLayout = dialog.findViewById(R.id.apartmentLinearLayout);
+        buildingLayout = dialog.findViewById(R.id.buildingLinearLayout);
+        houseLayout = dialog.findViewById(R.id.houseLinearLayout);
+        parkingLayout = dialog.findViewById(R.id.parkingLinearLayout);
+        penthouseLayout = dialog.findViewById(R.id.penthouseLinearLayout);
+        loftLayout = dialog.findViewById(R.id.loftLinearLayout);
+        storageLayout = dialog.findViewById(R.id.storageLinearLayout);
+
+        continueButton = dialog.findViewById(R.id.continueButton);
+        continueButton.setOnClickListener(this);
+        rentLayout.setOnClickListener(this);
+        buyLayout.setOnClickListener(this);
+        allLayout.setOnClickListener(this);
+        apartmentLayout.setOnClickListener(this);
+        buildingLayout.setOnClickListener(this);
+        houseLayout.setOnClickListener(this);
+        parkingLayout.setOnClickListener(this);
+        penthouseLayout.setOnClickListener(this);
+        loftLayout.setOnClickListener(this);
+        storageLayout.setOnClickListener(this);
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.filterTextView) {
+            showBottomDialog();
+        } else if (v.getId() == R.id.rentLinearLayout) {
+            changeFrame(rentLayout, dialog.findViewById(R.id.rentTextView));
+            Toast.makeText(getContext(), "Rent", Toast.LENGTH_SHORT).show();
+            selectedFilter = "Rent";
+        } else if (v.getId() == R.id.buyLinearLayout) {
+            changeFrame(buyLayout, dialog.findViewById(R.id.buyTextView));
+            Toast.makeText(getContext(), "Buy", Toast.LENGTH_SHORT).show();
+            selectedFilter = "Buy";
+        } else if (v.getId() == R.id.allLinearLayout) {
+            changeFrame(allLayout, dialog.findViewById(R.id.allTextView));
+            Toast.makeText(getContext(), "All", Toast.LENGTH_SHORT).show();
+            selectedFilter = "All";
+        } else if (v.getId() == R.id.apartmentLinearLayout) {
+            changeFrame(apartmentLayout, dialog.findViewById(R.id.apartmentTextView));
+            Toast.makeText(getContext(), "Apartment", Toast.LENGTH_SHORT).show();
+            selectedFilter = "Apartment";
+        } else if (v.getId() == R.id.buildingLinearLayout) {
+            changeFrame(buildingLayout, dialog.findViewById(R.id.buildingTextView));
+            Toast.makeText(getContext(), "Building", Toast.LENGTH_SHORT).show();
+            selectedFilter = "Building";
+        } else if (v.getId() == R.id.houseLinearLayout) {
+            changeFrame(houseLayout, dialog.findViewById(R.id.houseTextView));
+            Toast.makeText(getContext(), "House", Toast.LENGTH_SHORT).show();
+            selectedFilter = "House";
+        } else if (v.getId() == R.id.parkingLinearLayout) {
+            changeFrame(parkingLayout, dialog.findViewById(R.id.parkingTextView));
+            Toast.makeText(getContext(), "Parking", Toast.LENGTH_SHORT).show();
+            selectedFilter = "Parking";
+        } else if (v.getId() == R.id.penthouseLinearLayout) {
+            changeFrame(penthouseLayout, dialog.findViewById(R.id.penthouseTextView));
+            Toast.makeText(getContext(), "Penthouse", Toast.LENGTH_SHORT).show();
+            selectedFilter = "Penthouse";
+        } else if (v.getId() == R.id.loftLinearLayout) {
+            changeFrame(loftLayout, dialog.findViewById(R.id.loftTextView));
+            Toast.makeText(getContext(), "Loft", Toast.LENGTH_SHORT).show();
+            selectedFilter = "Loft";
+        } else if (v.getId() == R.id.storageLinearLayout) {
+            changeFrame(storageLayout, dialog.findViewById(R.id.storageTextView));
+            Toast.makeText(getContext(), "Storage", Toast.LENGTH_SHORT).show();
+            selectedFilter = "Storage";
+        } else if (v.getId() == R.id.continueButton) {
+            filterList(selectedFilter);
+            dialog.dismiss();
+        }
+    }
+
+    private void changeFrame(LinearLayout layout, TextView textView) {
+        if (layout.getTag() == null || !((boolean) layout.getTag())) {
+            // Set filled background and white text
+            layout.setBackgroundResource(R.drawable.filled_blue_frame_textview);
+            textView.setTextColor(Color.WHITE);
+            layout.setTag(true);
+            Toast.makeText(getContext(), "Rent", Toast.LENGTH_SHORT).show();
+        } else {
+            // Set unfilled background and blue text
+            layout.setBackgroundResource(R.drawable.empty_blue_frame_textview);
+            textView.setTextColor(Color.BLUE);
+            layout.setTag(false);
+        }
+    }
+
+    private void filterList(String status) {
+        selectedFilter = status;
+        filteredList.clear();
+        int i = 0;
+        for (HashMap<String, String> post : postList.values()) {
+            if (post.get("type").toLowerCase().contains(status.toLowerCase())) {
+                filteredList.put(String.valueOf(i++), post);
+            }
+        }
+        if (filteredList.isEmpty()) {
+            Toast.makeText(getContext(), "No results found", Toast.LENGTH_SHORT).show();
+        }
+        PostAdapter adapter = new PostAdapter(filteredList);
+        recyclerView.setAdapter(adapter);
+    }
 }

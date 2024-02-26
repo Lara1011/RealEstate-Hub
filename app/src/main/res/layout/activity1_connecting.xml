@@ -37,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/logInTextView"
         android:layout_margin="30dp"
-        android:background="@drawable/custom_edittext"
         app:cardCornerRadius="30dp"
         app:cardElevation="25dp">
 

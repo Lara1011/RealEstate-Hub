@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/removeImage"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:scaleType="centerCrop"
+        android:src="@drawable/icon_remove" />
+
+    <TextView
+        android:id="@+id/filterTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/mazzardsofth_regular"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="Filter"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- Options -->
+    <LinearLayout
+        android:id="@+id/optionsLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/mazzardsofth_regular"
+            android:padding="5dp"
+            android:text="Options"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/optionsInsideLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:id="@+id/rentLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:background="@drawable/empty_blue_frame_textview"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/icon_rent_house" />
+
+                <TextView
+                    android:id="@+id/rentTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mazzardsofth_regular"
+                    android:text="@string/rent"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buyLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/empty_blue_frame_textview"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/icon_buy_house" />
+
+                <TextView
+                    android:id="@+id/buyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mazzardsofth_regular"
+                    android:text="Buy"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <!-- Property Types -->
+    <LinearLayout
+        android:id="@+id/propertyTypesLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/mazzardsofth_regular"
+            android:padding="5dp"
+            android:text="Property Types"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/propertyTypesInsideLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:id="@+id/allLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:background="@drawable/empty_blue_frame_textview"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/icon_all" />
+
+                    <TextView
+                        android:id="@+id/allTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mazzardsofth_regular"
+                        android:text="All"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/apartmentLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/empty_blue_frame_textview"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/icon_apartment" />
+
+                    <TextView
+                        android:id="@+id/apartmentTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mazzardsofth_regular"
+                        android:text="Apartment"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/buildingLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/empty_blue_frame_textview"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/icon_building" />
+
+                    <TextView
+                        android:id="@+id/buildingTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mazzardsofth_regular"
+                        android:text="Building"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/houseLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/empty_blue_frame_textview"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/icon_house" />
+
+                    <TextView
+                        android:id="@+id/houseTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mazzardsofth_regular"
+                        android:text="House"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/parkingLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/empty_blue_frame_textview"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/icon_parking" />
+
+                    <TextView
+                        android:id="@+id/parkingTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mazzardsofth_regular"
+                        android:text="Parking"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/penthouseLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/empty_blue_frame_textview"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/icon_penthouse" />
+
+                    <TextView
+                        android:id="@+id/penthouseTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mazzardsofth_regular"
+                        android:text="Roof/Penthouse"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/loftLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/empty_blue_frame_textview"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/icon_loft" />
+
+                    <TextView
+                        android:id="@+id/loftTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mazzardsofth_regular"
+                        android:text="Studio/Loft"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/storageLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/empty_blue_frame_textview"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/icon_storage" />
+
+                    <TextView
+                        android:id="@+id/storageTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mazzardsofth_regular"
+                        android:text="Storage"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+    <Button
+        android:id="@+id/continueButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/email_cardview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/welcome_button"
+        android:fontFamily="@font/mazzardsofth_regular"
+        android:padding="10dp"
+        android:text="@string/continue_"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+</LinearLayout>
+
+
+    <!--    </LinearLayout>-->
+    <!--    &lt;!&ndash; Price Range &ndash;&gt;-->
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/priceLinearLayout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="vertical">-->
+
+    <!--        <TextView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="30dp"-->
+    <!--            android:layout_marginTop="5dp"-->
+    <!--            android:fontFamily="@font/mazzardsofth_regular"-->
+    <!--            android:padding="5dp"-->
+    <!--            android:text="Options"-->
+    <!--            android:textColor="@color/black"-->
+    <!--            android:textSize="16sp"-->
+    <!--            android:textStyle="bold" />-->
+
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/optionsInsideLinearLayout"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            android:padding="10dp">-->
+
+    <!--            <LinearLayout-->
+    <!--                android:id="@+id/rentLinearLayout"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="30dp"-->
+    <!--                android:background="@drawable/empty_blue_frame_textview"-->
+    <!--                android:gravity="center"-->
+    <!--                android:orientation="horizontal">-->
+
+    <!--                <ImageView-->
+    <!--                    android:layout_width="20dp"-->
+    <!--                    android:layout_height="20dp"-->
+    <!--                    android:layout_marginEnd="5dp"-->
+    <!--                    android:background="@drawable/icon_rent_house" />-->
+
+    <!--                <TextView-->
+    <!--                    android:id="@+id/rentTextView"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:fontFamily="@font/mazzardsofth_regular"-->
+    <!--                    android:text="@string/rent"-->
+    <!--                    android:textColor="@color/blue"-->
+    <!--                    android:textSize="14sp" />-->
+    <!--            </LinearLayout>-->
+
+    <!--            <LinearLayout-->
+    <!--                android:id="@+id/buyLinearLayout"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="10dp"-->
+    <!--                android:background="@drawable/empty_blue_frame_textview"-->
+    <!--                android:gravity="center"-->
+    <!--                android:orientation="horizontal">-->
+
+    <!--                <ImageView-->
+    <!--                    android:layout_width="20dp"-->
+    <!--                    android:layout_height="20dp"-->
+    <!--                    android:layout_marginEnd="5dp"-->
+    <!--                    android:background="@drawable/icon_buy_house" />-->
+
+    <!--                <TextView-->
+    <!--                    android:id="@+id/buyTextView"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:fontFamily="@font/mazzardsofth_regular"-->
+    <!--                    android:text="Buy"-->
+    <!--                    android:textColor="@color/blue"-->
+    <!--                    android:textSize="14sp" />-->
+    <!--            </LinearLayout>-->
+
+    <!--        </LinearLayout>-->
+
+    <!--    </LinearLayout>-->
+    <!--    &lt;!&ndash; Facilities &ndash;&gt;-->
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/facilitiesLinearLayout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="vertical">-->
+
+    <!--        <TextView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="30dp"-->
+    <!--            android:layout_marginTop="5dp"-->
+    <!--            android:fontFamily="@font/mazzardsofth_regular"-->
+    <!--            android:padding="5dp"-->
+    <!--            android:text="Options"-->
+    <!--            android:textColor="@color/black"-->
+    <!--            android:textSize="16sp"-->
+    <!--            android:textStyle="bold" />-->
+
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/optionsInsideLinearLayout"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            android:padding="10dp">-->
+
+    <!--            <LinearLayout-->
+    <!--                android:id="@+id/rentLinearLayout"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="30dp"-->
+    <!--                android:background="@drawable/empty_blue_frame_textview"-->
+    <!--                android:gravity="center"-->
+    <!--                android:orientation="horizontal">-->
+
+    <!--                <ImageView-->
+    <!--                    android:layout_width="20dp"-->
+    <!--                    android:layout_height="20dp"-->
+    <!--                    android:layout_marginEnd="5dp"-->
+    <!--                    android:background="@drawable/icon_rent_house" />-->
+
+    <!--                <TextView-->
+    <!--                    android:id="@+id/rentTextView"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:fontFamily="@font/mazzardsofth_regular"-->
+    <!--                    android:text="@string/rent"-->
+    <!--                    android:textColor="@color/blue"-->
+    <!--                    android:textSize="14sp" />-->
+    <!--            </LinearLayout>-->
+
+    <!--            <LinearLayout-->
+    <!--                android:id="@+id/buyLinearLayout"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="10dp"-->
+    <!--                android:background="@drawable/empty_blue_frame_textview"-->
+    <!--                android:gravity="center"-->
+    <!--                android:orientation="horizontal">-->
+
+    <!--                <ImageView-->
+    <!--                    android:layout_width="20dp"-->
+    <!--                    android:layout_height="20dp"-->
+    <!--                    android:layout_marginEnd="5dp"-->
+    <!--                    android:background="@drawable/icon_buy_house" />-->
+
+    <!--                <TextView-->
+    <!--                    android:id="@+id/buyTextView"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:fontFamily="@font/mazzardsofth_regular"-->
+    <!--                    android:text="Buy"-->
+    <!--                    android:textColor="@color/blue"-->
+    <!--                    android:textSize="14sp" />-->
+    <!--            </LinearLayout>-->
+
+    <!--        </LinearLayout>-->
+
+    <!--    </LinearLayout>-->
+    <!--    &lt;!&ndash; Location &ndash;&gt;-->
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/locationLinearLayout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="vertical">-->
+
+    <!--        <TextView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="30dp"-->
+    <!--            android:layout_marginTop="5dp"-->
+    <!--            android:fontFamily="@font/mazzardsofth_regular"-->
+    <!--            android:padding="5dp"-->
+    <!--            android:text="Options"-->
+    <!--            android:textColor="@color/black"-->
+    <!--            android:textSize="16sp"-->
+    <!--            android:textStyle="bold" />-->
+
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/optionsInsideLinearLayout"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            android:padding="10dp">-->
+
+    <!--            <LinearLayout-->
+    <!--                android:id="@+id/rentLinearLayout"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="30dp"-->
+    <!--                android:background="@drawable/empty_blue_frame_textview"-->
+    <!--                android:gravity="center"-->
+    <!--                android:orientation="horizontal">-->
+
+    <!--                <ImageView-->
+    <!--                    android:layout_width="20dp"-->
+    <!--                    android:layout_height="20dp"-->
+    <!--                    android:layout_marginEnd="5dp"-->
+    <!--                    android:background="@drawable/icon_rent_house" />-->
+
+    <!--                <TextView-->
+    <!--                    android:id="@+id/rentTextView"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:fontFamily="@font/mazzardsofth_regular"-->
+    <!--                    android:text="@string/rent"-->
+    <!--                    android:textColor="@color/blue"-->
+    <!--                    android:textSize="14sp" />-->
+    <!--            </LinearLayout>-->
+
+    <!--            <LinearLayout-->
+    <!--                android:id="@+id/buyLinearLayout"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="10dp"-->
+    <!--                android:background="@drawable/empty_blue_frame_textview"-->
+    <!--                android:gravity="center"-->
+    <!--                android:orientation="horizontal">-->
+
+    <!--                <ImageView-->
+    <!--                    android:layout_width="20dp"-->
+    <!--                    android:layout_height="20dp"-->
+    <!--                    android:layout_marginEnd="5dp"-->
+    <!--                    android:background="@drawable/icon_buy_house" />-->
+
+    <!--                <TextView-->
+    <!--                    android:id="@+id/buyTextView"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:fontFamily="@font/mazzardsofth_regular"-->
+    <!--                    android:text="Buy"-->
+    <!--                    android:textColor="@color/blue"-->
+    <!--                    android:textSize="14sp" />-->
+    <!--            </LinearLayout>-->
+
+    <!--        </LinearLayout>-->
+
+    <!--    </LinearLayout>-->
+
+    <!--</LinearLayout>-->
