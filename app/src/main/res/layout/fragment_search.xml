@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/back_ground_theme"
     tools:context="com.example.realestatehub.HomeFragments.SearchFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -27,13 +27,14 @@
 
             <android.widget.SearchView
                 android:id="@+id/searchEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:drawableStart="@drawable/search"
-                android:clickable="true"
-                android:hint="Search" />
+                android:drawableStart="@android:drawable/ic_menu_search"
+                android:drawablePadding="8dp"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search" />
 
             <TextView
                 android:id="@+id/filterTextView"
@@ -55,128 +56,3 @@
             tools:listitem="@layout/post_item_layout" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!--<?xml version="1.0" encoding="utf-8"?>-->
-    <!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--    xmlns:tools="http://schemas.android.com/tools"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="match_parent"-->
-    <!--    android:background="@color/back_ground_theme"-->
-    <!--    tools:context="com.example.realestatehub.HomeFragments.SearchFragment">-->
-
-    <!--    <RelativeLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content">-->
-
-    <!--        <LinearLayout-->
-    <!--            android:id="@+id/firstLinearLayout"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginTop="15dp"-->
-    <!--            android:gravity="center_vertical"-->
-    <!--            android:orientation="horizontal">-->
-
-    <!--            <Button-->
-    <!--                android:id="@+id/backButton"-->
-    <!--                android:layout_width="30dp"-->
-    <!--                android:layout_height="30dp"-->
-    <!--                android:layout_marginStart="10dp"-->
-    <!--                android:background="@drawable/icon_back" />-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/pageNametextView"-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginStart="10dp"-->
-    <!--                android:fontFamily="@font/mazzardsofth_regular"-->
-    <!--                android:text="Search"-->
-    <!--                android:textColor="@color/black"-->
-    <!--                android:textSize="20sp"-->
-    <!--                android:textStyle="bold" />-->
-    <!--        </LinearLayout>-->
-
-    <!--        &lt;!&ndash; Main &ndash;&gt;-->
-    <!--        <LinearLayout-->
-    <!--            android:id="@+id/otherDetailsLinearLayout"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_below="@+id/firstLinearLayout"-->
-    <!--            android:layout_centerHorizontal="true"-->
-    <!--            android:orientation="vertical"-->
-    <!--            android:layout_marginTop="12dp"-->
-    <!--            android:padding="10dp">-->
-
-    <!--                <EditText-->
-    <!--                    android:id="@+id/SearchLocationEditText"-->
-    <!--                    android:layout_width="match_parent"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:background="@drawable/background_for_text"-->
-    <!--                    android:fontFamily="@font/mazzardsofth_regular"-->
-    <!--                    android:inputType="textMultiLine"-->
-    <!--                    android:hint="Search for an area, city or street"-->
-    <!--                    android:padding="12dp"-->
-    <!--                    android:textSize="14sp"-->
-    <!--                    android:textStyle="bold" />-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/PropertyTypeTextView"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginStart="10dp"-->
-    <!--                android:layout_marginTop="10dp"-->
-    <!--                android:text="Property Type"-->
-    <!--                android:textSize="14sp"-->
-    <!--                android:textStyle="bold" />-->
-
-    <!--            <com.google.android.material.textfield.TextInputLayout-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:background="@drawable/background_for_text">-->
-
-    <!--                <Spinner-->
-    <!--                    android:id="@+id/showerNumberSpinner"-->
-    <!--                    android:layout_width="match_parent"-->
-    <!--                    android:layout_height="match_parent"-->
-    <!--                    android:padding="12dp" />-->
-    <!--            </com.google.android.material.textfield.TextInputLayout>-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/numberOfRoomsTitle"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginStart="10dp"-->
-    <!--                android:layout_marginTop="10dp"-->
-    <!--                android:text="Select number of rooms"-->
-    <!--                android:textSize="14sp"-->
-    <!--                android:textStyle="bold" />-->
-
-    <!--            <com.google.android.material.textfield.TextInputLayout-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:background="@drawable/background_for_text">-->
-
-    <!--                <Spinner-->
-    <!--                    android:id="@+id/numberOfParkingSpinner"-->
-    <!--                    android:layout_width="match_parent"-->
-    <!--                    android:layout_height="match_parent"-->
-    <!--                    android:padding="12dp" />-->
-    <!--            </com.google.android.material.textfield.TextInputLayout>-->
-
-    <!--            <Button-->
-    <!--                android:id="@+id/continueButton"-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginStart="50dp"-->
-    <!--                android:layout_marginTop="20dp"-->
-    <!--                android:layout_marginEnd="50dp"-->
-    <!--                android:background="@drawable/welcome_button"-->
-    <!--                android:fontFamily="@font/mazzardsofth_regular"-->
-    <!--                android:padding="10dp"-->
-    <!--                android:text="@string/continue_"-->
-    <!--                android:textColor="@color/white"-->
-    <!--                android:textSize="10sp"-->
-    <!--                android:textStyle="bold" />-->
-    <!--        </LinearLayout>-->
-
-    <!--    </RelativeLayout>-->
-    <!--</ScrollView>-->
