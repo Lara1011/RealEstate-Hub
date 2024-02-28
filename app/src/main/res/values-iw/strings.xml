@@ -68,60 +68,60 @@
 
 
     <!-- ================ ADD POST ACTIVITY ================ -->
-    <string name="add_post">Add Post</string>
-    <string name="rent">Rent</string>
-    <string name="sell">Sell</string>
+    <string name="add_post">הוסף פוסט</string>
+    <string name="rent">השכרה</string>
+    <string name="sell">מכירה</string>
 
 
     <!-- ================ PROPERTY AD PLAN ACTIVITY ================ -->
-    <string name="select_advertising_route">Select Your Advertising Route</string>
-    <string name="free_ad_description">Tap the \'Free Ad\' button to post a free advertisement.</string>
-    <string name="free_ad">Free Ad</string>
-    <string name="paid_app_description">If you would like your advertisement to show on top of \'Home Page\', click on the \'Paid Ad\' button.</string>
-    <string name="paid_ad">Paid Ad</string>
+    <string name="select_advertising_route">בחר את מסלול הפרסום שלך</string>
+    <string name="free_ad_description">הקש על הלחצן \'מודעה בחינם\' כדי לפרסם פרסומת בחינם.</string>
+    <string name="free_ad">מודעה בחינם</string>
+    <string name="paid_app_description">אם תרצה שהמודעה שלך תוצג בראש \'דף הבית\', לחץ על הלחצן \'מודעה בתשלום\'.</string>
+    <string name="paid_ad">מודעה בתשלום</string>
 
 
     <!-- ================ PROPERTY ADDRESS ACTIVITY ================ -->
-    <string name="fill_property_address">Fill Your Property Address</string>
-    <string name="post_name">Post Name</string>
-    <string name="select_property_type">Select Property Type</string>
-    <string name="select_view">Select view</string>
-    <string name="property_location">What is the property location?</string>
-    <string name="street">Street</string>
-    <string name="floor_number">Floor Number</string>
-    <string name="total_floors">Total floors in the building</string>
-    <string name="no_home">No. Home</string>
+    <string name="fill_property_address">מלא את כתובת הנכס שלך</string>
+    <string name="post_name">שם הפוסט</string>
+    <string name="select_property_type">בחר סוג נכס</string>
+    <string name="select_view">בחר תצוגה</string>
+    <string name="property_location">מהו מיקום הנכס?</string>
+    <string name="street">רחוב</string>
+    <string name="floor_number">מספר קומה</string>
+    <string name="total_floors">סך הקומות בבניין</string>
+    <string name="no_home">מספר בית</string>
     <!-- ================ PROPERTY INFORMATION ACTIVITY ================ -->
-    <string name="fill_property_information">Fill Your Property Information</string>
-    <string name="no_rooms">Number of rooms</string>
-    <string name="no_showers">Select number of showers</string>
-    <string name="no_parking">Select number of parking</string>
-    <string name="no_balconies">Select number of balconies</string>
-    <string name="property_characteristics">Property Characteristics</string>
-    <string name="elevators">Elevators</string>
-    <string name="conditioner">Tornado air conditioner</string>
-    <string name="kosher_kitchen">Kosher kitchen</string>
-    <string name="storage">Storage</string>
-    <string name="water_heater">Water Heater</string>
-    <string name="renovated">Renovated</string>
-    <string name="access_for_disabled">Access for disabled</string>
-    <string name="furniture">Furniture</string>
-    <string name="what_important_about_property">What is important to you about the property?</string>
+    <string name="fill_property_information">מלא את פרטי הנכס שלך</string>
+    <string name="no_rooms">מספר חדרים</string>
+    <string name="no_showers">בחר מספר מקלחות</string>
+    <string name="no_parking">בחר מספר חניות</string>
+    <string name="no_balconies">בחר מספר מרפסות</string>
+    <string name="property_characteristics">מאפייני הנכס</string>
+    <string name="elevators">מעליות</string>
+    <string name="conditioner">מזגן</string>
+    <string name="kosher_kitchen">מטבח כשר</string>
+    <string name="storage">אִחסוּן</string>
+    <string name="water_heater">מחמם מים</string>
+    <string name="renovated">מחודש</string>
+    <string name="access_for_disabled">גישה לנכים</string>
+    <string name="furniture">רהיטים</string>
+    <string name="what_important_about_property">מה חשוב לך בנכס?</string>
 
 
     <!-- ================ PROPERTY PHOTOS VIDEOS ACTIVITY ================ -->
-    <string name="upload_property_pictures_videos">Upload Your Property Pictures/Videos</string>
-    <string name="upload_photos">Upload Photos</string>
-    <string name="upload_videos">Upload Videos</string>
-    <string name="click_to_upload">Click here to upload photos</string>
+    <string name="upload_property_pictures_videos">העלה תמונות/סרטונים של הנכס שלך</string>
+    <string name="upload_photos">העלה תמונות</string>
+    <string name="upload_videos">העלה סרטונים</string>
+    <string name="click_to_upload">לחץ כאן כדי להעלות תמונות</string>
 
     <!-- ================ PROPERTY PRICE AND SIZE ACTIVITY ================    -->
-    <string name="size_square_meters">Total size in square meters</string>
-    <string name="price">Price</string>
-    <string name="entry_date">Entry Date</string>
-    <string name="immediate">Immediate</string>
-    <string name="flexible">Flexible</string>
-    <string name="fill_property_payments">Fill Your Property Payments</string>
+    <string name="size_square_meters">גודל כולל במ\"ר</string>
+    <string name="price">מחיר</string>
+    <string name="entry_date">תאריך כניסה</string>
+    <string name="immediate">מידי</string>
+    <string name="flexible">גמיש</string>
+    <string name="fill_property_payments">מלא את תשלומי הנכס שלך</string>
 
 
     <string-array name="property_types">
@@ -161,4 +161,19 @@
     <string name="last_name">שם משפחה</string>
     <string name="phone_number">מספר טלפון</string>
     <string name="hello_blank_fragment">hello blank fragment</string>
+    <string name="filter">סנן</string>
+    <string name="options">אפשרויות</string>
+    <string name="buy">רכישה</string>
+    <string name="property_types">סוג נכס</string>
+    <string name="apartment">דירה</string>
+    <string name="building">בניין</string>
+    <string name="house">בית</string>
+    <string name="parking">חניה</string>
+    <string name="roof_penthouse">גג/ פנטהאוז</string>
+    <string name="studio_loft">סטודיו/ לופט</string>
+    <string name="price_range">טווח מחירים</string>
+    <string name="from">מ-</string>
+    <string name="to">עד-</string>
+    <string name="characteristics">מאפייני דירה</string>
+    <string name="reset">נקה</string>
 </resources>

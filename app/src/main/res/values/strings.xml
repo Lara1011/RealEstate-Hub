@@ -103,7 +103,7 @@
     <string name="no_balconies">Select number of balconies</string>
     <string name="property_characteristics">Property Characteristics</string>
     <string name="elevators">Elevators</string>
-    <string name="conditioner">Tornado air conditioner</string>
+    <string name="conditioner">air conditioner</string>
     <string name="kosher_kitchen">Kosher kitchen</string>
     <string name="storage">Storage</string>
     <string name="water_heater">Water Heater</string>
@@ -170,7 +170,6 @@
     <string name="options">Options</string>
     <string name="buy">Buy</string>
     <string name="property_types">Property types</string>
-    <string name="all">All</string>
     <string name="apartment">Apartment</string>
     <string name="building">Building</string>
     <string name="house">House</string>
@@ -178,13 +177,9 @@
     <string name="roof_penthouse">Roof/Penthouse</string>
     <string name="studio_loft">Studio/Loft</string>
     <string name="price_range">Price range</string>
-    <string name="from">From:</string>
-    <string name="to">To:</string>
+    <string name="from">From -</string>
+    <string name="to">To -</string>
     <string name="characteristics">Characteristics</string>
     <string name="reset">Reset</string>
 
-    <string-array name="priceSlider">
-        <item>1000</item>
-        <item>100000000</item>
-    </string-array>
 </resources>
