@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -34,54 +36,43 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SearchFragment extends Fragment implements View.OnClickListener {
-   private View view;
+    private View view;
     private RecyclerView recyclerView;
-    private HashMap<String, HashMap<String, String>> postList = new HashMap<>();
-    private HashMap<String, HashMap<String, String>> filteredList = new HashMap<>();
-    private HashSet<String> selectedFilters = new HashSet<>();
+    private HashMap<String, HashMap<String, String>> postList;
+    private HashMap<String, HashMap<String, String>> filteredList;
     private List<HashMap<String, Object>> userList;
-    private DatabaseReference usersReference;
-    private DatabaseReference postsReference;
+    private DatabaseReference usersReference, postsReference;
     private SearchView searchView;
     private TextView filterTextView;
-    private LinearLayout rentLayout;
-    private LinearLayout buyLayout;
-    private LinearLayout allLayout;
-    private LinearLayout apartmentLayout;
-    private LinearLayout buildingLayout;
-    private LinearLayout houseLayout;
-    private LinearLayout parkingLayout;
-    private LinearLayout penthouseLayout;
-    private LinearLayout loftLayout;
-    private LinearLayout storageLayout;
-    private Dialog dialog;
-    private Button continueButton;
-    private Button resetButton;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_search, container, false);
-        searchView = view.findViewById(R.id.searchEditText);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        userList = new ArrayList<>();
-        filterTextView = view.findViewById(R.id.filterTextView);
-        filterTextView.setOnClickListener(this);
 
-        // Initialize Firebase references for user and post data
-        usersReference = FirebaseDatabase.getInstance().getReference("Registered Users");
-        postsReference = FirebaseDatabase.getInstance().getReference("Users Posts");
-
-        // Method call to start loading user data from Firebase
+        initUI();
         readUserData();
-
-        // Call initSearch after initializing RecyclerView
         initSearch();
 
         return view;
+    }
+
+    private void initUI() {
+        postList = new HashMap<>();
+        filteredList = new HashMap<>();
+        userList = new ArrayList<>();
+
+        searchView = view.findViewById(R.id.searchEditText);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        filterTextView = view.findViewById(R.id.filterTextView);
+
+        usersReference = FirebaseDatabase.getInstance().getReference("Registered Users");
+        postsReference = FirebaseDatabase.getInstance().getReference("Users Posts");
+
+        filterTextView.setOnClickListener(this);
     }
 
     private void initSearch() {
@@ -93,8 +84,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // Apply search filter when text changes
-                String searchText = newText.trim().toLowerCase(); // Trim and convert to lowercase
+                String searchText = newText.trim().toLowerCase();
                 applySearchFilter(searchText);
                 return true;
             }
@@ -120,19 +110,19 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         usersReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userList.clear(); // Clear existing data to avoid duplicates
+                userList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     try {
                         HashMap<String, Object> userMap = (HashMap<String, Object>) snapshot.getValue();
                         if (userMap != null) {
-                            userMap.put("id", snapshot.getKey()); // Add user ID to the map
-                            userList.add(userMap); // Add the map to the list of users
+                            userMap.put("id", snapshot.getKey());
+                            userList.add(userMap);
                         }
                     } catch (Exception e) {
-                        e.printStackTrace(); // Handle any exceptions
+                        e.printStackTrace();
                     }
                 }
-                readPostData(); // Once user data is loaded, start loading post data
+                readPostData();
             }
 
             @Override
@@ -146,23 +136,22 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         postsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                postList.clear(); // Clear existing data to avoid duplicates
+                postList.clear();
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     for (DataSnapshot postSnapshot : userSnapshot.getChildren()) {
-                        HashMap<String, String> postDetails = new HashMap<>();
-                        postDetails.putAll((Map<String, String>) postSnapshot.child("Property Details").getValue());
-                        if (postDetails.isEmpty()) continue; // Skip if no post details are found
-                        String postId = postSnapshot.getKey(); // Unique key for each post
+                        HashMap<String, String> postDetails = new HashMap<>((Map<String, String>) postSnapshot.child("Property Details").getValue());
+                        if (postDetails.isEmpty()) {
+                            continue;
+                        }
+                        String postId = postSnapshot.getKey();
                         String userId = userSnapshot.getKey();
-                        // Match user ID with the post and add user details to post details
                         for (HashMap<String, Object> userMap : userList) {
-                            if (userMap.get("id").equals(userId)) {
+                            if (Objects.equals(userMap.get("id"), userId)) {
                                 postDetails.put("userName", userMap.get("firstName") + " " + userMap.get("lastName"));
-                                postDetails.put("phoneNumber", userMap.get("phoneNumber") + "");
+                                postDetails.put("phoneNumber", String.valueOf(userMap.get("phoneNumber")));
                                 break;
                             }
                         }
-                        // Add first photo URL to post details, if available
                         DataSnapshot photosSnapshot = postSnapshot.child("Photos");
                         if (photosSnapshot.exists()) {
                             for (DataSnapshot photoSnapshot : photosSnapshot.getChildren()) {
@@ -170,7 +159,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                                 break;
                             }
                         }
-                        // Add the post details map to the list of posts using postId as key
                         postList.put(postId, postDetails);
                     }
                 }
@@ -183,17 +171,34 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-//------------------------------------------------------------------------------------------------
-//----------------------------------------F I L T E R I N G---------------------------------------
-//------------------------------------------------------------------------------------------------
-    private void showBottomDialog() {
+    //------------------------------------------------------------------------------------------------
+    //----------------------------------------F I L T E R I N G---------------------------------------
+    //------------------------------------------------------------------------------------------------
+    private HashSet<String> selectedFilters = new HashSet<>();
+    private HashSet<String> typeSelectedFilters = new HashSet<>();
+    private Dialog dialog;
+    private LinearLayout rentLayout, buyLayout, apartmentLayout, buildingLayout, houseLayout, parkingLayout, penthouseLayout, loftLayout, storageLayout;
+    private EditText minPriceEditText, maxPriceEditText, minNumOfRoomsEditText, maxNumOfRoomsEditText;
+    private CheckBox elevatorsCheckBox, airConditionerCheckBox, kosherKitchenCheckBox, storageCheckBox, waterHeaterCheckBox, renovatedCheckBox, accessForDisabledCheckBox, furnitureCheckBox;
+    private Button continueButton, resetButton;
+    private String minNumOfRooms;
+    private String maxNumOfRooms;
+    private String minPrice;
+    private String maxPrice;
+    private boolean flag = false;
+
+
+    private void dialogInitUI() {
         dialog = new Dialog(getContext());
+
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.activity_search_filter);
 
+        //Type Options
         rentLayout = dialog.findViewById(R.id.rentLinearLayout);
         buyLayout = dialog.findViewById(R.id.buyLinearLayout);
-        allLayout = dialog.findViewById(R.id.allLinearLayout);
+
+        //Property Types
         apartmentLayout = dialog.findViewById(R.id.apartmentLinearLayout);
         buildingLayout = dialog.findViewById(R.id.buildingLinearLayout);
         houseLayout = dialog.findViewById(R.id.houseLinearLayout);
@@ -202,6 +207,25 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         loftLayout = dialog.findViewById(R.id.loftLinearLayout);
         storageLayout = dialog.findViewById(R.id.storageLinearLayout);
 
+        //Price Range
+        minPriceEditText = dialog.findViewById(R.id.minPriceEditText);
+        maxPriceEditText = dialog.findViewById(R.id.maxPriceEditText);
+
+        //Number of rooms
+        minNumOfRoomsEditText = dialog.findViewById(R.id.minNumOfRoomsEditText);
+        maxNumOfRoomsEditText = dialog.findViewById(R.id.maxNumOfRoomsEditText);
+
+        //Characteristics
+        elevatorsCheckBox = dialog.findViewById(R.id.elevatorsCheckBox);
+        airConditionerCheckBox = dialog.findViewById(R.id.airConditionerCheckBox);
+        kosherKitchenCheckBox = dialog.findViewById(R.id.kosherKitchenCheckBox);
+        storageCheckBox = dialog.findViewById(R.id.storageCheckBox);
+        waterHeaterCheckBox = dialog.findViewById(R.id.waterHeaterCheckBox);
+        renovatedCheckBox = dialog.findViewById(R.id.renovatedCheckBox);
+        accessForDisabledCheckBox = dialog.findViewById(R.id.accessForDisabledCheckBox);
+        furnitureCheckBox = dialog.findViewById(R.id.furnitureCheckBox);
+
+        //Buttons
         continueButton = dialog.findViewById(R.id.continueButton);
         resetButton = dialog.findViewById(R.id.resetButton);
 
@@ -209,7 +233,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         resetButton.setOnClickListener(this);
         rentLayout.setOnClickListener(this);
         buyLayout.setOnClickListener(this);
-        allLayout.setOnClickListener(this);
         apartmentLayout.setOnClickListener(this);
         buildingLayout.setOnClickListener(this);
         houseLayout.setOnClickListener(this);
@@ -229,14 +252,188 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.filterTextView) {
-            showBottomDialog();
-        } else if (id == R.id.rentLinearLayout || id == R.id.buyLinearLayout || id == R.id.allLinearLayout || id == R.id.apartmentLinearLayout || id == R.id.buildingLinearLayout || id == R.id.houseLinearLayout || id == R.id.parkingLinearLayout || id == R.id.penthouseLinearLayout || id == R.id.loftLinearLayout || id == R.id.storageLinearLayout) {
+            dialogInitUI();
+        } else if (id == R.id.rentLinearLayout || id == R.id.buyLinearLayout || id == R.id.apartmentLinearLayout || id == R.id.buildingLinearLayout || id == R.id.houseLinearLayout || id == R.id.parkingLinearLayout || id == R.id.penthouseLinearLayout || id == R.id.loftLinearLayout || id == R.id.storageLinearLayout) {
             toggleFilterSelection(v);
         } else if (id == R.id.continueButton) {
+            obtainData();
             applyFilters();
+            if (!flag)
+                checkCharacteristics();
+            resetFilters();
         } else if (id == R.id.resetButton) {
             resetFilters();
         }
+    }
+
+    private void obtainData() {
+        String elevators = String.valueOf(elevatorsCheckBox.isChecked());
+        String airConditioner = String.valueOf(airConditionerCheckBox.isChecked());
+        String kosherKitchen = String.valueOf(kosherKitchenCheckBox.isChecked());
+        String storage = String.valueOf(storageCheckBox.isChecked());
+        String waterHeater = String.valueOf(waterHeaterCheckBox.isChecked());
+        String renovated = String.valueOf(renovatedCheckBox.isChecked());
+        String accessForDisabled = String.valueOf(accessForDisabledCheckBox.isChecked());
+        String furniture = String.valueOf(furnitureCheckBox.isChecked());
+        minNumOfRooms = minNumOfRoomsEditText.getText().toString();
+        maxNumOfRooms = maxNumOfRoomsEditText.getText().toString();
+        minPrice = minPriceEditText.getText().toString();
+        maxPrice = maxPriceEditText.getText().toString();
+
+        if (elevators.equals("true")) {
+            selectedFilters.add("Elevators");
+        }
+
+        if (airConditioner.equals("true")) {
+            selectedFilters.add("airConditioner");
+        }
+
+        if (kosherKitchen.equals("true")) {
+            selectedFilters.add("kosherkitchen");
+        }
+
+        if (storage.equals("true")) {
+            selectedFilters.add("Storage");
+        }
+
+        if (waterHeater.equals("true")) {
+            selectedFilters.add("waterHeater");
+        }
+
+        if (renovated.equals("true")) {
+            selectedFilters.add("Renovated");
+        }
+
+        if (accessForDisabled.equals("true")) {
+            selectedFilters.add("accessForDisabled");
+        }
+
+        if (furniture.equals("true")) {
+            selectedFilters.add("Furniture");
+        }
+        if (apartmentLayout.isActivated()) {
+            selectedFilters.add("Apartment");
+        }
+
+        if (buildingLayout.isActivated()) {
+            selectedFilters.add("Building");
+        }
+
+        if (houseLayout.isActivated()) {
+            selectedFilters.add("House");
+        }
+
+        if (parkingLayout.isActivated()) {
+            selectedFilters.add("Parking");
+        }
+
+        if (penthouseLayout.isActivated()) {
+            selectedFilters.add("Penthouse");
+        }
+
+        if (loftLayout.isActivated()) {
+            selectedFilters.add("Loft");
+        }
+
+        if (storageLayout.isActivated()) {
+            selectedFilters.add("Storage");
+        }
+
+    }
+
+    private void checkCharacteristics() {
+        String[] toBeRemoved = new String[filteredList.size()];
+        int i = 0, currentPost = 0;
+        if (!filteredList.isEmpty()) {
+            int j = 0;
+            outerLoop:
+            for (HashMap<String, String> post : filteredList.values()) {
+                boolean passFilter = true;
+                innerLoop:
+                for (String filter : selectedFilters) {
+                    switch (filter) {
+                        case "Elevators":
+                        case "airConditioner":
+                        case "kosherkitchen":
+                        case "waterHeater":
+                        case "Renovated":
+                        case "accessForDisabled":
+                        case "Furniture":
+                        case "Storage":
+                            passFilter &= checkFilter(post, filter);
+                            if (!passFilter && !selectedFilters.isEmpty()) {
+                                toBeRemoved[j++] = String.valueOf(currentPost);
+                                break innerLoop;
+                            }
+
+                            if (filteredList.isEmpty()) {
+                                break outerLoop;
+                            }
+                            break;
+                    }
+                }
+                currentPost++;
+            }
+            for (int k = 0; k < toBeRemoved.length; k++) {
+                filteredList.remove(toBeRemoved[k]);
+            }
+        } else {
+            for (HashMap<String, String> post : postList.values()) {
+                boolean passFilter = true;
+                for (String filter : selectedFilters) {
+                    switch (filter) {
+                        case "Elevators":
+                        case "airConditioner":
+                        case "kosherkitchen":
+                        case "waterHeater":
+                        case "Renovated":
+                        case "accessForDisabled":
+                        case "Furniture":
+                        case "Storage":
+                            passFilter &= checkFilter(post, filter);
+                            break;
+                    }
+                }
+                if (passFilter) {
+                    filteredList.put(String.valueOf(i++), post);
+                }
+            }
+        }
+
+        if (filteredList.isEmpty()) {
+            Toast.makeText(getContext(), "No results found", Toast.LENGTH_SHORT).show();
+        }
+
+        PostAdapter adapter = new PostAdapter(filteredList);
+        recyclerView.setAdapter(adapter);
+        dialog.dismiss();
+    }
+
+    private boolean checkFilter(HashMap<String, String> post, String filter) {
+        return post.containsKey(filter) && post.get(filter).equals("true");
+    }
+
+    private void resetFilters() {
+        for (LinearLayout layout : getFilterLayouts()) {
+            TextView textView = layout.findViewById(getTextViewIdForLayoutId(layout.getId()));
+            changeFrame(layout, textView, false);
+        }
+        selectedFilters.clear();
+        typeSelectedFilters.clear();
+    }
+
+    private List<LinearLayout> getFilterLayouts() {
+        List<LinearLayout> layouts = new ArrayList<>();
+        layouts.add(rentLayout);
+        layouts.add(buyLayout);
+        layouts.add(apartmentLayout);
+        layouts.add(buildingLayout);
+        layouts.add(houseLayout);
+        layouts.add(parkingLayout);
+        layouts.add(penthouseLayout);
+        layouts.add(loftLayout);
+        layouts.add(storageLayout);
+        return layouts;
     }
 
     private void toggleFilterSelection(View view) {
@@ -244,11 +441,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         TextView textView = layout.findViewById(getTextViewIdForLayoutId(view.getId()));
         String filter = textView.getText().toString();
 
-        if (selectedFilters.contains(filter)) {
-            selectedFilters.remove(filter);
+        if (typeSelectedFilters.contains(filter)) {
+            typeSelectedFilters.remove(filter);
             changeFrame(layout, textView, false);
         } else {
-            selectedFilters.add(filter);
+            typeSelectedFilters.add(filter);
             changeFrame(layout, textView, true);
         }
     }
@@ -270,8 +467,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             return R.id.rentTextView;
         } else if (layoutId == R.id.buyLinearLayout) {
             return R.id.buyTextView;
-        } else if (layoutId == R.id.allLinearLayout) {
-            return R.id.allTextView;
         } else if (layoutId == R.id.apartmentLinearLayout) {
             return R.id.apartmentTextView;
         } else if (layoutId == R.id.buildingLinearLayout) {
@@ -290,45 +485,80 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         return -1;
     }
 
+
     private void applyFilters() {
         filteredList.clear();
-        int i = 0;
+        int currentPost = 0;
+
         for (HashMap<String, String> post : postList.values()) {
-            for (String filter : selectedFilters) {
+            for (String filter : typeSelectedFilters) {
                 if (post.get("type").toLowerCase().contains(filter.toLowerCase())) {
-                    filteredList.put(String.valueOf(i++), post);
-                    break; // Move to the next post once a match is found
+                    flag = true;
+                    filteredList.put(String.valueOf(currentPost++), post);
+                    break;
                 }
             }
         }
-        if (filteredList.isEmpty()) {
-            Toast.makeText(getContext(), "No results found", Toast.LENGTH_SHORT).show();
+        if (flag && filteredList.isEmpty()) {
+            noSuchDataFound();
+            return;
         }
-        PostAdapter adapter = new PostAdapter(filteredList);
-        recyclerView.setAdapter(adapter);
+        flag = false;
+        findMinMax("numberOfRooms", minNumOfRooms, maxNumOfRooms);
+        if (flag && filteredList.isEmpty()) {
+            noSuchDataFound();
+            return;
+        }
+        findMinMax("Price", minPrice, maxPrice);
+        if (flag && filteredList.isEmpty()) {
+            noSuchDataFound();
+        }
+        flag = false;
+
+    }
+
+    private void findMinMax(String Child, String min, String max) {
+        if (min.isEmpty()) {
+            min = "0";
+        }
+        if (max.isEmpty()) {
+            max = "100000000";
+        }
+        int currentPost = 0;
+        if (filteredList.isEmpty()) {
+            for (HashMap<String, String> post : postList.values()) {
+                String postChild = post.get(Child);
+                int val = Integer.parseInt(postChild);
+                int minVal = Integer.parseInt(min);
+                int maxVal = Integer.parseInt(max);
+                if (val >= minVal && val <= maxVal) {
+                    filteredList.put(String.valueOf(currentPost++), post);
+                    flag = true;
+                }
+            }
+        } else {
+            int j = 0;
+            String[] toBeRemoved = new String[filteredList.size()];
+            for (HashMap<String, String> post : filteredList.values()) {
+                String postChild = post.get(Child);
+                int val = Integer.parseInt(postChild);
+                int minVal = Integer.parseInt(min);
+                int maxVal = Integer.parseInt(max);
+                if (val < minVal || val > maxVal) {
+                    toBeRemoved[j++] = String.valueOf(currentPost);
+                    flag = true;
+                }
+                currentPost++;
+            }
+            for (int k = 0; k < toBeRemoved.length; k++) {
+                filteredList.remove(toBeRemoved[k]);
+            }
+        }
+    }
+
+    private void noSuchDataFound() {
+        Toast.makeText(getContext(), "No results found", Toast.LENGTH_SHORT).show();
         dialog.dismiss();
     }
-
-    private void resetFilters() {
-        for (LinearLayout layout : getFilterLayouts()) {
-            TextView textView = layout.findViewById(getTextViewIdForLayoutId(layout.getId()));
-            changeFrame(layout, textView, false);
-        }
-        selectedFilters.clear();
-    }
-
-    private List<LinearLayout> getFilterLayouts() {
-        List<LinearLayout> layouts = new ArrayList<>();
-        layouts.add(rentLayout);
-        layouts.add(buyLayout);
-        layouts.add(allLayout);
-        layouts.add(apartmentLayout);
-        layouts.add(buildingLayout);
-        layouts.add(houseLayout);
-        layouts.add(parkingLayout);
-        layouts.add(penthouseLayout);
-        layouts.add(loftLayout);
-        layouts.add(storageLayout);
-        return layouts;
-    }
 }
+

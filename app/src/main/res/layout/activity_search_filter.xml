@@ -30,7 +30,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
-        <!-- Options -->
+        <!-- Type Options -->
         <LinearLayout
             android:id="@+id/optionsLinearLayout"
             android:layout_width="match_parent"
@@ -148,36 +148,12 @@
                     android:orientation="horizontal"
                     android:padding="10dp">
 
-                    <LinearLayout
-                        android:id="@+id/allLinearLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:background="@drawable/background_empty_frame_blue"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/icon_all" />
-
-                        <TextView
-                            android:id="@+id/allTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mazzardsofth_regular"
-                            android:text="@string/all"
-                            android:textColor="@color/blue"
-                            android:textSize="14sp" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/apartmentLinearLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="20dp"
                         android:background="@drawable/background_empty_frame_blue"
                         android:gravity="center"
                         android:orientation="horizontal">
@@ -521,7 +497,7 @@
                         android:orientation="vertical">
 
                         <CheckBox
-                            android:id="@+id/ElevatorsCheckBox"
+                            android:id="@+id/elevatorsCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:buttonTint="@color/blue"
@@ -541,7 +517,7 @@
                             android:textSize="14sp" />
 
                         <CheckBox
-                            android:id="@+id/kosherkitchenCheckBox"
+                            android:id="@+id/kosherKitchenCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:buttonTint="@color/blue"
@@ -551,7 +527,7 @@
                             android:textSize="14sp" />
 
                         <CheckBox
-                            android:id="@+id/StorageCheckBox"
+                            android:id="@+id/storageCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:buttonTint="@color/blue"
@@ -578,7 +554,7 @@
                             android:textSize="14sp" />
 
                         <CheckBox
-                            android:id="@+id/RenovatedCheckBox"
+                            android:id="@+id/renovatedCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:buttonTint="@color/blue"
@@ -598,7 +574,7 @@
                             android:textSize="14sp" />
 
                         <CheckBox
-                            android:id="@+id/FurnitureCheckBox"
+                            android:id="@+id/furnitureCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:buttonTint="@color/blue"
