@@ -615,7 +615,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:background="@drawable/welcome_button"
+                android:background="@drawable/background_filled_frame_blue"
                 android:fontFamily="@font/mazzardsofth_regular"
                 android:text="@string/continue_"
                 android:textColor="@color/white"
