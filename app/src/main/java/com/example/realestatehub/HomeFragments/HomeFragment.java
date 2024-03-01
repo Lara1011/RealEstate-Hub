@@ -5,23 +5,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.realestatehub.FillDetails.ReadWritePostDetails;
 import com.example.realestatehub.FillDetails.ReadWriteUserDetails;
 import com.example.realestatehub.HomeFragments.ReadPost.PostAdapter;
 import com.example.realestatehub.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeFragment extends Fragment {
 
@@ -33,11 +45,27 @@ public class HomeFragment extends Fragment {
     private DatabaseReference postsReference;
     private ProgressBar progressBar;
 
+    private CircleImageView userImg;
+    private TextView userName;
+    private FirebaseUser firebaseUser;
+    BottomNavigationView bottomNavigationView;
+    public HomeFragment(BottomNavigationView bottomNavigationView) {
+        this.bottomNavigationView = bottomNavigationView;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
+        userImg = view.findViewById(R.id.user_img);
+        userName = view.findViewById(R.id.user_name);
+        view.findViewById(R.id.user_lay).setOnClickListener(v -> {
+            bottomNavigationView.setSelectedItemId(R.id.profile);
+        });
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null) {
+            Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
+        }
         // Initialize the ProgressBar and RecyclerView
         progressBar = view.findViewById(R.id.progressBar);
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -50,10 +78,47 @@ public class HomeFragment extends Fragment {
 
         // Method call to start loading user data from Firebase
         readUserData();
-
+        updateProfileUI();
         return view;
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        firebaseUser.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    updateProfileUI();
+                } else {
+                    Toast.makeText(getContext(), "Failed to refresh user profile", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        updateProfileUI();
+    }
+    private void updateProfileUI() {
+        if (firebaseUser != null) {
+            String uid = firebaseUser.getUid(); //"SfXciDdsPNPeTcU3jJE58UXyiQr1";//
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Registered Users");
+            reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
 
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ReadWriteUserDetails readWriteUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
+                    if (readWriteUserDetails != null) {
+                        userName.setText(String.format(readWriteUserDetails.getFirstName() + " " + readWriteUserDetails.getLastName()));
+
+                        Picasso.get().load(firebaseUser.getPhotoUrl()).into(userImg);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
     // Method to show the progress bar when loading data
     private void showLoading() {
         progressBar.setVisibility(View.VISIBLE);
