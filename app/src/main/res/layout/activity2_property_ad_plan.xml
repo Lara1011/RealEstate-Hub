@@ -1,123 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragments.UploadPost.PropertyAdPlan"
-    android:background="@color/back_ground_theme">
+    android:background="@color/back_ground_theme"
+    tools:context=".HomeFragments.UploadPost.PropertyAdPlan">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/firstLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".LogIn.SignUpActivity">
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/firstLinearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/icon_back" />
 
-            <Button
-                android:id="@+id/backButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/icon_back" />
-
-            <TextView
-                android:id="@+id/pageNametextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/mazzardsofth_regular"
-                android:text="@string/select_advertising_route"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/picButtonsLinearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/firstLinearLayout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp">
-        </RelativeLayout>
-        <!-- Main -->
-        <LinearLayout
-            android:id="@+id/otherDetailsLinearLayout"
+        <TextView
+            android:id="@+id/pageNametextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/picButtonsLinearLayout"
-            android:layout_centerHorizontal="true"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/mazzardsofth_regular"
+            android:text="@string/select_advertising_route"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Main -->
+    <LinearLayout
+        android:id="@+id/otherDetailsLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/firstLinearLayout"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="35dp"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/freeCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="15dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="20dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/background_for_text"
-                >
+                android:layout_marginTop="15dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="@string/free_ad_description"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"/>
-
-                <Button
-                    android:id="@+id/FreeAdButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="50dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="50dp"
-                    android:background="@drawable/background_filled_frame_blue"
                     android:fontFamily="@font/mazzardsofth_regular"
-                    android:padding="12dp"
-                    android:text="@string/free_ad"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/free_ad_description"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/background_for_text"
-                >
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="@string/paid_app_description"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"/>
                 <Button
-                    android:id="@+id/PaidAdButton"
+                    android:id="@+id/freeAdButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="50dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="50dp"
+                    android:layout_marginBottom="50dp"
+                    android:background="@drawable/background_button_softblue"
+                    android:fontFamily="@font/mazzardsofth_regular"
+                    android:text="@string/free_ad"
+                    android:textColor="@color/blue"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <ImageView
+            android:id="@+id/diamondImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/diamond" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/paidCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="20dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mazzardsofth_regular"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/paid_ad_description"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/paidAdButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginBottom="50dp"
                     android:background="@drawable/background_filled_frame_blue"
                     android:fontFamily="@font/mazzardsofth_regular"
-                    android:padding="12dp"
                     android:text="@string/paid_ad"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_empty_frame_blue" />
+        </androidx.cardview.widget.CardView>
 
-    </RelativeLayout>
-</ScrollView>
+    </LinearLayout>
+
+</RelativeLayout>

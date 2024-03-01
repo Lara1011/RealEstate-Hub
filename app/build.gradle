@@ -24,6 +24,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    viewBinding {
+        enabled = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -61,5 +64,7 @@ dependencies {
     //country codes
     implementation 'com.hbb20:ccp:2.7.3'
     implementation 'com.squareup.picasso:picasso:2.8'
+    //Google Pay
+    implementation "com.google.android.gms:play-services-wallet:19.3.0-beta01"
 
 }
