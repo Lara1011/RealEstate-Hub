@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -29,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.realestatehub.HomeFragments.UploadPost.PropertyAdPlan;
 import com.example.realestatehub.R;
 import com.example.realestatehub.databinding.ActivityCheckoutBinding;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -51,6 +53,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private CheckoutViewModel model;
 
     private PayButton googlePayButton;
+    private Button backButton;
 
     private final ActivityResultLauncher<Task<PaymentData>> paymentDataLauncher =
             registerForActivityResult(new GetPaymentDataResult(), result -> {
@@ -93,6 +96,8 @@ public class CheckoutActivity extends AppCompatActivity {
 
         //Image
         Glide.with(this).load(R.drawable.payment_checkout).into(layoutBinding.paymentCheckoutImageView);
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> onBackPressed());
 
         // The Google Pay button is a layout file – take the root view
         googlePayButton = layoutBinding.googlePayButton;
@@ -105,6 +110,13 @@ public class CheckoutActivity extends AppCompatActivity {
         } catch (JSONException e) {
             // Keep Google Pay button hidden (consider logging this to your app analytics service)
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, PropertyAdPlan.class);
+        startActivity(intent);
+        finish();
     }
 
     /**

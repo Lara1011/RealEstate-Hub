@@ -77,7 +77,7 @@
     <string name="select_advertising_route">בחר את מסלול הפרסום שלך</string>
     <string name="free_ad_description">הקש על הלחצן \'מודעה בחינם\' כדי לפרסם פרסומת בחינם.</string>
     <string name="free_ad">מודעה בחינם</string>
-    <string name="paid_app_description">אם תרצה שהמודעה שלך תוצג בראש \'דף הבית\', לחץ על הלחצן \'מודעה בתשלום\'.</string>
+    <string name="paid_ad_description">אם תרצה שהמודעה שלך תוצג בראש \'דף הבית\', לחץ על הלחצן \'מודעה בתשלום\'.</string>
     <string name="paid_ad">מודעה בתשלום</string>
 
 
