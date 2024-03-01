@@ -29,4 +29,13 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
 
+    <color name="primary">#333</color>
+    <color name="primaryDark">#111</color>
+    <color name="accent">#999</color>
+    <color name="accent_alpha26">#42CCCCCC</color>
+
+    <color name="favoriteFilled">#E53935</color>
+
+
+
 </resources>

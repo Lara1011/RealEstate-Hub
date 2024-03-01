@@ -67,6 +67,16 @@
         <activity
             android:name=".HomeFragments.UploadPost.PropertyAdPlan"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeFragments.UploadPost.GooglePay.CheckoutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeFragments.UploadPost.GooglePay.CheckoutSuccessActivity"
+            android:screenOrientation="portrait" />
+        <!-- Enabling this flag is required in order to use the PaymentsClient -->
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
     </application>
 
 </manifest>

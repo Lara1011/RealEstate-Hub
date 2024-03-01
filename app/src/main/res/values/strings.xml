@@ -81,7 +81,8 @@
     <string name="select_advertising_route">Select Your Advertising Route</string>
     <string name="free_ad_description">Tap the \'Free Ad\' button to post a free advertisement.</string>
     <string name="free_ad">Free Ad</string>
-    <string name="paid_app_description">If you would like your advertisement to show on top of \'Home Page\', click on the \'Paid Ad\' button.</string>
+    <string name="paid_ad_description">If you would like your advertisement to\n show on top of \'Home Page\',\n click on the \'Paid Ad\' button.</string>
+    <string name="paid_ad_description2">"Upgrade to our premium plan for just $49.99 and watch your post soar to the top as a sponsored listing for 30 days, gaining maximum visibility and reaching more potential buyers!</string>
     <string name="paid_ad">Paid Ad</string>
 
 
@@ -187,4 +188,13 @@
         <item>1000</item>
         <item>100000000</item>
     </string-array>
+
+    <!-- Checkout -->
+    <string name="google_pay_status_unavailable">Unfortunately, Google Pay is not available on this device.</string>
+    <string name="payments_show_name">Successfully received payment data for %s!</string>
+    <string name="gateway_replace_name_example">"Gateway name set to \"example\" - please modify Constants.java and replace it with your own gateway."</string>
+    <string name="checkout_item_description">Description</string>
+    <string name="payment_details">30 Days Property Ad Plan</string>
+    <string name="payment_price">$49.99</string>
+
 </resources>
