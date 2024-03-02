@@ -15,14 +15,15 @@ public class ReadWritePostDetails {
     public void addPost(String id, String name, String location, String streetName, String floor, String totalFloors, String homeNumber, String type, String view){
         if(!postDetailsMap.containsKey(id)){
             HashMap<String, String> detailsMap = new HashMap<>();
-            detailsMap.put("name", name);
-            detailsMap.put("location", location);
-            detailsMap.put("streetName", streetName);
-            detailsMap.put("floor", floor);
-            detailsMap.put("totalFloors", totalFloors);
-            detailsMap.put("homeNumber", homeNumber);
-            detailsMap.put("type", type);
-            detailsMap.put("view", view);
+            detailsMap.put("Id", id);
+            detailsMap.put("Name", name);
+            detailsMap.put("Location", location);
+            detailsMap.put("Street Name", streetName);
+            detailsMap.put("Floor", floor);
+            detailsMap.put("Total Floors", totalFloors);
+            detailsMap.put("Home Number", homeNumber);
+            detailsMap.put("Type", type);
+            detailsMap.put("View", view);
             postDetailsMap.put(id, detailsMap);
         }
     }
@@ -56,7 +57,7 @@ public class ReadWritePostDetails {
 
     public void setAdType(String id, String adType){
         if(postDetailsMap.containsKey(id)){
-            postDetailsMap.get(id).put("adType", adType);
+            postDetailsMap.get(id).put("Ad Type", adType);
         }
     }
 

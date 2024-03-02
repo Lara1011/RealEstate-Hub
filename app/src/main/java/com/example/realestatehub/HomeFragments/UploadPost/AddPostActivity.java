@@ -169,20 +169,20 @@ public class AddPostActivity extends AppCompatActivity implements View.OnClickLi
         HashMap<String, String> postDetails = readWritePostDetails.getPostDetails(readWritePostDetails.getAdID());
 
         if (postDetails != null) {
-            postNameEditText.setText(getSafeValue(postDetails, "name"));
-            propertyLocationEditText.setText(getSafeValue(postDetails, "location"));
-            streetNameTextView.setText(getSafeValue(postDetails, "streetName"));
-            propertyFloorEditText.setText(getSafeValue(postDetails, "floor"));
-            totalFloorsEditText.setText(getSafeValue(postDetails, "totalFloors"));
-            homeNumberEditText.setText(getSafeValue(postDetails, "homeNumber"));
+            postNameEditText.setText(getSafeValue(postDetails, "Name"));
+            propertyLocationEditText.setText(getSafeValue(postDetails, "Location"));
+            streetNameTextView.setText(getSafeValue(postDetails, "Street Name"));
+            propertyFloorEditText.setText(getSafeValue(postDetails, "Floor"));
+            totalFloorsEditText.setText(getSafeValue(postDetails, "Total Floors"));
+            homeNumberEditText.setText(getSafeValue(postDetails, "Home Number"));
 
-            String propertyType = getSafeValue(postDetails, "type");
+            String propertyType = getSafeValue(postDetails, "Type");
             if (!propertyType.isEmpty()) {
                 int position = propertyTypeAdapter.getPosition(propertyType);
                 propertyTypeSpinner.setSelection(position);
             }
 
-            String view = getSafeValue(postDetails, "view");
+            String view = getSafeValue(postDetails, "View");
             if (!view.isEmpty()) {
                 int position = viewAdapter.getPosition(view);
                 viewSpinner.setSelection(position);

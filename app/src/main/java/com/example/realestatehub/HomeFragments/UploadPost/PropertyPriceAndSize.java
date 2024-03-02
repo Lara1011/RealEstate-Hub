@@ -18,6 +18,7 @@ import com.example.realestatehub.FillDetails.ReadWritePostDetails;
 import com.example.realestatehub.R;
 
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class PropertyPriceAndSize extends AppCompatActivity implements View.OnClickListener{
     private Button backButton;
@@ -25,8 +26,6 @@ public class PropertyPriceAndSize extends AppCompatActivity implements View.OnCl
     private EditText TotalSizeEditText;
     private EditText PriceEditText;
     private EditText entryDateEditText;
-    private CheckBox ImmediateCheckBox;
-    private CheckBox FlexibleCheckBox;
     private Intent intent;
     protected ReadWritePostDetails readWritePostDetails = ReadWritePostDetails.getInstance();
 
@@ -38,6 +37,7 @@ public class PropertyPriceAndSize extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity2_property_price_and_size);
 
         initUI();
+        loadSavedData();
     }
 
     private void initUI() {
@@ -46,8 +46,6 @@ public class PropertyPriceAndSize extends AppCompatActivity implements View.OnCl
         TotalSizeEditText = findViewById(R.id.TotalSizeEditText);
         PriceEditText = findViewById(R.id.PriceEditText);
         entryDateEditText = findViewById(R.id.entryDateEditText);
-        ImmediateCheckBox = findViewById(R.id.ImmediateCheckBox);
-        FlexibleCheckBox = findViewById(R.id.FlexibleCheckBox);
 
         continueButton.setOnClickListener(this);
         backButton.setOnClickListener(this);
@@ -105,7 +103,7 @@ public class PropertyPriceAndSize extends AppCompatActivity implements View.OnCl
         }
 
         if (TextUtils.isEmpty(Price)) {
-            PriceEditText.setError("Location of property is required");
+            PriceEditText.setError("Price of property is required");
             PriceEditText.requestFocus();
         }
 
@@ -113,12 +111,14 @@ public class PropertyPriceAndSize extends AppCompatActivity implements View.OnCl
             entryDateEditText.setError("Entry date is required");
             entryDateEditText.requestFocus();
         }
-        readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(),"TotalSize", TotalSize);
-        readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(),"Price", Price);
-        readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(),"EntryDate", entryDate);
-        intent = new Intent(this, PropertyAddPhotosVideos.class);
-        startActivity(intent);
-        finish();
+        else {
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Total Size", TotalSize);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Price", Price);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Entry Date", entryDate);
+            intent = new Intent(this, PropertyAddPhotosVideos.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void pickEntryDate() {
@@ -140,4 +140,19 @@ public class PropertyPriceAndSize extends AppCompatActivity implements View.OnCl
         datePickerDialog.show();
     }
 
+    private void loadSavedData() {
+        // Load saved data from ReadWritePostDetails
+        HashMap<String, String> postDetails = readWritePostDetails.getPostDetails(readWritePostDetails.getAdID());
+
+        if (postDetails != null) {
+            TotalSizeEditText.setText(getSafeValue(postDetails, "Total Size"));
+            PriceEditText.setText(getSafeValue(postDetails, "Price"));
+            entryDateEditText.setText(getSafeValue(postDetails, "Entry Date"));
+        }
+    }
+
+    // Helper method to safely retrieve values
+    private String getSafeValue(HashMap<String, String> map, String key) {
+        return map.containsKey(key) ? map.get(key) : "";
+    }
 }

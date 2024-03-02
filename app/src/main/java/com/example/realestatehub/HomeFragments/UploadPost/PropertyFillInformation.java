@@ -2,6 +2,7 @@ package com.example.realestatehub.HomeFragments.UploadPost;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -147,34 +148,62 @@ public class PropertyFillInformation extends AppCompatActivity implements View.O
         String kosherkitchen = String.valueOf(kosherkitchenCheckBox.isChecked());
         String Furniture = String.valueOf(FurnitureCheckBox.isChecked());
         String Elevators = String.valueOf(ElevatorsCheckBox.isChecked());
+        String numberOfBalconies = numberOfBalconiesSpinner.getSelectedItem().toString();
+        String numberOfParking = numberOfParkingSpinner.getSelectedItem().toString();
+        String showerNumber = showerNumberSpinner.getSelectedItem().toString();
 
-        readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "numberOfRooms", numberOfRooms);
-        readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "additionalInformation", additionalInformation);
-        readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "accessForDisabled", accessForDisabled);
-        readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "airConditioner", airConditioner);
-        readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Renovated", Renovated);
-        readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Storage", Storage);
-        readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "waterHeater", waterHeater);
-        readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "kosherkitchen", kosherkitchen);
-        readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Furniture", Furniture);
-        readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Elevators", Elevators);
-        intent = new Intent(PropertyFillInformation.this, PropertyPriceAndSize.class);
-        startActivity(intent);
-        finish();
+        if (TextUtils.isEmpty(numberOfRooms)) {
+            numberOfRoomsEditText.setError("Number of rooms is required");
+            numberOfRoomsEditText.requestFocus();
+        }
+        else {
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Number Of Rooms", numberOfRooms);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Shower Number", showerNumber);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Number Of Parking", numberOfParking);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Number Of Balconies", numberOfBalconies);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Additional Information", additionalInformation);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Access For Disabled", accessForDisabled);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Air Conditioner", airConditioner);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Renovated", Renovated);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Storage", Storage);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Water Heater", waterHeater);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Kosher Kitchen", kosherkitchen);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Furniture", Furniture);
+            readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Elevators", Elevators);
+
+            intent = new Intent(PropertyFillInformation.this, PropertyPriceAndSize.class);
+            startActivity(intent);
+            finish();
+        }
     }
     private void loadSavedData() {
         // Load saved data from ReadWritePostDetails
         HashMap<String, String> postDetails = readWritePostDetails.getPostDetails(readWritePostDetails.getAdID());
 
         if (postDetails != null) {
-            numberOfRoomsEditText.setText(getSafeValue(postDetails, "numberOfRooms"));
-            additionalInformationEditText.setText(getSafeValue(postDetails, "additionalInformation"));
-            accessForDisabledCheckBox.setChecked(getSafeValue(postDetails, "accessForDisabled").equals("true"));
-            airConditionerCheckBox.setChecked(getSafeValue(postDetails, "airConditioner").equals("true"));
+            numberOfRoomsEditText.setText(getSafeValue(postDetails, "Number Of Rooms"));
+            String balconies = getSafeValue(postDetails, "Number Of Balconies");
+            if (!balconies.isEmpty()) {
+                int position = numberOfBalconiesAdapter.getPosition(balconies);
+                numberOfBalconiesSpinner.setSelection(position);
+            }
+            String parking = getSafeValue(postDetails, "Number Of Parking");
+            if (!parking.isEmpty()) {
+                int position = numberOfParkingAdapter.getPosition(parking);
+                numberOfParkingSpinner.setSelection(position);
+            }
+            String shower = getSafeValue(postDetails, "Shower Number");
+            if (!parking.isEmpty()) {
+                int position = showerNumberAdapter.getPosition(shower);
+                showerNumberSpinner.setSelection(position);
+            }
+            additionalInformationEditText.setText(getSafeValue(postDetails, "Additional Information"));
+            accessForDisabledCheckBox.setChecked(getSafeValue(postDetails, "Access For Disabled").equals("true"));
+            airConditionerCheckBox.setChecked(getSafeValue(postDetails, "Air Conditioner").equals("true"));
             RenovatedCheckBox.setChecked(getSafeValue(postDetails, "Renovated").equals("true"));
             StorageCheckBox.setChecked(getSafeValue(postDetails, "Storage").equals("true"));
-            waterHeaterCheckBox.setChecked(getSafeValue(postDetails, "waterHeater").equals("true"));
-            kosherkitchenCheckBox.setChecked(getSafeValue(postDetails, "kosherkitchen").equals("true"));
+            waterHeaterCheckBox.setChecked(getSafeValue(postDetails, "Water Heater").equals("true"));
+            kosherkitchenCheckBox.setChecked(getSafeValue(postDetails, "Kosher Kitchen").equals("true"));
             FurnitureCheckBox.setChecked(getSafeValue(postDetails, "Furniture").equals("true"));
             ElevatorsCheckBox.setChecked(getSafeValue(postDetails, "Elevators").equals("true"));
         }

@@ -122,18 +122,6 @@
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:hint="@string/entry_date" />
-
-                    <CheckBox
-                        android:id="@+id/ImmediateCheckBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/immediate" />
-
-                    <CheckBox
-                        android:id="@+id/FlexibleCheckBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/flexible" />
                 </LinearLayout>
             </com.google.android.material.textfield.TextInputLayout>
 
