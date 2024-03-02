@@ -28,10 +28,10 @@ public class HomeBottomNavigation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page); // Set the content view directly
-        replaceFragment(new HomeFragment());
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        replaceFragment(new HomeFragment(bottomNavigationView));
         LanguageUtils.loadLocale(this);
         // Find views using findViewById
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         ReadWriteUserDetails readWriteUserDetails = ReadWriteUserDetails.getInstance(this);
         if(readWriteUserDetails.getPurpose().equals("Buyer")){
             bottomNavigationView.getMenu().removeItem(R.id.add);
@@ -44,7 +44,7 @@ public class HomeBottomNavigation extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.home) {
-                replaceFragment(new HomeFragment());
+                replaceFragment(new HomeFragment(bottomNavigationView));
             } else if (itemId == R.id.search) {
                 replaceFragment(new SearchFragment());
             } else if (itemId == R.id.favorite) {
@@ -66,7 +66,6 @@ public class HomeBottomNavigation extends AppCompatActivity {
 
         LinearLayout rentLayout = dialog.findViewById(R.id.rent);
         LinearLayout sellLayout = dialog.findViewById(R.id.sell);
-        LinearLayout postLayout = dialog.findViewById(R.id.layoutPost);
 
         rentLayout.setOnClickListener(new View.OnClickListener() {
             @Override

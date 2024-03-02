@@ -45,7 +45,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         String postId = (String) postList.keySet().toArray()[position];
         HashMap<String, String> post = postList.get(postId);
 
-        holder.nameTextView.setText(getSafeValue(post.get("name")));
+        holder.nameTextView.setText(getSafeValue(post.get("Name")));
         if (post.get("userName") != null)
             holder.userTextView.setText(getSafeValue("by " + post.get("userName")));
 
@@ -57,10 +57,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             holder.imageView.setImageResource(R.drawable.picture_img);
         }
 
-        holder.viewDetailsButton.setOnClickListener(view -> {
+        holder.imageView.setOnClickListener(view -> {
             Context context = view.getContext();
             Intent intent = new Intent(context, PostDetailsActivity.class);
-            intent.putExtra("postDetails", post);
+            intent.putExtra("Post Details", post);
+            intent.putExtra("Post Id", postId);
             context.startActivity(intent);
         });
     }
@@ -74,14 +75,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public TextView nameTextView;
         public TextView userTextView;
         public ImageView imageView;
-        public Button viewDetailsButton;
 
         public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             userTextView = itemView.findViewById(R.id.userTextView);
             imageView = itemView.findViewById(R.id.imageView);
-            viewDetailsButton = itemView.findViewById(R.id.viewDetailsButton);
+            imageView.setClickable(true);
 
             itemView.setOnClickListener(view -> {
                 int position = getAdapterPosition();

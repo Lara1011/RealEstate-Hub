@@ -285,11 +285,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         }
 
         if (airConditioner.equals("true")) {
-            selectedFilters.add("airConditioner");
+            selectedFilters.add("Air Conditioner");
         }
 
         if (kosherKitchen.equals("true")) {
-            selectedFilters.add("kosherkitchen");
+            selectedFilters.add("Kosher Kitchen");
         }
 
         if (storage.equals("true")) {
@@ -297,7 +297,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         }
 
         if (waterHeater.equals("true")) {
-            selectedFilters.add("waterHeater");
+            selectedFilters.add("Water Heater");
         }
 
         if (renovated.equals("true")) {
@@ -305,7 +305,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         }
 
         if (accessForDisabled.equals("true")) {
-            selectedFilters.add("accessForDisabled");
+            selectedFilters.add("Access For Disabled");
         }
 
         if (furniture.equals("true")) {
@@ -353,11 +353,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 for (String filter : selectedFilters) {
                     switch (filter) {
                         case "Elevators":
-                        case "airConditioner":
-                        case "kosherkitchen":
-                        case "waterHeater":
+                        case "Air Conditioner":
+                        case "Kosher Kitchen":
+                        case "Water Heater":
                         case "Renovated":
-                        case "accessForDisabled":
+                        case "Access For Disabled":
                         case "Furniture":
                         case "Storage":
                             passFilter &= checkFilter(post, filter);
@@ -383,11 +383,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 for (String filter : selectedFilters) {
                     switch (filter) {
                         case "Elevators":
-                        case "airConditioner":
-                        case "kosherkitchen":
-                        case "waterHeater":
+                        case "Air Conditioner":
+                        case "Kosher Kitchen":
+                        case "Water Heater":
                         case "Renovated":
-                        case "accessForDisabled":
+                        case "Access For Disabled":
                         case "Furniture":
                         case "Storage":
                             passFilter &= checkFilter(post, filter);
@@ -492,7 +492,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
         for (HashMap<String, String> post : postList.values()) {
             for (String filter : typeSelectedFilters) {
-                if (post.get("type").toLowerCase().contains(filter.toLowerCase())) {
+                if (post.get("Type").toLowerCase().contains(filter.toLowerCase())) {
                     flag = true;
                     filteredList.put(String.valueOf(currentPost++), post);
                     break;
@@ -504,7 +504,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             return;
         }
         flag = false;
-        findMinMax("numberOfRooms", minNumOfRooms, maxNumOfRooms);
+        findMinMax("Number Of Rooms", minNumOfRooms, maxNumOfRooms);
         if (flag && filteredList.isEmpty()) {
             noSuchDataFound();
             return;
