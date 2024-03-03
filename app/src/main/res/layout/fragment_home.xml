@@ -75,56 +75,15 @@
             </LinearLayout>
 
 
-            <RelativeLayout
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/circle"
-                android:padding="10dp">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/notification_bell" />
-            </RelativeLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/otp_background"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/searchEditText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:drawableLeft="@drawable/search"
-                android:hint="Search" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/searchRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-
-            <ImageView
-                android:id="@+id/filterIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:contentDescription="Filter Icon"
-                android:src="@drawable/filter"
-                app:tint="@color/blue" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
