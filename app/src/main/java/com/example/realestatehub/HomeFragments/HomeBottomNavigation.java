@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 
-import com.example.realestatehub.Utils.ReadWriteUserDetails;
+import com.example.realestatehub.Utils.Database;
 import com.example.realestatehub.HomeFragments.UploadPost.AddPostActivity;
 import com.example.realestatehub.Utils.Language;
 import com.example.realestatehub.R;
@@ -24,23 +24,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class HomeBottomNavigation extends AppCompatActivity {
+    private Database database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page); // Set the content view directly
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         replaceFragment(new HomeFragment(bottomNavigationView));
-        Language.loadLocale(this);
-        // Find views using findViewById
-        ReadWriteUserDetails readWriteUserDetails = ReadWriteUserDetails.getInstance(this);
-        if(readWriteUserDetails.getPurpose().equals("Buyer")){
-            bottomNavigationView.getMenu().removeItem(R.id.add);
-        }else if(readWriteUserDetails.getPurpose().equals("Seller")){
-            bottomNavigationView.getMenu().removeItem(R.id.favorite);
-            bottomNavigationView.getMenu().removeItem(R.id.search);
-        }
 
-        bottomNavigationView.setBackground(null);
+        initUI();
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.home) {
@@ -58,6 +53,24 @@ public class HomeBottomNavigation extends AppCompatActivity {
         });
 
     }
+
+    private void initUI() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        Language.loadLocale(this);
+
+        database = new Database(this);
+
+        // Find views using findViewById
+        if (database.getReadWriteUserDetails().getPurpose().equals("Buyer")) {
+            bottomNavigationView.getMenu().removeItem(R.id.add);
+        } else if (database.getReadWriteUserDetails().getPurpose().equals("Seller")) {
+            bottomNavigationView.getMenu().removeItem(R.id.favorite);
+            bottomNavigationView.getMenu().removeItem(R.id.search);
+        }
+        bottomNavigationView.setBackground(null);
+
+    }
+
     private void showBottomDialog() {
 
         final Dialog dialog = new Dialog(this);
@@ -75,8 +88,6 @@ public class HomeBottomNavigation extends AppCompatActivity {
                 startActivity(intent);
 
                 finish();
-                //Toast.makeText(HomePageActivity.this, "Rent is clicked", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -88,8 +99,6 @@ public class HomeBottomNavigation extends AppCompatActivity {
                 startActivity(intent);
 
                 finish();
-                //Toast.makeText(HomePageActivity.this, "Sell is Clicked", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -106,4 +115,6 @@ public class HomeBottomNavigation extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
+
+
 }

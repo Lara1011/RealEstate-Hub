@@ -28,7 +28,6 @@ public class ReadWriteUserDetails {
     private String purpose;
     private String id;
     private Context context;
-    //private StringBuilder favoritePost= new StringBuilder();
 
     private ReadWriteUserDetails() {
     }
@@ -46,7 +45,6 @@ public class ReadWriteUserDetails {
         gender = sharedPreferences.getString(KEY_GENDER, "");
         purpose = sharedPreferences.getString(KEY_PURPOSE, "");
         id = sharedPreferences.getString(KEY_ID, "");
-        //favoritePost = new StringBuilder();
     }
 
     public static synchronized ReadWriteUserDetails getInstance(Context context) {
@@ -95,7 +93,6 @@ public class ReadWriteUserDetails {
         this.id = id;
     }
 
-    // Getters and setters for all fields
     public String getFirstName() {
         return firstName;
     }
@@ -167,35 +164,5 @@ public class ReadWriteUserDetails {
     public void setPurpose(String purpose) {
         this.purpose = purpose;
     }
-
-//    public StringBuilder getFavoritePost() {
-//        return favoritePost;
-//    }
-//
-//    public void addFavoritePost(String favoritePost) {
-//        this.favoritePost.append(favoritePost);
-//        this.favoritePost.append(" ");
-//    }
-//
-//    public void removeFavoritePost(String favoritePostToRemove) {
-//        // Convert StringBuilder to String to perform operations
-//        String favoritePosts = favoritePost.toString();
-//
-//        // Split the string by space to get individual favorite posts
-//        String[] postsArray = favoritePosts.split(" ");
-//
-//        // Create a new StringBuilder to store the modified list of favorite posts
-//        StringBuilder newFavoritePosts = new StringBuilder();
-//
-//        // Iterate through the postsArray to find and remove the specified post
-//        for (String post : postsArray) {
-//            if (!post.equals(favoritePostToRemove)) {
-//                newFavoritePosts.append(post).append(" ");
-//            }
-//        }
-//
-//        // Set the new StringBuilder as the favoritePost
-//        this.favoritePost = newFavoritePosts;
-//    }
 
 }

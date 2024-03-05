@@ -15,7 +15,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.realestatehub.HomeFragments.UploadPost.AddPostActivity;
 import com.example.realestatehub.Utils.Database;
 import com.example.realestatehub.HomeFragments.HomeBottomNavigation;
 import com.example.realestatehub.R;
@@ -115,7 +114,7 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
             passwordEditText.setError("Password is required");
             passwordEditText.requestFocus();
         } else {
-            database.login(email, password, new Database.RegistrationCallback() {
+            database.login(email, password, new Database.GeneralCallback() {
 
                 @Override
                 public void onSuccess() {

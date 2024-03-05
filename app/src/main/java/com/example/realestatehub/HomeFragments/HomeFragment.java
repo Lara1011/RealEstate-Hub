@@ -7,29 +7,21 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.realestatehub.Utils.ReadWritePostDetails;
-import com.example.realestatehub.Utils.ReadWriteUserDetails;
+
+import com.example.realestatehub.Utils.Database;
 import com.example.realestatehub.HomeFragments.ReadPostAdapter.PostAdapter;
 import com.example.realestatehub.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,16 +29,12 @@ public class HomeFragment extends Fragment {
 
     // Declaration of variables to hold view references and Firebase data
     private RecyclerView recyclerView;
-    private HashMap<String, HashMap<String, String>> postList = ReadWritePostDetails.getInstance().postDetailsMap;
-    private List<HashMap<String, Object>> userList;
-    private DatabaseReference usersReference;
-    private DatabaseReference postsReference;
     private ProgressBar progressBar;
     private CircleImageView userImg;
     private TextView userName;
-    private FirebaseUser firebaseUser;
-    private String purpose, userId;
     BottomNavigationView bottomNavigationView;
+    private Database database;
+
     public HomeFragment(BottomNavigationView bottomNavigationView) {
         this.bottomNavigationView = bottomNavigationView;
     }
@@ -56,36 +44,26 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        purpose = ReadWriteUserDetails.getInstance(getContext()).getPurpose();
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userImg = view.findViewById(R.id.user_img);
         userName = view.findViewById(R.id.user_name);
-        view.findViewById(R.id.user_lay).setOnClickListener(v -> {
-            bottomNavigationView.setSelectedItemId(R.id.profile);
-        });
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser == null) {
-            Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
-        }
+        view.findViewById(R.id.user_lay).setOnClickListener(v -> bottomNavigationView.setSelectedItemId(R.id.profile));
+
         // Initialize the ProgressBar and RecyclerView
         progressBar = view.findViewById(R.id.progressBar);
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext())); // Set the layout manager
-        userList = new ArrayList<>();
 
-        // Initialize Firebase references for user and post data
-        usersReference = FirebaseDatabase.getInstance().getReference("Registered Users");
-        postsReference = FirebaseDatabase.getInstance().getReference("Users Posts");
-
+        database = new Database(getContext());
         // Method call to start loading user data from Firebase
-        readUserData();
+        readUsersAndPosts();
         updateProfileUI();
         return view;
     }
+
     @Override
     public void onStart() {
         super.onStart();
-        firebaseUser.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+        database.getFirebaseUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
@@ -97,29 +75,25 @@ public class HomeFragment extends Fragment {
         });
         updateProfileUI();
     }
+
     private void updateProfileUI() {
-        if (firebaseUser != null) {
-            String uid = firebaseUser.getUid(); //"SfXciDdsPNPeTcU3jJE58UXyiQr1";//
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Registered Users");
-            reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.CheckCurrUserIfExists(new Database.GeneralCallback() {
+            @Override
+            public void onSuccess() {
+                userName.setText(String.format(database.getReadWriteUserDetails().getFirstName() + " " + database.getReadWriteUserDetails().getLastName()));
+                Picasso.get().load(database.getFirebaseUser().getPhotoUrl()).into(userImg);
+            }
 
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    ReadWriteUserDetails readWriteUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
-                    if (readWriteUserDetails != null) {
-                        userName.setText(String.format(readWriteUserDetails.getFirstName() + " " + readWriteUserDetails.getLastName()));
 
-                        Picasso.get().load(firebaseUser.getPhotoUrl()).into(userImg);
-                    }
+            @Override
+            public void onFailure(int errorCode, String errorMessage) {
+                if (errorCode == 0) {
+                    Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
                 }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+            }
+        });
     }
+
     // Method to show the progress bar when loading data
     private void showLoading() {
         progressBar.setVisibility(View.VISIBLE);
@@ -131,86 +105,37 @@ public class HomeFragment extends Fragment {
     }
 
     // Method to read user data from Firebase
-    private void readUserData() {
-        showLoading(); // Show the progress bar
-        usersReference.addValueEventListener(new ValueEventListener() {
+    private void readUsersAndPosts() {
+        showLoading();
+        database.readUsersData(new Database.GeneralCallback() {
+
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userList.clear(); // Clear existing data to avoid duplicates
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    try {
-                        HashMap<String, Object> userMap = (HashMap<String, Object>) snapshot.getValue();
-                        if(purpose.equals("Seller")){
-                            if(!userMap.get("id").equals(userId)) continue;
-                            else {
-                                userMap.put("id", snapshot.getKey()); // Add user ID to the map
-                                userList.add(userMap); // Add the map to the list of users
-                                break;
-                            }
-                        }
-                        if (userMap != null) {
-                            userMap.put("id", snapshot.getKey()); // Add user ID to the map
-                            userList.add(userMap); // Add the map to the list of users
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace(); // Handle any exceptions
+            public void onSuccess() {
+                database.readPostsData(new Database.PostsCallback() {
+                    @Override
+                    public void onSuccess(HashMap<String, HashMap<String, String>> postList) {
+                        hideLoading();
+                        // Create and set an adapter for the RecyclerView with the loaded post data
+                        PostAdapter adapter = new PostAdapter(postList);
+                        recyclerView.setAdapter(adapter);
                     }
+
+
+                    @Override
+                    public void onFailure(int errorCode, String errorMessage) {
+                        hideLoading(); // Hide the progress bar on error
+                        if (errorCode == 0) {
+                            Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();}
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode, String errorMessage) {
+                hideLoading(); // Hide the progress bar on error
+                if (errorCode == 0) {
+                    Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
                 }
-                readPostData(); // Once user data is loaded, start loading post data
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                hideLoading(); // Hide progress bar on error
-                Toast.makeText(getContext(), "Failed to read user value: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    // Method to read post data from Firebase
-    private void readPostData() {
-        postsReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                postList.clear(); // Clear existing data to avoid duplicates
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    if(purpose.equals("Seller") && !userSnapshot.getKey().equals(userId)) {
-                        continue; // Skip if the purpose is "Seller" but user ID doesn't match
-                    }
-                    for (DataSnapshot postSnapshot : userSnapshot.getChildren()) {
-                        HashMap<String, String> postDetails = (HashMap<String, String>) postSnapshot.child("Property Details").getValue();
-                        if (postDetails == null) continue; // Skip if no post details are found
-                        String userId = userSnapshot.getKey();
-                        // Match user ID with the post and add user details to post details
-                        for (HashMap<String, Object> userMap : userList) {
-                            if (userMap.get("id").equals(userId)) {
-                                postDetails.put("userName", userMap.get("firstName") + " " + userMap.get("lastName"));
-                                postDetails.put("phoneNumber", userMap.get("phoneNumber")+"");
-                                break;
-                            }
-                        }
-                        // Add first photo URL to post details, if available
-                        DataSnapshot photosSnapshot = postSnapshot.child("Photos");
-                        if (photosSnapshot.exists()) {
-                            for (DataSnapshot photoSnapshot : photosSnapshot.getChildren()) {
-                                postDetails.put("photoUrl", photoSnapshot.getValue(String.class));
-                                break;
-                            }
-                        }
-                        // Add the post details map to the list of posts
-                        postList.put(postSnapshot.getKey(), postDetails);
-                    }
-                }
-                hideLoading(); // Hide the progress bar after loading data
-                // Create and set an adapter for the RecyclerView with the loaded post data
-                PostAdapter adapter = new PostAdapter(postList);
-                recyclerView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                hideLoading(); // Hide progress bar on error
-                Toast.makeText(getContext(), "Failed to read post value: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

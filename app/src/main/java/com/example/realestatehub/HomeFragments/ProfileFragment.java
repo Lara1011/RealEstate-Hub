@@ -20,8 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.realestatehub.Utils.ReadWriteUserDetails;
 import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.InsideProfileFragment;
+import com.example.realestatehub.Utils.Database;
 import com.example.realestatehub.Utils.Language;
 import com.example.realestatehub.LogIn.ConnectingActivity;
 import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.PaymentsFragment;
@@ -31,13 +31,6 @@ import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.RecentlySe
 import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.RecentlyViewedFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
@@ -47,10 +40,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             ProfileViewedLayout, PaymentViewedLayout,
             LanguageLayout, InviteFriendsLayout, LogoutViewedLayout;
     private View view;
-    private FirebaseAuth auth;
-    private DatabaseReference reference;
-    private FirebaseUser firebaseUser;
     private Uri uriImage;
+    private Database database;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,7 +54,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        firebaseUser.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+        database = new Database(getContext());
+        database.getFirebaseUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
@@ -76,28 +68,21 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private void updateProfileUI() {
-        if (firebaseUser != null) {
-            String uid = firebaseUser.getUid();
-            reference = FirebaseDatabase.getInstance().getReference("Registered Users");
-            reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.CheckCurrUserIfExists(new Database.GeneralCallback() {
+            @Override
+            public void onSuccess() {
+                UserFullNameTextView.setText(String.format("Welcome\n" + database.getReadWriteUserDetails().getFirstName() + " " + database.getReadWriteUserDetails().getLastName()));
+                uriImage = database.getFirebaseUser().getPhotoUrl();
+                Picasso.get().load(uriImage).into(userImageView);
+            }
 
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    ReadWriteUserDetails readWriteUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
-                    if (readWriteUserDetails != null) {
-                        UserFullNameTextView.setText(String.format("Welcome\n" + readWriteUserDetails.getFirstName() + " " + readWriteUserDetails.getLastName()));
-                        //userImageView
-                        uriImage = firebaseUser.getPhotoUrl();
-                        Picasso.get().load(uriImage).into(userImageView);
-                    }
+            @Override
+            public void onFailure(int errorCode, String errorMessage) {
+                if (errorCode == 0) {
+                    Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
                 }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+            }
+        });
     }
 
     private void initUI() {
@@ -122,8 +107,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         LanguageLayout.setOnClickListener(this);
         LogoutViewedLayout.setOnClickListener(this);
 
-        ReadWriteUserDetails readWriteUserDetails = ReadWriteUserDetails.getInstance(getContext());
-        if(readWriteUserDetails.getPurpose().equals("Seller")){
+        database = new Database(getContext());
+
+        if (database.getReadWriteUserDetails().getPurpose().equals("Seller")) {
             RecentlyViewedLayout.setVisibility(View.GONE);
             RecentlySearchedLayout.setVisibility(View.GONE);
             // Add margin top to RecentlyReachedLayout
@@ -132,11 +118,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             RecentlyReachedLayout.setLayoutParams(params);
         }
 
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
-        if (firebaseUser == null) {
-            Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
@@ -158,7 +139,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         } else if (id == R.id.InviteFriendsLayout) {
             showInviteFriends();
         } else if (id == R.id.LogoutLayout) {
-            auth.signOut();
+            database.getAuth().signOut();
             Intent intent = new Intent(getContext(), ConnectingActivity.class);
             startActivity(intent);
             getActivity().finish();

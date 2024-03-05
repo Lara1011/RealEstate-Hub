@@ -69,7 +69,7 @@ public class SetIntentActivity extends AppCompatActivity implements View.OnClick
                 Toast.makeText(this, "Please choose at least one purpose", Toast.LENGTH_SHORT).show();
                 return;
             }
-            database.setPurpose(fromGoogle, new Database.RegistrationCallback() {
+            database.setPurpose(fromGoogle, new Database.GeneralCallback() {
                 @Override
                 public void onSuccess() {
                     Intent intent = new Intent(SetIntentActivity.this, ConnectingActivity.class);

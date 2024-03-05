@@ -248,7 +248,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if (isValid) {
             gender = genderRadioButton.getText().toString();
             if (fromGoogle) {
-                database.registerUserFromGoogle(firstName, lastName, email, password, birthday, phoneNumber, gender, address, new Database.RegistrationCallback() {
+                database.registerUserFromGoogle(firstName, lastName, email, password, birthday, phoneNumber, gender, address, new Database.GeneralCallback() {
                     @Override
                     public void onSuccess() {
                         Intent intent = new Intent(SignUpActivity.this, SetIntentActivity.class);
@@ -267,7 +267,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 });
             } else {
-                database.registerUser(firstName, lastName, email, password, birthday, phoneNumber, gender, address, new Database.RegistrationCallback() {
+                database.registerUser(firstName, lastName, email, password, birthday, phoneNumber, gender, address, new Database.GeneralCallback() {
 
                     @Override
                     public void onSuccess() {

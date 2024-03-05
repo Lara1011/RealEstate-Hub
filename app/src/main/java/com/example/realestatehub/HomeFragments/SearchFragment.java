@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,35 +24,28 @@ import android.widget.Toast;
 
 import com.example.realestatehub.HomeFragments.ReadPostAdapter.PostAdapter;
 import com.example.realestatehub.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.realestatehub.Utils.Database;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class SearchFragment extends Fragment implements View.OnClickListener {
     private View view;
     private RecyclerView recyclerView;
     private HashMap<String, HashMap<String, String>> postList;
     private HashMap<String, HashMap<String, String>> filteredList;
-    private List<HashMap<String, Object>> userList;
-    private DatabaseReference usersReference, postsReference;
     private SearchView searchView;
     private TextView filterTextView;
+    private Database database;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_search, container, false);
 
         initUI();
-        readUserData();
+        readUsersAndPosts();
         initSearch();
 
         return view;
@@ -62,17 +54,15 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private void initUI() {
         postList = new HashMap<>();
         filteredList = new HashMap<>();
-        userList = new ArrayList<>();
 
         searchView = view.findViewById(R.id.searchEditText);
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         filterTextView = view.findViewById(R.id.filterTextView);
 
-        usersReference = FirebaseDatabase.getInstance().getReference("Registered Users");
-        postsReference = FirebaseDatabase.getInstance().getReference("Users Posts");
-
         filterTextView.setOnClickListener(this);
+
+        database = new Database(getContext());
     }
 
     private void initSearch() {
@@ -106,67 +96,22 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         recyclerView.setAdapter(adapter);
     }
 
-    private void readUserData() {
-        usersReference.addValueEventListener(new ValueEventListener() {
+    private void readUsersAndPosts() {
+        database.readUsersData(new Database.GeneralCallback() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    try {
-                        HashMap<String, Object> userMap = (HashMap<String, Object>) snapshot.getValue();
-                        if (userMap != null) {
-                            userMap.put("id", snapshot.getKey());
-                            userList.add(userMap);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+            public void onSuccess() {
+                database.readPostsData(new Database.PostsCallback() {
+                    @Override
+                    public void onSuccess(HashMap<String, HashMap<String, String>> postList) {
+                        SearchFragment.this.postList = postList;
                     }
-                }
-                readPostData();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Failed to read user value: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void readPostData() {
-        postsReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                postList.clear();
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    for (DataSnapshot postSnapshot : userSnapshot.getChildren()) {
-                        HashMap<String, String> postDetails = new HashMap<>((Map<String, String>) postSnapshot.child("Property Details").getValue());
-                        if (postDetails.isEmpty()) {
-                            continue;
-                        }
-                        String postId = postSnapshot.getKey();
-                        String userId = userSnapshot.getKey();
-                        for (HashMap<String, Object> userMap : userList) {
-                            if (Objects.equals(userMap.get("id"), userId)) {
-                                postDetails.put("userName", userMap.get("firstName") + " " + userMap.get("lastName"));
-                                postDetails.put("phoneNumber", String.valueOf(userMap.get("phoneNumber")));
-                                break;
-                            }
-                        }
-                        DataSnapshot photosSnapshot = postSnapshot.child("Photos");
-                        if (photosSnapshot.exists()) {
-                            for (DataSnapshot photoSnapshot : photosSnapshot.getChildren()) {
-                                postDetails.put("photoUrl", photoSnapshot.getValue(String.class));
-                                break;
-                            }
-                        }
-                        postList.put(postId, postDetails);
+                    @Override
+                    public void onFailure(int errorCode, String errorMessage) {
                     }
-                }
+                });
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Failed to read post value: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(int errorCode, String errorMessage) {
             }
         });
     }
@@ -374,8 +319,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 }
                 currentPost++;
             }
-            for (int k = 0; k < toBeRemoved.length; k++) {
-                filteredList.remove(toBeRemoved[k]);
+            for (String s : toBeRemoved) {
+                filteredList.remove(s);
             }
         } else {
             for (HashMap<String, String> post : postList.values()) {
@@ -550,8 +495,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 }
                 currentPost++;
             }
-            for (int k = 0; k < toBeRemoved.length; k++) {
-                filteredList.remove(toBeRemoved[k]);
+            for (String s : toBeRemoved) {
+                filteredList.remove(s);
             }
         }
     }

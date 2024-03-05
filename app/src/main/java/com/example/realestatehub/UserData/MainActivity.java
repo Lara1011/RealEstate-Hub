@@ -14,8 +14,6 @@ import com.example.realestatehub.R;
 public class MainActivity extends AppCompatActivity {
     private static final String PREF_NAME = "MyAppPreferences";
     private static final String PREF_KEY_FIRST_LAUNCH = "firstLaunch";
-    private Intent intent;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -11,16 +11,18 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.realestatehub.HomeFragments.HomeBottomNavigation;
+import com.example.realestatehub.Utils.Database;
 import com.example.realestatehub.Utils.Language;
 import com.example.realestatehub.LogIn.ConnectingActivity;
 import com.example.realestatehub.R;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoadingActivity extends AppCompatActivity {
     private ImageView loadingImageView;
     private final int delay = 2500;
     private Handler handler = new Handler();
+
+    private Database database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +43,19 @@ public class LoadingActivity extends AppCompatActivity {
         loadingImageView = findViewById(R.id.loadingBarImageView);
         // Load and animate the GIF using Glide
         Glide.with(this).asGif().load(R.drawable.loading2).into(loadingImageView);
+
+        database = new Database(this);
     }
 
     @Override
     protected void onStart() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
         super.onStart();
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                FirebaseUser user = auth.getCurrentUser();
-                if (user != null && user.isEmailVerified()) {
+                FirebaseUser firebaseUser = database.getFirebaseUser();
+                if (firebaseUser != null && firebaseUser.isEmailVerified()) {
                     Intent intent = new Intent(LoadingActivity.this, HomeBottomNavigation.class);
                     startActivity(intent);
                     finish();

@@ -91,7 +91,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
             emailEditText.setError("Valid Email is required");
             emailEditText.requestFocus();
         } else {
-            database.sendPasswordRestLink(email, new Database.RegistrationCallback() {
+            database.sendPasswordRestLink(email, new Database.GeneralCallback() {
 
                 @Override
                 public void onSuccess() {

@@ -26,20 +26,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class Database {
     private FirebaseAuth auth;
     private FirebaseUser firebaseUser;
-    private FirebaseDatabase firebaseDatabase;
     private final DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("Registered Users");
-    private final DatabaseReference postReference = FirebaseDatabase.getInstance().getReference("Users Posts");
+    private final DatabaseReference postsReference = FirebaseDatabase.getInstance().getReference("Users Posts");
+    private final DatabaseReference favoritesReference = FirebaseDatabase.getInstance().getReference("Users Favorites");
     private Context context;
     private ReadWriteUserDetails readWriteUserDetails;
     private static final String TAG = "Database";
 
-    public interface RegistrationCallback {
+    public interface GeneralCallback {
         void onSuccess();
 
         void onFailure(int errorCode, String errorMessage);
@@ -55,6 +57,12 @@ public class Database {
         void onSuccess(boolean valid);
     }
 
+    public interface PostsCallback {
+        void onSuccess(HashMap<String, HashMap<String, String>> postList);
+
+        void onFailure(int errorCode, String errorMessage);
+    }
+
     public Database(Context context) {
         this.context = context;
         auth = FirebaseAuth.getInstance();
@@ -62,9 +70,22 @@ public class Database {
         readWriteUserDetails = ReadWriteUserDetails.getInstance(context);
     }
 
+
     public ReadWriteUserDetails getReadWriteUserDetails() {
         return readWriteUserDetails;
     }
+
+    public FirebaseAuth getAuth() {
+        return auth;
+    }
+
+    public FirebaseUser getFirebaseUser() {
+        return firebaseUser;
+    }
+
+    //=========================================================
+    //==========================LogIn==========================
+    //=========================================================
 
     //==========================SignUpActivity==========================
 
@@ -81,9 +102,7 @@ public class Database {
      * @param address     address
      * @param callback    callback
      */
-    public void registerUserFromGoogle(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String gender, String address, RegistrationCallback callback) {
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
+    public void registerUserFromGoogle(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String gender, String address, GeneralCallback callback) {
         if (firebaseUser != null) {
             //Enter User data into the firebase Realtime Database
             ReadWriteUserDetails writeUserDetails = ReadWriteUserDetails.getInstance(context);
@@ -128,7 +147,7 @@ public class Database {
      * @param address     address
      * @param callback    callback
      */
-    public void registerUser(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String gender, String address, RegistrationCallback callback) {
+    public void registerUser(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String gender, String address, GeneralCallback callback) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(context, "User has been registered successfully", Toast.LENGTH_SHORT).show();
@@ -187,7 +206,7 @@ public class Database {
      * @param password password
      * @param callback callback
      */
-    public void login(String email, String password, RegistrationCallback callback) {
+    public void login(String email, String password, GeneralCallback callback) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -214,7 +233,7 @@ public class Database {
      *
      * @param callback callback
      */
-    public void checkVerification(RegistrationCallback callback) {
+    public void checkVerification(GeneralCallback callback) {
         if (firebaseUser.isEmailVerified()) {
             updateReadWriteUserDetails();
             callback.onSuccess();
@@ -313,7 +332,7 @@ public class Database {
      * @param email    email
      * @param callback callback
      */
-    public void sendPasswordRestLink(String email, final RegistrationCallback callback) {
+    public void sendPasswordRestLink(String email, final GeneralCallback callback) {
         checkEmailValidation(email, new EmailValidationCallback() {
             @Override
             public void onSuccess(boolean valid) {
@@ -378,9 +397,14 @@ public class Database {
 
 
     //==========================SetIntentActivity==========================
-    public void setPurpose(boolean fromGoogle, final RegistrationCallback callback) {
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
+
+    /**
+     * <p>Set purpose for user [Seller, Buyer, Seller and Buyer]
+     *
+     * @param fromGoogle fromGoogle
+     * @param callback   callback
+     */
+    public void setPurpose(boolean fromGoogle, final GeneralCallback callback) {
         if (fromGoogle) {
             if (firebaseUser != null) {
                 HashMap<String, Object> userData = new HashMap<>();
@@ -414,7 +438,168 @@ public class Database {
     }
 
 
+    //=================================================================
+    //==========================HomeFragments==========================
+    //=================================================================
+    private HashMap<String, HashMap<String, String>> postList = new HashMap<>();
+    private List<HashMap<String, Object>> userList = new ArrayList<>();
 
+    //==========================HomeFragment==========================
+
+    /**
+     * <p>Read user data from Firebase
+     *
+     * @param callback callback
+     */
+    public void readUsersData(GeneralCallback callback) {
+        usersReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userList.clear(); // Clear existing data to avoid duplicates
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    try {
+                        HashMap<String, Object> userMap = (HashMap<String, Object>) snapshot.getValue();
+                        if (readWriteUserDetails.getPurpose().equals("Seller")) {
+                            if (!userMap.get("id").equals(readWriteUserDetails.getId())) continue;
+                            else {
+                                userMap.put("id", snapshot.getKey()); // Add user ID to the map
+                                userList.add(userMap); // Add the map to the list of users
+                                break;
+                            }
+                        }
+                        if (userMap != null) {
+                            userMap.put("id", snapshot.getKey()); // Add user ID to the map
+                            userList.add(userMap); // Add the map to the list of users
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace(); // Handle any exceptions
+                    }
+                }
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onFailure(0, "Failed to read user value: " + error.getMessage());
+            }
+        });
+    }
+
+
+    /**
+     * <p>Read posts data from Firebase
+     *
+     * @param callback callback
+     */
+    public void readPostsData(PostsCallback callback) {
+        postsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                postList.clear(); // Clear existing data to avoid duplicates
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    if (readWriteUserDetails.getPurpose().equals("Seller") && !userSnapshot.getKey().equals(readWriteUserDetails.getId())) {
+                        continue; // Skip if the purpose is "Seller" but user ID doesn't match
+                    }
+                    for (DataSnapshot postSnapshot : userSnapshot.getChildren()) {
+                        HashMap<String, String> postDetails = (HashMap<String, String>) postSnapshot.child("Property Details").getValue();
+                        if (postDetails == null) continue; // Skip if no post details are found
+                        String userId = userSnapshot.getKey();
+                        String postId = postSnapshot.getKey();
+
+                        if (callback.toString().contains("Favorite")) {
+                            if (!favoriteMap.contains(postId)) {
+                                continue;
+                            }
+                        }
+                        // Match user ID with the post and add user details to post details
+                        for (HashMap<String, Object> userMap : userList) {
+                            if (userMap.get("id").equals(userId)) {
+                                postDetails.put("userName", userMap.get("firstName") + " " + userMap.get("lastName"));
+                                postDetails.put("phoneNumber", userMap.get("phoneNumber") + "");
+                                break;
+                            }
+                        }
+                        // Add first photo URL to post details, if available
+                        DataSnapshot photosSnapshot = postSnapshot.child("Photos");
+                        if (photosSnapshot.exists()) {
+                            for (DataSnapshot photoSnapshot : photosSnapshot.getChildren()) {
+                                postDetails.put("photoUrl", photoSnapshot.getValue(String.class));
+                                break;
+                            }
+                        }
+                        // Add the post details map to the list of posts
+                        postList.put(postSnapshot.getKey(), postDetails);
+                    }
+                }
+                callback.onSuccess(postList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onFailure(0, "Failed to read post value: " + error.getMessage());
+            }
+        });
+    }
+
+
+    /**
+     * <p>Check if the current user exists in the database
+     *
+     * @param callback callback
+     */
+    public void CheckCurrUserIfExists(GeneralCallback callback) {
+        if (firebaseUser != null) {
+            String uid = firebaseUser.getUid();
+            usersReference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ReadWriteUserDetails UserDetails = snapshot.getValue(ReadWriteUserDetails.class);
+                    if (UserDetails != null) {
+                        callback.onSuccess();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    callback.onFailure(0, "Something Went Wrong!");
+                }
+            });
+        }
+    }
+
+    //==========================FavoriteFragment==========================
+    private List<String> favoriteMap = new ArrayList<>();
+
+
+    /**
+     * <p>Shows the favorite posts in FavoriteFragment
+     *
+     * @param callback callback
+     */
+    public void updateFavoriteData(PostsCallback callback) {
+        String uid = firebaseUser.getUid();
+        favoritesReference.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    try {
+                        HashMap<String, String> favMap = (HashMap<String, String>) snapshot.getValue();
+                        if (favMap != null) {
+                            favoriteMap.add(favMap.get("Post Id"));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                readPostsData(callback);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
 }
 
 
