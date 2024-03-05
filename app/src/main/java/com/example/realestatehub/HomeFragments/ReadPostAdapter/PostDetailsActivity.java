@@ -137,7 +137,19 @@ public class PostDetailsActivity extends AppCompatActivity {
                     deleteButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            database.deletePost(getSafeValue(intent.getStringExtra("Post Id")));
+                            database.deletePost(getSafeValue(intent.getStringExtra("Post Id")), new Database.GeneralCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    Toast.makeText(PostDetailsActivity.this, "Post deleted successfully", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(int errorCode, String errorMessage) {
+                                    if (errorCode == 0) {
+                                        Toast.makeText(PostDetailsActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                             finish();
                         }
                     });

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.realestatehub.HomeFragments.ReadPost.PaidAdAdapter;
 import com.example.realestatehub.R;
 
 import java.util.HashMap;
@@ -40,7 +38,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public PostAdapter(HashMap<String, HashMap<String, String>> postList) {
-        this.postList = postList;
+        HashMap<String, HashMap<String, String>> filteredMap = new HashMap<>();
+        int count=0;
+        for (String postId : postList.keySet()) {
+            if(count==0){
+                filteredMap.put(postId+" ", postList.get(postId));
+                count++;
+            }
+            filteredMap.put(postId, postList.get(postId));
+        }
+        this.postList = filteredMap;
         this.freePostList = filterAdPosts(postList);
     }
 
@@ -52,7 +59,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 filteredMap.put(postId, post);
             }
         }
-        return filteredMap;
+        HashMap<String, HashMap<String, String>> filteredMap1 = new HashMap<>();
+        int count=0;
+        for (String postId : filteredMap.keySet()) {
+            if(count==0){
+                filteredMap1.put(postId+" ", postList.get(postId));
+                count++;
+            }
+            filteredMap1.put(postId, postList.get(postId));
+        }
+        return filteredMap1;
     }
 
     @NonNull

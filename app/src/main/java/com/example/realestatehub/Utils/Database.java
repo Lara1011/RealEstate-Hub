@@ -609,19 +609,26 @@ public class Database {
             return false;
         }
     }
-    public void deletePost(String postId) {
+
+    public void deletePost(String postId, GeneralCallback callback) {
         String uid = firebaseUser.getUid();
         postsReference.child(uid).child(postId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(context, "Post deleted successfully", Toast.LENGTH_SHORT).show();
+                    callback.onSuccess();
                 }else {
-                    Toast.makeText(context, "Failed to delete post", Toast.LENGTH_SHORT).show();
+                    callback.onFailure(0, "Failed to delete post");
                 }
             }
         });
     }
+    public void deleteAccount(){
+        String uid = firebaseUser.getUid();
+        if(readWriteUserDetails.getPurpose().equals("Seller") || readWriteUserDetails.getPurpose().equals("Seller and Buyer")) {
+            postsReference.child(uid).removeValue();
+        }
+        usersReference.child(uid).removeValue();
+        auth.getCurrentUser().delete();
+    }
 }
-
-

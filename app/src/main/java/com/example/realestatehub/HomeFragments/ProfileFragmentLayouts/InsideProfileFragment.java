@@ -1,5 +1,6 @@
 package com.example.realestatehub.HomeFragments.ProfileFragmentLayouts;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -14,8 +15,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.realestatehub.LogIn.ConnectingActivity;
+import com.example.realestatehub.Utils.Database;
 import com.example.realestatehub.Utils.ReadWriteUserDetails;
 import com.example.realestatehub.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +36,7 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
     private Button backButton, saveOrEditButton;
     private ImageView userImageView;
     private EditText firstNameEditText, lastNameEditText, emailEditText, birthdayEditText, phoneNumberEditText, addressEditText;
+    private TextView deleteAccountTextView;
     private RadioGroup genderRadioGroup;
     private RadioButton genderRadioButton;
     private FirebaseAuth auth;
@@ -40,6 +45,7 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
     private View view;
     private boolean editing = true;
     private ReadWriteUserDetails readWriteUserDetails = ReadWriteUserDetails.getInstance(getContext());
+    private Database database;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,6 +67,9 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
         genderRadioButton = view.findViewById(genderRadioId);
         saveOrEditButton = view.findViewById(R.id.saveOrEditButton);
         addressEditText = view.findViewById(R.id.addressEditText);
+        deleteAccountTextView = view.findViewById(R.id.deleteAccountTextView);
+
+        deleteAccountTextView.setOnClickListener(this);
 
         setInputFields(false);
 
@@ -74,6 +83,8 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
         } else {
             fetchUserDetailsFromFirebase();
         }
+
+        database = new Database(getContext());
     }
 
     @Override
@@ -89,6 +100,12 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
             }
             pushUserDetailsToFirebase();
             editing = !editing;
+        }
+        if (id == R.id.deleteAccountTextView) {
+            database.deleteAccount();
+            Intent intent = new Intent(getContext(), ConnectingActivity.class);
+            startActivity(intent);
+            getActivity().finish();
         }
     }
 

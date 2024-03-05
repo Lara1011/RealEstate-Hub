@@ -68,6 +68,7 @@
     <string name="english_us">English (US)</string>
     <string name="invite_friends">Invite Friends</string>
     <string name="logout">Logout</string>
+    <string name="delete_account">Delete Account</string>
 
 
     <!-- ================ ADD POST ACTIVITY ================ -->
@@ -182,6 +183,8 @@
     <string name="characteristics">Characteristics</string>
     <string name="reset">Reset</string>
     <string name="favorite">Favorite</string>
+    <string name="delete_post">Delete Post</string>
+
 
 
     <string-array name="priceSlider">
