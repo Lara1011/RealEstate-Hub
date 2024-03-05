@@ -277,6 +277,28 @@
             android:layout_marginBottom="8dp"/>
 
 
+        <!-- Kosher Kitchen TextView -->
+        <RelativeLayout
+            android:id="@+id/DeleteLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:id="@+id/DeleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="35dp"
+                android:fontFamily="@font/mazzardsofth_regular"
+                android:text="@string/delete_post"
+                android:textColor="#FF0000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+
 
     </LinearLayout>
 </ScrollView>

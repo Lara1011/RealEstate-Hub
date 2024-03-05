@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.realestatehub.R;
+import com.example.realestatehub.Utils.Database;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PostDetailsActivity extends AppCompatActivity {
+    private Database database;
     private boolean favoriteClicked = false;
     private void addToFavoriteDB(String itemId) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -104,7 +106,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_details);
-
+        database = new Database(this);
         Intent intent = getIntent();
         if (intent != null) {
             HashMap<String, Object> post = (HashMap<String, Object>) intent.getSerializableExtra("Post Details");
@@ -128,6 +130,18 @@ public class PostDetailsActivity extends AppCompatActivity {
                 Button callButton = findViewById(R.id.callButton);
                 Button whatsappButton = findViewById(R.id.whatsappButton);
                 ImageView favoriteButton = findViewById(R.id.favoriteImageView);
+                Button deleteButton = findViewById(R.id.DeleteButton);
+
+                if(database.canDeletePost(getSafeValue(intent.getStringExtra("Post Id")))) {
+                    deleteButton.setVisibility(View.VISIBLE);
+                    deleteButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            database.deletePost(getSafeValue(intent.getStringExtra("Post Id")));
+                            finish();
+                        }
+                    });
+                }
 
                 userNameTextView.setText("User Name: " + getSafeValue(post.get("userName")));
                 phoneNumberTextView.setText("Phone Number: " + getSafeValue(post.get("phoneNumber")));

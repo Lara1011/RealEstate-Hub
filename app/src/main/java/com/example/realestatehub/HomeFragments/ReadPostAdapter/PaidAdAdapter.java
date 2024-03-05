@@ -1,4 +1,4 @@
-package com.example.realestatehub.HomeFragments.ReadPost;
+package com.example.realestatehub.HomeFragments.ReadPostAdapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.realestatehub.HomeFragments.ReadPostAdapter.PostDetailsActivity;
 import com.example.realestatehub.R;
 
 import java.util.HashMap;

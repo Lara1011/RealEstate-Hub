@@ -600,6 +600,28 @@ public class Database {
             }
         });
     }
+
+    public boolean canDeletePost(String postId) {
+        String uid = firebaseUser.getUid();
+        if (postsReference.child(uid).child(postId) != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public void deletePost(String postId) {
+        String uid = firebaseUser.getUid();
+        postsReference.child(uid).child(postId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(context, "Post deleted successfully", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(context, "Failed to delete post", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 }
 
 
