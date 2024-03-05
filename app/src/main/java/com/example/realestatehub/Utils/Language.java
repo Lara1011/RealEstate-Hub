@@ -1,4 +1,4 @@
-package com.example.realestatehub.HomeFragments.ProfileFragmentLayouts;
+package com.example.realestatehub.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.content.res.Configuration;
 
 import java.util.Locale;
 
-public class LanguageUtils {
+public class Language {
 
     private static final String LANGUAGE_PREF_KEY = "LanguagePref";
 

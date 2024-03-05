@@ -20,11 +20,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.realestatehub.FillDetails.ReadWriteUserDetails;
+import com.example.realestatehub.Utils.ReadWriteUserDetails;
 import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.InsideProfileFragment;
-import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.LanguageUtils;
+import com.example.realestatehub.Utils.Language;
 import com.example.realestatehub.LogIn.ConnectingActivity;
-import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.NotificationFragment;
 import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.PaymentsFragment;
 import com.example.realestatehub.R;
 import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.RecentlyReachedFragment;
@@ -45,7 +44,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private ImageView userImageView;
     private TextView UserFullNameTextView;
     private RelativeLayout RecentlyViewedLayout, RecentlyReachedLayout, RecentlySearchedLayout,
-            ProfileViewedLayout, PaymentViewedLayout, NotificationLayout,
+            ProfileViewedLayout, PaymentViewedLayout,
             LanguageLayout, InviteFriendsLayout, LogoutViewedLayout;
     private View view;
     private FirebaseAuth auth;
@@ -110,7 +109,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         RecentlySearchedLayout = view.findViewById(R.id.RecentlySearchedLayout);
         ProfileViewedLayout = view.findViewById(R.id.InsideProfileLayout);
         PaymentViewedLayout = view.findViewById(R.id.PaymentsLayout);
-        NotificationLayout = view.findViewById(R.id.NotificationLayout);
         InviteFriendsLayout = view.findViewById(R.id.InviteFriendsLayout);
         LanguageLayout = view.findViewById(R.id.LanguageLayout);
         LogoutViewedLayout = view.findViewById(R.id.LogoutLayout);
@@ -120,7 +118,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         RecentlySearchedLayout.setOnClickListener(this);
         ProfileViewedLayout.setOnClickListener(this);
         PaymentViewedLayout.setOnClickListener(this);
-        NotificationLayout.setOnClickListener(this);
         InviteFriendsLayout.setOnClickListener(this);
         LanguageLayout.setOnClickListener(this);
         LogoutViewedLayout.setOnClickListener(this);
@@ -156,8 +153,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             replaceFragment(new InsideProfileFragment());
         } else if (id == R.id.PaymentsLayout) {
             replaceFragment(new PaymentsFragment());
-        } else if (id == R.id.NotificationLayout) {
-            replaceFragment(new NotificationFragment());
         } else if (id == R.id.LanguageLayout) {
             showChangeLanguage();
         } else if (id == R.id.InviteFriendsLayout) {
@@ -194,11 +189,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
-                    LanguageUtils.setLocale(getContext(), "en");
-                    LanguageUtils.recreateActivity(getActivity(), HomeBottomNavigation.class);
+                    Language.setLocale(getContext(), "en");
+                    Language.recreateActivity(getActivity(), HomeBottomNavigation.class);
                 } else if (which == 1) {
-                    LanguageUtils.setLocale(getContext(), "iw");
-                    LanguageUtils.recreateActivity(getActivity(), HomeBottomNavigation.class);
+                    Language.setLocale(getContext(), "iw");
+                    Language.recreateActivity(getActivity(), HomeBottomNavigation.class);
                 }
                 dialog.dismiss();
             }

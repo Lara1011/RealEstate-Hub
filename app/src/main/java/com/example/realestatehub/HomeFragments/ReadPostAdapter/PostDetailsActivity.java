@@ -1,4 +1,4 @@
-package com.example.realestatehub.HomeFragments.ReadPost;
+package com.example.realestatehub.HomeFragments.ReadPostAdapter;
 
 import android.content.Intent;
 import android.net.Uri;

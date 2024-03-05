@@ -1,6 +1,5 @@
 package com.example.realestatehub.LogIn;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -8,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
@@ -21,30 +19,18 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.realestatehub.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.realestatehub.Utils.Database;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button backButton;
-    private TextView pageNameTextView;
-    private ImageView forgotPasswordImageView;
-    private TextView mainTextView;
+    private Button backButton, continueButton;
+    private TextView pageNameTextView, mainTextView;
+    private ImageView forgotPasswordImageView, loadingImageView;
     private CardView emailCardView;
     private EditText emailEditText;
-    private Button continueButton;
-    private ImageView loadingImageView;
-    private FirebaseAuth auth;
     private final int delay = 4000;
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
     private Intent intent;
-    private final static String TAG = "ForgotPasswordActivity";
+    private Database database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,16 +45,18 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
     private void initUI() {
         backButton = findViewById(R.id.backButton);
+        continueButton = findViewById(R.id.continueButton);
         pageNameTextView = findViewById(R.id.pageNameTextView);
         forgotPasswordImageView = findViewById(R.id.forgotPasswordImageView);
         mainTextView = findViewById(R.id.mainTextView);
         emailCardView = findViewById(R.id.email_cardview);
         emailEditText = findViewById(R.id.emailEditText);
-        continueButton = findViewById(R.id.continueButton);
         loadingImageView = findViewById(R.id.dialog_loading);
 
         backButton.setOnClickListener(this);
         continueButton.setOnClickListener(this);
+
+        database = new Database(this);
     }
 
     @Override
@@ -83,8 +71,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.backButton) {
-            startActivity(new Intent(ForgotPasswordActivity.this, ConnectingActivity.class));
-            finish();
+            onBackPressed();
         } else if (id == R.id.continueButton) {
             //Check if email is valid and send password reset link
             //Check if email is valid -> Changing Visibilities + Opening ConnectingActivity
@@ -104,54 +91,34 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
             emailEditText.setError("Valid Email is required");
             emailEditText.requestFocus();
         } else {
-            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("Registered Users");
-            usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            database.sendPasswordRestLink(email, new Database.RegistrationCallback() {
+
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    boolean isValidEmail = false;
-                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                        String userEmail = userSnapshot.child("email").getValue(String.class);
-                        if (userEmail != null && userEmail.equals(email)) {
-                            isValidEmail = true;
-                            break;
+                public void onSuccess() {
+                    changeVisibilities();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(ForgotPasswordActivity.this, ConnectingActivity.class));
+                            finish();
                         }
-                    }
-                    if (isValidEmail) {
-                        // Email is valid, continue with password reset
-                        auth = FirebaseAuth.getInstance();
-                        auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    changeVisibilities();
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            startActivity(new Intent(ForgotPasswordActivity.this, ConnectingActivity.class));
-                                            finish();
-                                        }
-                                    }, delay);
-                                } else {
-                                    try {
-                                        throw task.getException();
-                                    } catch (FirebaseAuthInvalidUserException e) {
-                                        emailEditText.setError("User doesn't exist.\nPlease register again.");
-                                    } catch (Exception e) {
-                                        Log.e(TAG, e.getMessage());
-                                        Toast.makeText(ForgotPasswordActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                    Toast.makeText(ForgotPasswordActivity.this, "Failed to send Email", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    } else {
-                        // Email is not in our Database
-                        emailEditText.setError("Email doesn't exist");
-                    }
+                    }, delay);
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                public void onFailure(int errorCode, String errorMessage) {
+                    if (errorCode == 1) {
+                        emailEditText.setError(errorMessage);
+                        emailEditText.requestFocus();
+                    } else if (errorCode == 2) {
+                        Toast.makeText(ForgotPasswordActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    } else if (errorCode == 3) {
+                        Toast.makeText(ForgotPasswordActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    } else if (errorCode == 4) {
+                        emailEditText.setError(errorMessage);
+                        emailEditText.requestFocus();
+                        Toast.makeText(ForgotPasswordActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }

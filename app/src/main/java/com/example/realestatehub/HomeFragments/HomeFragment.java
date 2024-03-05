@@ -9,13 +9,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.realestatehub.FillDetails.ReadWritePostDetails;
-import com.example.realestatehub.FillDetails.ReadWriteUserDetails;
-import com.example.realestatehub.HomeFragments.ReadPost.PostAdapter;
+import com.example.realestatehub.Utils.ReadWritePostDetails;
+import com.example.realestatehub.Utils.ReadWriteUserDetails;
+import com.example.realestatehub.HomeFragments.ReadPostAdapter.PostAdapter;
 import com.example.realestatehub.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,10 +42,10 @@ public class HomeFragment extends Fragment {
     private DatabaseReference usersReference;
     private DatabaseReference postsReference;
     private ProgressBar progressBar;
-
     private CircleImageView userImg;
     private TextView userName;
     private FirebaseUser firebaseUser;
+    private String purpose, userId;
     BottomNavigationView bottomNavigationView;
     public HomeFragment(BottomNavigationView bottomNavigationView) {
         this.bottomNavigationView = bottomNavigationView;
@@ -57,6 +55,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        purpose = ReadWriteUserDetails.getInstance(getContext()).getPurpose();
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userImg = view.findViewById(R.id.user_img);
         userName = view.findViewById(R.id.user_name);
         view.findViewById(R.id.user_lay).setOnClickListener(v -> {
@@ -139,6 +140,14 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     try {
                         HashMap<String, Object> userMap = (HashMap<String, Object>) snapshot.getValue();
+                        if(purpose.equals("Seller")){
+                            if(!userMap.get("id").equals(userId)) continue;
+                            else {
+                                userMap.put("id", snapshot.getKey()); // Add user ID to the map
+                                userList.add(userMap); // Add the map to the list of users
+                                break;
+                            }
+                        }
                         if (userMap != null) {
                             userMap.put("id", snapshot.getKey()); // Add user ID to the map
                             userList.add(userMap); // Add the map to the list of users
@@ -165,6 +174,9 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear(); // Clear existing data to avoid duplicates
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    if(purpose.equals("Seller") && !userSnapshot.getKey().equals(userId)) {
+                        continue; // Skip if the purpose is "Seller" but user ID doesn't match
+                    }
                     for (DataSnapshot postSnapshot : userSnapshot.getChildren()) {
                         HashMap<String, String> postDetails = (HashMap<String, String>) postSnapshot.child("Property Details").getValue();
                         if (postDetails == null) continue; // Skip if no post details are found

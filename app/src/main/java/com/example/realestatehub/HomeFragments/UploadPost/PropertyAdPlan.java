@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.example.realestatehub.FillDetails.ReadWritePostDetails;
+import com.example.realestatehub.Utils.ReadWritePostDetails;
 import com.example.realestatehub.HomeFragments.HomeBottomNavigation;
 import com.example.realestatehub.HomeFragments.UploadPost.GooglePay.CheckoutActivity;
 import com.example.realestatehub.R;

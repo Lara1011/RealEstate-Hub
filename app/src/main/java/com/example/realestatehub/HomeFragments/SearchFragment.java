@@ -23,7 +23,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.realestatehub.HomeFragments.ReadPost.PostAdapter;
+import com.example.realestatehub.HomeFragments.ReadPostAdapter.PostAdapter;
 import com.example.realestatehub.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -95,7 +95,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         filteredList.clear();
         int i = 0;
         for (HashMap<String, String> post : postList.values()) {
-            if (post.get("name").toLowerCase().contains(query.toLowerCase())) {
+            if (post.get("Name").toLowerCase().contains(query.toLowerCase())) {
                 filteredList.put(String.valueOf(i++), post);
             }
         }

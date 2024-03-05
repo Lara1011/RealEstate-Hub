@@ -1,4 +1,4 @@
-package com.example.realestatehub.FillDetails;
+package com.example.realestatehub.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -14,6 +14,7 @@ public class ReadWriteUserDetails {
     private static final String KEY_ADDRESS = "address";
     private static final String KEY_GENDER = "gender";
     private static final String KEY_PURPOSE = "purpose";
+    private static final String KEY_ID = "id";
     private static ReadWriteUserDetails instance;
     private SharedPreferences sharedPreferences;
     private String firstName;
@@ -25,10 +26,13 @@ public class ReadWriteUserDetails {
     private String address;
     private String gender;
     private String purpose;
+    private String id;
     private Context context;
+    //private StringBuilder favoritePost= new StringBuilder();
 
-    private ReadWriteUserDetails(){
+    private ReadWriteUserDetails() {
     }
+
     private ReadWriteUserDetails(Context context) {
         this.context = context;
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -41,6 +45,8 @@ public class ReadWriteUserDetails {
         address = sharedPreferences.getString(KEY_ADDRESS, "");
         gender = sharedPreferences.getString(KEY_GENDER, "");
         purpose = sharedPreferences.getString(KEY_PURPOSE, "");
+        id = sharedPreferences.getString(KEY_ID, "");
+        //favoritePost = new StringBuilder();
     }
 
     public static synchronized ReadWriteUserDetails getInstance(Context context) {
@@ -61,6 +67,7 @@ public class ReadWriteUserDetails {
         editor.putString(KEY_ADDRESS, address);
         editor.putString(KEY_GENDER, gender);
         editor.putString(KEY_PURPOSE, purpose);
+        editor.putString(KEY_ID, id);
         editor.apply();
         Log.i("ReadWriteUserDetails", firstName);
         Log.i("ReadWriteUserDetails", lastName);
@@ -71,12 +78,23 @@ public class ReadWriteUserDetails {
         Log.i("ReadWriteUserDetails", address);
         Log.i("ReadWriteUserDetails", gender);
         Log.i("ReadWriteUserDetails", purpose);
+        Log.i("ReadWriteUserDetails", id);
     }
+
     public void clearUserDetails() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear(); // Clear all stored data
         editor.apply();
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     // Getters and setters for all fields
     public String getFirstName() {
         return firstName;
@@ -149,4 +167,35 @@ public class ReadWriteUserDetails {
     public void setPurpose(String purpose) {
         this.purpose = purpose;
     }
+
+//    public StringBuilder getFavoritePost() {
+//        return favoritePost;
+//    }
+//
+//    public void addFavoritePost(String favoritePost) {
+//        this.favoritePost.append(favoritePost);
+//        this.favoritePost.append(" ");
+//    }
+//
+//    public void removeFavoritePost(String favoritePostToRemove) {
+//        // Convert StringBuilder to String to perform operations
+//        String favoritePosts = favoritePost.toString();
+//
+//        // Split the string by space to get individual favorite posts
+//        String[] postsArray = favoritePosts.split(" ");
+//
+//        // Create a new StringBuilder to store the modified list of favorite posts
+//        StringBuilder newFavoritePosts = new StringBuilder();
+//
+//        // Iterate through the postsArray to find and remove the specified post
+//        for (String post : postsArray) {
+//            if (!post.equals(favoritePostToRemove)) {
+//                newFavoritePosts.append(post).append(" ");
+//            }
+//        }
+//
+//        // Set the new StringBuilder as the favoritePost
+//        this.favoritePost = newFavoritePosts;
+//    }
+
 }

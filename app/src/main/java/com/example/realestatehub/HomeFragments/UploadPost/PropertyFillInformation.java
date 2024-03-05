@@ -13,7 +13,7 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.realestatehub.FillDetails.ReadWritePostDetails;
+import com.example.realestatehub.Utils.ReadWritePostDetails;
 import com.example.realestatehub.R;
 
 import java.util.HashMap;

@@ -23,27 +23,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.realestatehub.R;
-import com.example.realestatehub.FillDetails.ReadWriteUserDetails;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.realestatehub.Utils.Database;
 import com.hbb20.CountryCodePicker;
 
 import org.json.JSONArray;
@@ -62,29 +46,21 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button backButton;
+    private static final String TAG = "SignUpActivity";
+    private Button backButton, editImageViewButton, continueButton;
     private ImageView userImageView;
-    private Button editImageView;
-    private Button continueButton;
-    private EditText firstNameEditText;
-    private EditText lastNameEditText;
-    private EditText emailEditText;
-    private EditText passwordEditText;
-    private EditText confirmPasswordEditText;
-    private EditText birthdayEditText;
-    private EditText phoneNumberEditText;
+    private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, confirmPasswordEditText, birthdayEditText, phoneNumberEditText;
     private CountryCodePicker cpp;
     private RadioGroup genderRadioGroup;
     private RadioButton genderRadioButton;
     private AutoCompleteTextView autoCompleteTextView;
     private ArrayAdapter<String> adapter;
-    private Handler handler;
     private String currentQuery = "";
-    private static final String TAG = "SignUpActivity";
-    private Intent intent;
-    private FirebaseAuth auth;
-    private FirebaseUser firebaseUser;
     private boolean fromGoogle = false;
+    private Handler handler;
+    private Intent intent;
+    private Database database;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,27 +72,29 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initUI() {
-        auth = FirebaseAuth.getInstance();
+        database = new Database(this);
 
-        cpp = findViewById(R.id.countryCodeSpinner);
+        backButton = findViewById(R.id.backButton);
+        continueButton = findViewById(R.id.continueButton);
+        editImageViewButton = findViewById(R.id.editImageViewButton);
+
+        userImageView = findViewById(R.id.userImageView);
         firstNameEditText = findViewById(R.id.firstNameEditText);
         lastNameEditText = findViewById(R.id.lastNameEditText);
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
         birthdayEditText = findViewById(R.id.birthdayEditText);
+        cpp = findViewById(R.id.countryCodeSpinner);
         phoneNumberEditText = findViewById(R.id.phoneNumberEditText);
         genderRadioGroup = findViewById(R.id.genderRadioGroup);
         autoCompleteTextView = findViewById(R.id.addressAutoCompleteTextView);
-        backButton = findViewById(R.id.backButton);
-        editImageView = findViewById(R.id.editImageView);
-        userImageView = findViewById(R.id.userImageView);
-        continueButton = findViewById(R.id.continueButton);
+
         backButton.setOnClickListener(this);
         continueButton.setOnClickListener(this);
+        editImageViewButton.setOnClickListener(this);
         birthdayEditText.setOnClickListener(this);
         userImageView.setOnClickListener(this);
-        editImageView.setOnClickListener(this);
 
         // Retrieve user data from intent
         Intent intent = getIntent();
@@ -164,7 +142,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             pickBirthday();
         } else if (viewId == R.id.backButton) {
             onBackPressed();
-        } else if (viewId == R.id.userImageView || viewId == R.id.editImageView) {
+        } else if (viewId == R.id.userImageView || viewId == R.id.editImageViewButton) {
 //            Intent photoIntent = new Intent(Intent.ACTION_PICK);
 //            photoIntent.setType("image/*");
 //            startActivityForResult(photoIntent, 1);
@@ -251,15 +229,18 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             birthdayEditText.setError("Birthday is required");
             birthdayEditText.requestFocus();
             isValid = false;
-        } else if (phoneNumber.length() != 10) {
+        }
+        if (phoneNumber.length() != 10) {
             phoneNumberEditText.setError("Valid phone number is required");
             phoneNumberEditText.requestFocus();
             isValid = false;
-        } else if (TextUtils.isEmpty(address)) {
+        }
+        if (TextUtils.isEmpty(address)) {
             autoCompleteTextView.setError("Address is required");
             autoCompleteTextView.requestFocus();
             isValid = false;
-        } else if (genderRadioGroup.getCheckedRadioButtonId() == -1) {
+        }
+        if (genderRadioGroup.getCheckedRadioButtonId() == -1) {
             genderRadioButton.setError("Gender is required");
             genderRadioButton.requestFocus();
             isValid = false;
@@ -267,112 +248,54 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if (isValid) {
             gender = genderRadioButton.getText().toString();
             if (fromGoogle) {
-                registerUserFromGoogle(firstName, lastName, email, password, birthday, phoneNumber, gender, address);
-            } else {
-                registerUser(firstName, lastName, email, password, birthday, phoneNumber, gender, address);
-            }
-        }
-    }
-
-    private void registerUserFromGoogle(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String gender, String address) {
-        // Get the current user from Firebase authentication
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            //Enter User data into the firebase Realtime Database
-            ReadWriteUserDetails writeUserDetails = ReadWriteUserDetails.getInstance(SignUpActivity.this);
-            writeUserDetails.setFirstName(firstName);
-            writeUserDetails.setLastName(lastName);
-            writeUserDetails.setEmail(email);
-            writeUserDetails.setPassword(password);
-            writeUserDetails.setBirthday(birthday);
-            writeUserDetails.setPhoneNumber(phoneNumber);
-            writeUserDetails.setAddress(address);
-            writeUserDetails.setGender(gender);
-
-
-            // Store user data into Firebase Realtime Database under "Registered Users" node
-            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Registered Users");
-            usersRef.child(user.getUid()).setValue(writeUserDetails)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            intent = new Intent(SignUpActivity.this, SetIntentActivity.class);
-                            intent.putExtra("fromGoogle", fromGoogle);
-                            startActivity(intent);
-                            finish();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Error occurred while storing data, show error message or handle appropriately
-                            Toast.makeText(SignUpActivity.this, "Failed to store user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        } else {
-            // User is null, handle this case if necessary
-            Toast.makeText(SignUpActivity.this, "User is null", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    private void registerUser(String firstName, String lastName, String email, String password, String birthday, String phoneNumber, String gender, String address) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                if (task.isSuccessful()) {
-                    Toast.makeText(SignUpActivity.this, "User has been registered successfully", Toast.LENGTH_SHORT).show();
-                    firebaseUser = auth.getCurrentUser();
-                    UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(firstName + " " + lastName).build();
-                    firebaseUser.updateProfile(profileChangeRequest);
-
-                    //Enter User data into the firebase Realtime Database
-                    ReadWriteUserDetails writeUserDetails = ReadWriteUserDetails.getInstance(SignUpActivity.this);
-                    writeUserDetails.setFirstName(firstName);
-                    writeUserDetails.setLastName(lastName);
-                    writeUserDetails.setEmail(email);
-                    writeUserDetails.setPassword(password);
-                    writeUserDetails.setBirthday(birthday);
-                    writeUserDetails.setPhoneNumber(phoneNumber);
-                    writeUserDetails.setAddress(address);
-                    writeUserDetails.setGender(gender);
-
-                    //Extracting User reference from Database from "Registered Users"
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Registered Users");
-                    reference.child(firebaseUser.getUid()).setValue(writeUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                firebaseUser.sendEmailVerification();
-                                showAlertDialog();
-                            } else {
-                                Toast.makeText(SignUpActivity.this, "User registration failed. Please try again", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
-                } else {
-                    try {
-                        throw task.getException();
-                    } catch (FirebaseAuthWeakPasswordException e) {
-                        passwordEditText.setError("Your password should be at least 6 digits");
-                        passwordEditText.requestFocus();
-                    } catch (FirebaseAuthInvalidCredentialsException e) {
-                        emailEditText.setError("Valid email is required or already in use");
-                        emailEditText.requestFocus();
-                    } catch (FirebaseAuthUserCollisionException e) {
-                        emailEditText.setError("Email is already registered");
-                        emailEditText.requestFocus();
-                    } catch (Exception e) {
-                        Log.e(TAG, e.getMessage());
-                        Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                database.registerUserFromGoogle(firstName, lastName, email, password, birthday, phoneNumber, gender, address, new Database.RegistrationCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Intent intent = new Intent(SignUpActivity.this, SetIntentActivity.class);
+                        intent.putExtra("fromGoogle", fromGoogle);
+                        startActivity(intent);
+                        finish();
                     }
-                }
 
+                    @Override
+                    public void onFailure(int errorCode, String errorMessage) {
+                        if (errorCode == 1) {
+                            Toast.makeText(SignUpActivity.this, errorCode, Toast.LENGTH_SHORT).show();
+                        } else if (errorCode == 2) {
+                            Toast.makeText(SignUpActivity.this, errorCode, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            } else {
+                database.registerUser(firstName, lastName, email, password, birthday, phoneNumber, gender, address, new Database.RegistrationCallback() {
+
+                    @Override
+                    public void onSuccess() {
+                        showAlertDialog();
+                    }
+
+                    @Override
+                    public void onFailure(int errorCode, String errorMessage) {
+                        Log.e(TAG, "Registration failed: " + errorMessage);
+                        if (errorMessage != null && !errorMessage.isEmpty()) {
+                            if (errorCode == 1) {
+                                passwordEditText.setError(errorMessage);
+                                passwordEditText.requestFocus();
+                            } else if (errorCode == 2) {
+                                emailEditText.setError(errorMessage);
+                                emailEditText.requestFocus();
+                            } else if (errorCode == 3) {
+                                emailEditText.setError(errorMessage);
+                                emailEditText.requestFocus();
+                            }
+                            Toast.makeText(SignUpActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(SignUpActivity.this, "User registration failed. Please try again", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
-
-        });
+        }
     }
 
     private void showAlertDialog() {
@@ -473,5 +396,4 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             return suggestions;
         }
     }
-
 }

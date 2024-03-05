@@ -16,7 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.realestatehub.FillDetails.ReadWriteUserDetails;
+import com.example.realestatehub.Utils.ReadWriteUserDetails;
 import com.example.realestatehub.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

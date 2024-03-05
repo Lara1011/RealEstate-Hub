@@ -8,13 +8,12 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.realestatehub.FillDetails.ReadWritePostDetails;
+import com.example.realestatehub.Utils.ReadWritePostDetails;
 import com.example.realestatehub.R;
 
 import java.util.Calendar;

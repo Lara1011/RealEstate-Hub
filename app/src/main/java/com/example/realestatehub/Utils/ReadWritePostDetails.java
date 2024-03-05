@@ -1,4 +1,4 @@
-package com.example.realestatehub.FillDetails;
+package com.example.realestatehub.Utils;
 
 import java.util.HashMap;
 import java.util.UUID;

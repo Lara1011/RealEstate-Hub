@@ -54,7 +54,7 @@
                 android:background="@drawable/img_empty_profile" />
 
             <Button
-                android:id="@+id/editImageView"
+                android:id="@+id/editImageViewButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="140dp"

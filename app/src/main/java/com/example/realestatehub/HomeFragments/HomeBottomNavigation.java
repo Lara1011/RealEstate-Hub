@@ -16,9 +16,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 
-import com.example.realestatehub.FillDetails.ReadWriteUserDetails;
+import com.example.realestatehub.Utils.ReadWriteUserDetails;
 import com.example.realestatehub.HomeFragments.UploadPost.AddPostActivity;
-import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.LanguageUtils;
+import com.example.realestatehub.Utils.Language;
 import com.example.realestatehub.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -30,7 +30,7 @@ public class HomeBottomNavigation extends AppCompatActivity {
         setContentView(R.layout.activity_home_page); // Set the content view directly
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         replaceFragment(new HomeFragment(bottomNavigationView));
-        LanguageUtils.loadLocale(this);
+        Language.loadLocale(this);
         // Find views using findViewById
         ReadWriteUserDetails readWriteUserDetails = ReadWriteUserDetails.getInstance(this);
         if(readWriteUserDetails.getPurpose().equals("Buyer")){
