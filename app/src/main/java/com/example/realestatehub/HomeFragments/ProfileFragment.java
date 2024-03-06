@@ -24,7 +24,6 @@ import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.InsideProf
 import com.example.realestatehub.Utils.Database;
 import com.example.realestatehub.Utils.Language;
 import com.example.realestatehub.LogIn.ConnectingActivity;
-import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.PaymentsFragment;
 import com.example.realestatehub.R;
 import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.RecentlyReachedFragment;
 import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.RecentlySearchedFragment;
@@ -37,7 +36,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private ImageView userImageView;
     private TextView UserFullNameTextView;
     private RelativeLayout RecentlyViewedLayout, RecentlyReachedLayout, RecentlySearchedLayout,
-            ProfileViewedLayout, PaymentViewedLayout,
+            ProfileViewedLayout,
             LanguageLayout, InviteFriendsLayout, LogoutViewedLayout;
     private View view;
     private Uri uriImage;
@@ -93,7 +92,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         RecentlyReachedLayout = view.findViewById(R.id.RecentlyReachedLayout);
         RecentlySearchedLayout = view.findViewById(R.id.RecentlySearchedLayout);
         ProfileViewedLayout = view.findViewById(R.id.InsideProfileLayout);
-        PaymentViewedLayout = view.findViewById(R.id.PaymentsLayout);
         InviteFriendsLayout = view.findViewById(R.id.InviteFriendsLayout);
         LanguageLayout = view.findViewById(R.id.LanguageLayout);
         LogoutViewedLayout = view.findViewById(R.id.LogoutLayout);
@@ -102,7 +100,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         RecentlyReachedLayout.setOnClickListener(this);
         RecentlySearchedLayout.setOnClickListener(this);
         ProfileViewedLayout.setOnClickListener(this);
-        PaymentViewedLayout.setOnClickListener(this);
         InviteFriendsLayout.setOnClickListener(this);
         LanguageLayout.setOnClickListener(this);
         LogoutViewedLayout.setOnClickListener(this);
@@ -132,8 +129,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             replaceFragment(new RecentlySearchedFragment());
         } else if (id == R.id.InsideProfileLayout) {
             replaceFragment(new InsideProfileFragment());
-        } else if (id == R.id.PaymentsLayout) {
-            replaceFragment(new PaymentsFragment());
         } else if (id == R.id.LanguageLayout) {
             showChangeLanguage();
         } else if (id == R.id.InviteFriendsLayout) {
