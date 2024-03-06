@@ -38,7 +38,8 @@ public class Database {
     private final DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("Registered Users");
     private final DatabaseReference postsReference = FirebaseDatabase.getInstance().getReference("Users Posts");
     private final DatabaseReference favoritesReference = FirebaseDatabase.getInstance().getReference("Users Favorites");
-    private final DatabaseReference reachedUsersReference = FirebaseDatabase.getInstance().getReference("User Recently Reached");
+    private final DatabaseReference viewsReference = FirebaseDatabase.getInstance().getReference("User Viewed Items");
+ 	private final DatabaseReference reachedUsersReference = FirebaseDatabase.getInstance().getReference("User Recently Reached");
     private final DatabaseReference viewedPostsReference = FirebaseDatabase.getInstance().getReference("User Recently Viewed");
     private final DatabaseReference searchedPostsReference = FirebaseDatabase.getInstance().getReference("User Recently Searched");
     private Context context;
@@ -535,6 +536,21 @@ public class Database {
                                 continue;
                             }
                         }
+                        int favCount = 0;
+                        for (String map : favoriteMap) {
+                            if (map.equals(postId)) {
+                                favCount++;
+                            }
+                        }
+                        int viewCount = 0;
+                        for (HashMap<String, String> map : viewsMap) {
+                            if (map.containsValue(postId)) {
+                                viewCount++;
+                            }
+                        }
+                        postDetails.put("likes", favCount + "");
+                        postDetails.put("views", viewCount + "");
+
                         // Match user ID with the post and add user details to post details
                         for (HashMap<String, Object> userMap : userList) {
                             if (userMap.get("id").equals(userId)) {
@@ -593,6 +609,8 @@ public class Database {
 
     //==========================FavoriteFragment==========================
     private List<String> favoriteMap = new ArrayList<>();
+    private List<HashMap<String, String>> viewsMap = new ArrayList<>();
+
 
 
     /**
@@ -823,6 +841,59 @@ public class Database {
         }
         usersReference.child(uid).removeValue();
         auth.getCurrentUser().delete();
+    }
+    public void readPostData(PostsCallback callback) {
+
+        favoritesReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                favoriteMap.clear();
+                for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
+                    for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
+                        try {
+                            String favMap = snapshot2.getKey();
+                            if (favMap != null) {
+                                favoriteMap.add(favMap );
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                viewsReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        viewsMap.clear();
+                        for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
+                            for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
+                                try {
+                                    String viewedMap = snapshot2.getKey();
+                                    if (viewedMap != null) {
+                                        HashMap<String, String> map = new HashMap<>();
+                                        map.put(snapshot1.getKey(), viewedMap);
+                                        viewsMap.add(map);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        readPostsData(callback);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 }
 
