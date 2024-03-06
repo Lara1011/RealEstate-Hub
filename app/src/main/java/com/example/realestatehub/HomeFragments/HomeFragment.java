@@ -111,7 +111,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onSuccess() {
-                database.readPostsData(new Database.PostsCallback() {
+                database.readPostData(new Database.PostsCallback() {
                     @Override
                     public void onSuccess(HashMap<String, HashMap<String, String>> postList) {
                         hideLoading();
