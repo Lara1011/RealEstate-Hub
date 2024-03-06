@@ -126,11 +126,22 @@ public class PostDetailsActivity extends AppCompatActivity {
                 TextView adTypeTextView = findViewById(R.id.adTypeTextView);
                 TextView additionalInformationTextView = findViewById(R.id.additionalInformationTextView);
                 TextView propertyCharacteristicsTextView = findViewById(R.id.propertyCharacteristicsTextView);
+                TextView likesTextView = findViewById(R.id.likesTextView);
+                TextView viewsTextView = findViewById(R.id.viewsTextView);
                 ImageView imageView = findViewById(R.id.imageView);
                 Button callButton = findViewById(R.id.callButton);
                 Button whatsappButton = findViewById(R.id.whatsappButton);
                 ImageView favoriteButton = findViewById(R.id.favoriteImageView);
+
+                if (database.getReadWriteUserDetails().getPurpose().contains("Seller")
+                        && database.canDeletePost(getSafeValue(intent.getStringExtra("Post Id")))) {
+                    likesTextView.setVisibility(View.VISIBLE);
+                    viewsTextView.setVisibility(View.VISIBLE);
+                }
+
                 Button deleteButton = findViewById(R.id.DeleteButton);
+
+
 
                 if(database.canDeletePost(getSafeValue(intent.getStringExtra("Post Id")))) {
                     deleteButton.setVisibility(View.VISIBLE);
@@ -166,6 +177,8 @@ public class PostDetailsActivity extends AppCompatActivity {
                 typeTextView.setText("Type: " + getSafeValue(post.get("Type")));
                 viewTextView.setText("View: " + getSafeValue(post.get("View")));
                 adTypeTextView.setText("Ad Type: " + getSafeValue(post.get("Ad Type")));
+                likesTextView.setText("Total Likes: " + getSafeValue(post.get("likes")));
+                viewsTextView.setText("TotalViews: " + getSafeValue(post.get("views")));
                 additionalInformationTextView.setText("Additional Information: " + getSafeValue(post.get("Additional Information")));
                 propertyCharacteristicsTextView.setText("Property Characteristics: \n" +
                         getCharacteristicsString(post));
@@ -184,8 +197,13 @@ public class PostDetailsActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         favoriteClicked = !favoriteClicked;
                         if (favoriteClicked) {
+                            int count = Integer.parseInt(likesTextView.getText().toString().substring(13  ));
+                            likesTextView.setText("Total Likes: " + (count+1));
                             favoriteButton.setImageResource(R.drawable.icon_favorite_filled);
                         }else{
+                            int count = Integer.parseInt(likesTextView.getText().toString().substring(13  ));
+                            if (count != 0)
+                                likesTextView.setText("Total Likes: " + (count-1));
                             favoriteButton.setImageResource(R.drawable.icon_favorite);
                         }
                         addToFavoriteDB(getSafeValue(intent.getStringExtra("Post Id")));
