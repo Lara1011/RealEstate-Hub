@@ -276,6 +276,36 @@
             android:text=" "
             android:layout_marginBottom="8dp"/>
 
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/likesTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Total Likes: "
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/viewsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Total Views: "
+            android:layout_marginBottom="8dp"/>
+
 
         <!-- Kosher Kitchen TextView -->
         <RelativeLayout

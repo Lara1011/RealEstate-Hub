@@ -68,10 +68,10 @@
             android:name=".HomeFragments.UploadPost.PropertyAdPlan"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HomeFragments.UploadPost.GooglePay.CheckoutActivity"
+            android:name=".Utils.GooglePay.CheckoutActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HomeFragments.UploadPost.GooglePay.CheckoutSuccessActivity"
+            android:name=".Utils.GooglePay.CheckoutSuccessActivity"
             android:screenOrientation="portrait" />
         <!-- Enabling this flag is required in order to use the PaymentsClient -->
         <meta-data

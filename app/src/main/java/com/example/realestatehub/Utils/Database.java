@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Database {
@@ -37,8 +38,13 @@ public class Database {
     private final DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("Registered Users");
     private final DatabaseReference postsReference = FirebaseDatabase.getInstance().getReference("Users Posts");
     private final DatabaseReference favoritesReference = FirebaseDatabase.getInstance().getReference("Users Favorites");
+    private final DatabaseReference viewsReference = FirebaseDatabase.getInstance().getReference("User Viewed Items");
+ 	private final DatabaseReference reachedUsersReference = FirebaseDatabase.getInstance().getReference("User Recently Reached");
+    private final DatabaseReference viewedPostsReference = FirebaseDatabase.getInstance().getReference("User Recently Viewed");
+    private final DatabaseReference searchedPostsReference = FirebaseDatabase.getInstance().getReference("User Recently Searched");
     private Context context;
     private ReadWriteUserDetails readWriteUserDetails;
+    private ReadWritePostDetails readWritePostDetails;
     private static final String TAG = "Database";
 
     public interface GeneralCallback {
@@ -63,11 +69,28 @@ public class Database {
         void onFailure(int errorCode, String errorMessage);
     }
 
+    public interface RecentUpdateCallback {
+        void onSuccess(List<HashMap<String, String>> reachedItems);
+
+        void onFailure(int errorCode, String errorMessage);
+    }
+
+    public interface RecentDisplayCallback {
+        void onSuccess(HashMap<String, HashMap<String, String>> recentReachedPosts);
+
+        void onFailure(int errorCode, String errorMessage);
+    }
+
+    public ReadWritePostDetails getReadWritePostDetails() {
+        return readWritePostDetails;
+    }
+
     public Database(Context context) {
         this.context = context;
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
         readWriteUserDetails = ReadWriteUserDetails.getInstance(context);
+        readWritePostDetails = ReadWritePostDetails.getInstance();
     }
 
 
@@ -455,24 +478,26 @@ public class Database {
         usersReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userList.clear(); // Clear existing data to avoid duplicates
+                userList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     try {
                         HashMap<String, Object> userMap = (HashMap<String, Object>) snapshot.getValue();
+
                         if (readWriteUserDetails.getPurpose().equals("Seller")) {
                             if (!userMap.get("id").equals(readWriteUserDetails.getId())) continue;
                             else {
-                                userMap.put("id", snapshot.getKey()); // Add user ID to the map
-                                userList.add(userMap); // Add the map to the list of users
+                                userMap.put("id", snapshot.getKey());
+                                userList.add(userMap);
+                                callback.onSuccess();
                                 break;
                             }
                         }
                         if (userMap != null) {
-                            userMap.put("id", snapshot.getKey()); // Add user ID to the map
-                            userList.add(userMap); // Add the map to the list of users
+                            userMap.put("id", snapshot.getKey());
+                            userList.add(userMap);
                         }
                     } catch (Exception e) {
-                        e.printStackTrace(); // Handle any exceptions
+                        callback.onFailure(0, "Failed to read user value: " + e.getMessage());
                     }
                 }
                 callback.onSuccess();
@@ -511,6 +536,21 @@ public class Database {
                                 continue;
                             }
                         }
+                        int favCount = 0;
+                        for (String map : favoriteMap) {
+                            if (map.equals(postId)) {
+                                favCount++;
+                            }
+                        }
+                        int viewCount = 0;
+                        for (HashMap<String, String> map : viewsMap) {
+                            if (map.containsValue(postId)) {
+                                viewCount++;
+                            }
+                        }
+                        postDetails.put("likes", favCount + "");
+                        postDetails.put("views", viewCount + "");
+
                         // Match user ID with the post and add user details to post details
                         for (HashMap<String, Object> userMap : userList) {
                             if (userMap.get("id").equals(userId)) {
@@ -569,6 +609,8 @@ public class Database {
 
     //==========================FavoriteFragment==========================
     private List<String> favoriteMap = new ArrayList<>();
+    private List<HashMap<String, String>> viewsMap = new ArrayList<>();
+
 
 
     /**
@@ -600,6 +642,174 @@ public class Database {
             }
         });
     }
+    //==========================================================================
+    //==========================ProfileFragmentLayouts==========================
+    //==========================================================================
+
+
+    //==========================FavoriteFragment==========================
+    public void fetchUserDetailsFromFirebase(GeneralCallback callback) {
+        String uid = firebaseUser.getUid();
+        usersReference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (readWriteUserDetails != null) {
+                    callback.onSuccess();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onFailure(0, "Something Went Wrong!");
+            }
+        });
+    }
+
+    public void pushUserDetailsToFirebase(String firstName, String lastName, String email, String birthday, String phoneNumber, String address, String gender) {
+        String uid = firebaseUser.getUid();
+
+        readWriteUserDetails.setFirstName(firstName);
+        readWriteUserDetails.setLastName(lastName);
+        readWriteUserDetails.setEmail(email);
+        readWriteUserDetails.setBirthday(birthday);
+        readWriteUserDetails.setPhoneNumber(phoneNumber);
+        readWriteUserDetails.setAddress(address);
+        readWriteUserDetails.setGender(gender);
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Registered Users");
+        reference.child(uid).setValue(readWriteUserDetails);
+    }
+
+    //==========================RecentlyReachedFragment==========================
+    public void updateRecentPosts(RecentUpdateCallback callback) {
+        String uid = firebaseUser.getUid();
+        DatabaseReference ref = viewedPostsReference;
+        if (callback.toString().contains("RecentlyReachedFragment")) {
+            ref = reachedUsersReference;
+        }
+        ref.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    List<HashMap<String, String>> list = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        HashMap<String, String> post = new HashMap<>();
+                        post.put("Post Id", snapshot.child("Post Id").getValue(String.class));
+                        post.put("Date", snapshot.child("Date").getValue(String.class));
+                        list.add(post);
+                    }
+                    callback.onSuccess(list);
+                } else {
+                    callback.onFailure(0, "There is no posts.");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callback.onFailure(1, "Failed to read posts: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    public void displayRecentPosts(final List<HashMap<String, String>> list, RecentDisplayCallback callback) {
+        final HashMap<String, HashMap<String, String>> recentPosts = new HashMap<>();
+        postsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    for (DataSnapshot postSnapshot : userSnapshot.getChildren()) {
+                        String postId = postSnapshot.getKey();
+                        for (HashMap<String, String> posts : list) {
+                            if (postId.equals(posts.get("Post Id"))) {
+                                HashMap<String, String> postDetails = (HashMap<String, String>) postSnapshot.child("Property Details").getValue();
+                                if (postDetails != null) {
+                                    String userId = userSnapshot.getKey();
+                                    for (HashMap<String, Object> userMap : userList) {
+                                        if (userMap.get("id").equals(userId)) {
+                                            postDetails.put("userName", userMap.get("firstName") + " " + userMap.get("lastName"));
+                                            postDetails.put("phoneNumber", userMap.get("phoneNumber") + "");
+                                            if (callback.toString().contains("RecentlyViewedFragment")) {
+                                                postDetails.put("Date", posts.get("Date"));
+                                            }
+                                            break;
+                                        }
+                                    }
+                                    DataSnapshot photosSnapshot = postSnapshot.child("Photos");
+                                    if (photosSnapshot.exists()) {
+                                        for (DataSnapshot photoSnapshot : photosSnapshot.getChildren()) {
+                                            postDetails.put("photoUrl", photoSnapshot.getValue(String.class));
+                                            break;
+                                        }
+                                    }
+                                    postDetails.put("Date", posts.get("Date"));
+                                    recentPosts.put(postId, postDetails);
+                                }
+                            }
+                        }
+                    }
+                }
+                callback.onSuccess(recentPosts);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callback.onFailure(0, "Failed to read post value: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    //==========================RecentlySearchedFragment==========================
+
+    public void updateRecentSearchItems(RecentDisplayCallback callback) {
+        String uid = firebaseUser.getUid();
+        searchedPostsReference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    HashMap<String, HashMap<String, String>> searchItems = new HashMap<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        HashMap<String, String> searchItemDetails = new HashMap<>();
+                        String itemId = snapshot.child("Post Id").getValue(String.class);
+                        String filter = snapshot.child("filter").getValue(String.class);
+                        searchItemDetails.put("Date", snapshot.child("Date").getValue(String.class));
+                        searchItemDetails.put("keyword", snapshot.child("keyword").getValue(String.class));
+                        searchItemDetails.put("filter", snapshot.child("filter").getValue(String.class));
+
+                        searchItems.put(itemId + filter, searchItemDetails);
+                    }
+                    callback.onSuccess(searchItems);
+
+                } else {
+                    callback.onFailure(0, "No recent search items.");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callback.onFailure(1, "Failed to read recent search items: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    public void updateDatabaseReference(Map<String, Object> updateMap, String ref, GeneralCallback callback) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(ref);
+        String uid = firebaseUser.getUid();
+
+        databaseReference.child(uid).updateChildren(updateMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callback.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onFailure(0, "Failed to update database reference: " + e.getMessage());
+                    }
+                });
+    }
 
     public boolean canDeletePost(String postId) {
         String uid = firebaseUser.getUid();
@@ -617,18 +827,74 @@ public class Database {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     callback.onSuccess();
-                }else {
+                } else {
                     callback.onFailure(0, "Failed to delete post");
                 }
             }
         });
     }
-    public void deleteAccount(){
+
+    public void deleteAccount() {
         String uid = firebaseUser.getUid();
-        if(readWriteUserDetails.getPurpose().equals("Seller") || readWriteUserDetails.getPurpose().equals("Seller and Buyer")) {
+        if (readWriteUserDetails.getPurpose().equals("Seller") || readWriteUserDetails.getPurpose().equals("Seller and Buyer")) {
             postsReference.child(uid).removeValue();
         }
         usersReference.child(uid).removeValue();
         auth.getCurrentUser().delete();
     }
+    public void readPostData(PostsCallback callback) {
+
+        favoritesReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                favoriteMap.clear();
+                for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
+                    for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
+                        try {
+                            String favMap = snapshot2.getKey();
+                            if (favMap != null) {
+                                favoriteMap.add(favMap );
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                viewsReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        viewsMap.clear();
+                        for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
+                            for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
+                                try {
+                                    String viewedMap = snapshot2.getKey();
+                                    if (viewedMap != null) {
+                                        HashMap<String, String> map = new HashMap<>();
+                                        map.put(snapshot1.getKey(), viewedMap);
+                                        viewsMap.add(map);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        readPostsData(callback);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
 }
+
+

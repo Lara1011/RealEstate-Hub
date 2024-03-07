@@ -4,7 +4,7 @@
     android:id="@+id/success_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragments.UploadPost.GooglePay.CheckoutSuccessActivity">
+    tools:context=".Utils.GooglePay.CheckoutSuccessActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"

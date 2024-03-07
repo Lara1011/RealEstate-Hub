@@ -259,9 +259,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void onFailure(int errorCode, String errorMessage) {
-                        if (errorCode == 1) {
+                        if (errorCode == 0) {
                             Toast.makeText(SignUpActivity.this, errorCode, Toast.LENGTH_SHORT).show();
-                        } else if (errorCode == 2) {
+                        } else if (errorCode == 1) {
                             Toast.makeText(SignUpActivity.this, errorCode, Toast.LENGTH_SHORT).show();
                         }
                     }

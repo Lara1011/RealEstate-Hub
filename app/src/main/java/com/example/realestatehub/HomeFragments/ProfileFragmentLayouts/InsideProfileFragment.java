@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -19,17 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.realestatehub.LogIn.ConnectingActivity;
-import com.example.realestatehub.Utils.Database;
-import com.example.realestatehub.Utils.ReadWriteUserDetails;
 import com.example.realestatehub.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
+import com.example.realestatehub.Utils.Database;
 import com.squareup.picasso.Picasso;
 
 public class InsideProfileFragment extends Fragment implements View.OnClickListener {
@@ -39,12 +30,9 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
     private TextView deleteAccountTextView;
     private RadioGroup genderRadioGroup;
     private RadioButton genderRadioButton;
-    private FirebaseAuth auth;
-    private FirebaseUser firebaseUser;
-    private Uri imageUri;
+    private Uri uriImage;
     private View view;
     private boolean editing = true;
-    private ReadWriteUserDetails readWriteUserDetails = ReadWriteUserDetails.getInstance(getContext());
     private Database database;
 
     @Override
@@ -70,21 +58,18 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
         deleteAccountTextView = view.findViewById(R.id.deleteAccountTextView);
 
         deleteAccountTextView.setOnClickListener(this);
-
         setInputFields(false);
 
         backButton.setOnClickListener(this);
         saveOrEditButton.setOnClickListener(this);
 
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
-        if (firebaseUser == null) {
+        database = new Database(getContext());
+
+        if (database.getFirebaseUser() == null) {
             Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
         } else {
             fetchUserDetailsFromFirebase();
         }
-
-        database = new Database(getContext());
     }
 
     @Override
@@ -100,8 +85,7 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
             }
             pushUserDetailsToFirebase();
             editing = !editing;
-        }
-        if (id == R.id.deleteAccountTextView) {
+        } else if (id == R.id.deleteAccountTextView) {
             database.deleteAccount();
             Intent intent = new Intent(getContext(), ConnectingActivity.class);
             startActivity(intent);
@@ -139,41 +123,49 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
     }
 
     private void fetchUserDetailsFromFirebase() {
-        String uid = firebaseUser.getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Registered Users");
-        reference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-
+        database.fetchUserDetailsFromFirebase(new Database.GeneralCallback() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                ReadWriteUserDetails readWriteUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
-                if (readWriteUserDetails != null) {
-                    firstNameEditText.setText(readWriteUserDetails.getFirstName());
-                    lastNameEditText.setText(readWriteUserDetails.getLastName());
-                    emailEditText.setText(readWriteUserDetails.getEmail());
-                    birthdayEditText.setText(readWriteUserDetails.getBirthday());
-                    phoneNumberEditText.setText(readWriteUserDetails.getPhoneNumber());
-                    addressEditText.setText(readWriteUserDetails.getAddress());
+            public void onSuccess() {
+                firstNameEditText.setText(database.getReadWriteUserDetails().getFirstName());
+                lastNameEditText.setText(database.getReadWriteUserDetails().getLastName());
+                emailEditText.setText(database.getReadWriteUserDetails().getEmail());
+                birthdayEditText.setText(database.getReadWriteUserDetails().getBirthday());
+                phoneNumberEditText.setText(database.getReadWriteUserDetails().getPhoneNumber());
+                addressEditText.setText(database.getReadWriteUserDetails().getAddress());
 
-                    if (readWriteUserDetails.getGender().equals("Male")) {
-                        genderRadioGroup.check(R.id.maleRadioButton);
-                    } else {
-                        genderRadioGroup.check(R.id.femaleRadioButton);
-                    }
-                    //userImageView
-                    imageUri = firebaseUser.getPhotoUrl();
-                    Picasso.get().load(imageUri).into(userImageView);
+                if (database.getReadWriteUserDetails().getGender().equals("Male")) {
+                    genderRadioGroup.check(R.id.maleRadioButton);
+                } else {
+                    genderRadioGroup.check(R.id.femaleRadioButton);
                 }
+                updateProfileUI();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
+            public void onFailure(int errorCode, String errorMessage) {
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+    private void updateProfileUI() {
+        database.CheckCurrUserIfExists(new Database.GeneralCallback() {
+            @Override
+            public void onSuccess() {
+                uriImage = database.getFirebaseUser().getPhotoUrl();
+                Picasso.get().load(uriImage).into(userImageView);
+            }
+
+            @Override
+            public void onFailure(int errorCode, String errorMessage) {
+                if (errorCode == 0) {
+                    Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
     private void pushUserDetailsToFirebase() {
-        String uid = firebaseUser.getUid();
         String firstName = firstNameEditText.getText().toString();
         String lastName = lastNameEditText.getText().toString();
         String email = emailEditText.getText().toString();
@@ -186,15 +178,6 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
         genderRadioButton = view.findViewById(selectedGenderId);
         String gender = genderRadioButton.getText().toString();
 
-        readWriteUserDetails.setFirstName(firstName);
-        readWriteUserDetails.setLastName(lastName);
-        readWriteUserDetails.setEmail(email);
-        readWriteUserDetails.setBirthday(birthday);
-        readWriteUserDetails.setPhoneNumber(phoneNumber);
-        readWriteUserDetails.setAddress(address);
-        readWriteUserDetails.setGender(gender);
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Registered Users");
-        reference.child(uid).setValue(readWriteUserDetails);
+        database.pushUserDetailsToFirebase(firstName, lastName, email, birthday, phoneNumber, gender, address);
     }
 }

@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.realestatehub.Utils.ReadWritePostDetails;
 import com.example.realestatehub.HomeFragments.HomeBottomNavigation;
-import com.example.realestatehub.HomeFragments.UploadPost.GooglePay.CheckoutActivity;
+import com.example.realestatehub.Utils.GooglePay.CheckoutActivity;
 import com.example.realestatehub.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

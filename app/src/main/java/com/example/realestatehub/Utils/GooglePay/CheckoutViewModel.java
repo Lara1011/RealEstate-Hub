@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.realestatehub.HomeFragments.UploadPost.GooglePay;
+package com.example.realestatehub.Utils.GooglePay;
 
 import android.app.Application;
 import android.util.Log;
@@ -24,7 +24,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.realestatehub.HomeFragments.UploadPost.GooglePay.PaymentsUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.wallet.IsReadyToPayRequest;
 import com.google.android.gms.wallet.PaymentData;

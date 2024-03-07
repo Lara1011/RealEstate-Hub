@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,19 +24,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.realestatehub.HomeFragments.ReadPostAdapter.PostAdapter;
+import com.example.realestatehub.HomeFragments.ReadPostAdapter.PostDetailsActivity;
 import com.example.realestatehub.R;
 import com.example.realestatehub.Utils.Database;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class SearchFragment extends Fragment implements View.OnClickListener {
     private View view;
     private RecyclerView recyclerView;
     private HashMap<String, HashMap<String, String>> postList;
     private HashMap<String, HashMap<String, String>> filteredList;
+    private String selectedQuery = "";
     private SearchView searchView;
     private TextView filterTextView;
     private Database database;
@@ -69,11 +75,14 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                selectedQuery = query;
+                addToReSearchDB();
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                selectedQuery = newText;
                 String searchText = newText.trim().toLowerCase();
                 applySearchFilter(searchText);
                 return true;
@@ -85,7 +94,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         filteredList.clear();
         int i = 0;
         for (HashMap<String, String> post : postList.values()) {
-            if (post.get("Name").toLowerCase().contains(query.toLowerCase())) {
+            if (post.get("Name").toLowerCase().contains(query.toLowerCase()) && !query.isEmpty()) {
                 filteredList.put(String.valueOf(i++), post);
             }
         }
@@ -105,11 +114,13 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     public void onSuccess(HashMap<String, HashMap<String, String>> postList) {
                         SearchFragment.this.postList = postList;
                     }
+
                     @Override
                     public void onFailure(int errorCode, String errorMessage) {
                     }
                 });
             }
+
             @Override
             public void onFailure(int errorCode, String errorMessage) {
             }
@@ -434,6 +445,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private void applyFilters() {
         filteredList.clear();
         int currentPost = 0;
+        addToReSearchDB();
 
         for (HashMap<String, String> post : postList.values()) {
             for (String filter : typeSelectedFilters) {
@@ -504,6 +516,38 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private void noSuchDataFound() {
         Toast.makeText(getContext(), "No results found", Toast.LENGTH_SHORT).show();
         dialog.dismiss();
+    }
+
+    private void addToReSearchDB() {
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentDate = dateFormat.format(calendar.getTime());
+
+        HashMap<String, Object> viewedItemMap = new HashMap<>();
+        viewedItemMap.put("itemId", selectedQuery);
+        viewedItemMap.put("keyword", selectedQuery);
+        viewedItemMap.put("filter", "Types: " + TextUtils.join(", ", typeSelectedFilters)
+                + ",\nCharacteristics: " + TextUtils.join(", ", selectedFilters)
+                + ",\nPrice min: " + minPrice + ", max: " + maxPrice + ",\nNumOfRooms min: " + minNumOfRooms + ", max: " + maxNumOfRooms
+
+        );
+        viewedItemMap.put("Date", currentDate);
+
+        Map<String, Object> updateMap = new HashMap<>();
+        updateMap.put(selectedQuery + TextUtils.join(",", typeSelectedFilters) + TextUtils.join(",", selectedFilters)
+                + minPrice + maxPrice + minNumOfRooms + maxNumOfRooms, viewedItemMap);
+
+        database.updateDatabaseReference(updateMap, "User Recently Searched", new Database.GeneralCallback() {
+            @Override
+            public void onSuccess() {
+            }
+
+            @Override
+            public void onFailure(int errorCode, String errorMessage) {
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
 

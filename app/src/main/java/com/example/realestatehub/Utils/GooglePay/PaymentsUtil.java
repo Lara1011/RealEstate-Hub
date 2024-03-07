@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.realestatehub.HomeFragments.UploadPost.GooglePay;
+package com.example.realestatehub.Utils.GooglePay;
 
 import android.content.Context;
 
