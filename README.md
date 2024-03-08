@@ -30,3 +30,9 @@ Real-Estate Hub is designed to invest, purchase, rent and post real estate prope
   Buyer can save post.
 
   Seller can track posts(number of saved, number of views).
+
+## Video and Screenshots
+
+- [Youtube link](https://youtu.be/wyLOITdP638?si=XTWL4j5lHobLzRo7)
+
+![all](https://github.com/Lara1011/RealEstate-Hub/blob/05d8c71f331f00db00bbfed6e8c833634cf1e171/screenshot/all.png)
