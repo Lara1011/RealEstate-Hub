@@ -52,14 +52,14 @@ public class PostDetailsActivity extends AppCompatActivity {
 
     private void addToRecentlyDB(String itemId) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Viewed Items");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Recently Viewed");
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDate = dateFormat.format(calendar.getTime());
 
         HashMap<String, Object> viewedItemMap = new HashMap<>();
         viewedItemMap.put("Post Id", itemId);
-        viewedItemMap.put("viewedDate", currentDate);
+        viewedItemMap.put("Date", currentDate);
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put(itemId, viewedItemMap);
 
@@ -78,14 +78,14 @@ public class PostDetailsActivity extends AppCompatActivity {
 
     private void addToPurchasedDB(String itemId) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Reached Items");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Recently Reached");
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDate = dateFormat.format(calendar.getTime());
 
         HashMap<String, Object> purchasedItemMap = new HashMap<>();
         purchasedItemMap.put("Post Id", itemId);
-        purchasedItemMap.put("reachedDate", currentDate);
+        purchasedItemMap.put("Date", currentDate);
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put(itemId, purchasedItemMap);
 
@@ -112,7 +112,7 @@ public class PostDetailsActivity extends AppCompatActivity {
             HashMap<String, Object> post = (HashMap<String, Object>) intent.getSerializableExtra("Post Details");
             if (post != null) {
                 addToRecentlyDB(getSafeValue(intent.getStringExtra("Post Id")));
-
+                TextView priceTextView = findViewById(R.id.priceTextView);
                 TextView userNameTextView = findViewById(R.id.userNameTextView);
                 TextView phoneNumberTextView = findViewById(R.id.phoneNumberTextView);
                 TextView nameTextView = findViewById(R.id.nameTextView);
@@ -165,7 +165,7 @@ public class PostDetailsActivity extends AppCompatActivity {
                         }
                     });
                 }
-
+                priceTextView.setText("Price: " + getSafeValue(post.get("Price")));
                 userNameTextView.setText("User Name: " + getSafeValue(post.get("userName")));
                 phoneNumberTextView.setText("Phone Number: " + getSafeValue(post.get("phoneNumber")));
                 nameTextView.setText("Title: " + getSafeValue(post.get("Name")));
@@ -178,7 +178,7 @@ public class PostDetailsActivity extends AppCompatActivity {
                 viewTextView.setText("View: " + getSafeValue(post.get("View")));
                 adTypeTextView.setText("Ad Type: " + getSafeValue(post.get("Ad Type")));
                 likesTextView.setText("Total Likes: " + getSafeValue(post.get("likes")));
-                viewsTextView.setText("TotalViews: " + getSafeValue(post.get("views")));
+                viewsTextView.setText("Total Views: " + getSafeValue(post.get("views")));
                 additionalInformationTextView.setText("Additional Information: " + getSafeValue(post.get("Additional Information")));
                 propertyCharacteristicsTextView.setText("Property Characteristics: \n" +
                         getCharacteristicsString(post));

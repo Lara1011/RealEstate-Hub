@@ -14,11 +14,11 @@
             android:id="@+id/nameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textColor="@color/black"
-            android:text="Title: Placeholder Title"
             android:layout_marginBottom="16dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="Title: Placeholder Title"
+            android:textColor="@color/black"
+            android:textSize="24sp" />
 
         <!-- Image View -->
 
@@ -44,40 +44,57 @@
                 android:layout_alignBottom="@+id/imageView"
                 android:src="@drawable/icon_favorite" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/priceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="Price"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
         <TextView
             android:id="@+id/userNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:ellipsize="end"
-            android:text="User Name" />
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="User Name"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/phoneNumberTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:ellipsize="end"
-            android:text="Phone Number" />
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="Phone Number"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:orientation="horizontal"
-            android:gravity="end">
+            android:gravity="end"
+            android:orientation="horizontal">
 
 
             <!-- Call Button -->
@@ -85,18 +102,18 @@
                 android:id="@+id/callButton"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:background="@drawable/ic_call"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="18dp" />
+                android:layout_marginEnd="18dp"
+                android:background="@drawable/ic_call" />
 
             <!-- WhatsApp Button -->
             <Button
                 android:id="@+id/whatsappButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/ic_whatsapp"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ic_whatsapp" />
 
         </LinearLayout>
 
@@ -104,66 +121,67 @@
             android:id="@+id/homeNumberTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:ellipsize="end"
-            android:text="Home Number" />
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="Home Number"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
         <!-- Phone Number TextView -->
         <TextView
             android:id="@+id/streetNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:text="streetNameTextView: "
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp" 
-            android:maxLines="1"
-            android:ellipsize="end"
             android:layout_marginBottom="8dp"
-            android:gravity="center" />
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="streetNameTextView: "
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
 
         <!-- Location TextView -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/locationTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:ellipsize="end"
                 android:gravity="start"
                 android:maxLines="1"
-                android:ellipsize="end"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:text="Location"
-                android:layout_marginBottom="8dp"/>
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
             <!-- Call Button -->
             <Button
                 android:id="@+id/locationButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/ic_map"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ic_map" />
 
-            <!-- WhatsApp Button --> 
+            <!-- WhatsApp Button -->
 
         </LinearLayout>
-        
+
 
         <!-- Add other TextViews for displaying additional information -->
 
@@ -172,31 +190,30 @@
             android:id="@+id/floorTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:ellipsize="end"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:text="Floor"
-            android:layout_marginBottom="8dp"/>
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
         <!-- Total Floors TextView -->
         <TextView
             android:id="@+id/totalFloorsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:ellipsize="end"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:text="Total Floors"
-            android:layout_marginBottom="8dp"/>
-
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
 
         <!-- Type TextView -->
@@ -204,31 +221,30 @@
             android:id="@+id/typeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:ellipsize="end"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:text="Type"
-            android:layout_marginBottom="8dp"/>
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
         <!-- View TextView -->
         <TextView
             android:id="@+id/viewTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:ellipsize="end"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:text="View"
-            android:layout_marginBottom="8dp"/>
-
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
 
         <!-- Ad Type TextView -->
@@ -236,31 +252,30 @@
             android:id="@+id/adTypeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:ellipsize="end"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:text="Ad Type"
-            android:layout_marginBottom="8dp"/>
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
         <!-- Additional Information TextView -->
         <TextView
             android:id="@+id/additionalInformationTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:ellipsize="end"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:text="Additional Information"
-            android:layout_marginBottom="8dp"/>
-
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
 
         <!-- Kosher Kitchen TextView -->
@@ -268,43 +283,43 @@
             android:id="@+id/propertyCharacteristicsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"
+            android:gravity="start"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:gravity="start"
             android:text=" "
-            android:layout_marginBottom="8dp"/>
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
         <TextView
-            android:visibility="invisible"
             android:id="@+id/likesTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:ellipsize="end"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:text="Total Likes: "
-            android:layout_marginBottom="8dp"/>
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:visibility="invisible" />
 
         <TextView
-            android:visibility="invisible"
             android:id="@+id/viewsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:ellipsize="end"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:text="Total Views: "
-            android:layout_marginBottom="8dp"/>
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:visibility="invisible" />
 
 
         <!-- Kosher Kitchen TextView -->
@@ -327,7 +342,6 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </RelativeLayout>
-
 
 
     </LinearLayout>

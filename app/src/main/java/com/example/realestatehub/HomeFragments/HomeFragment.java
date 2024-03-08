@@ -81,7 +81,11 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess() {
                 userName.setText(String.format(database.getReadWriteUserDetails().getFirstName() + " " + database.getReadWriteUserDetails().getLastName()));
-                Picasso.get().load(database.getFirebaseUser().getPhotoUrl()).into(userImg);
+                if (database.getFirebaseUser().getPhotoUrl() != null)
+                    Picasso.get().load(database.getFirebaseUser().getPhotoUrl()).into(userImg);
+                else{
+                    userImg.setImageResource(R.drawable.icon_person);
+                }
             }
 
 

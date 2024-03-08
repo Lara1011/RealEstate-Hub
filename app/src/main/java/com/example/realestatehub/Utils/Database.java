@@ -38,7 +38,6 @@ public class Database {
     private final DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("Registered Users");
     private final DatabaseReference postsReference = FirebaseDatabase.getInstance().getReference("Users Posts");
     private final DatabaseReference favoritesReference = FirebaseDatabase.getInstance().getReference("Users Favorites");
-    private final DatabaseReference viewsReference = FirebaseDatabase.getInstance().getReference("User Viewed Items");
  	private final DatabaseReference reachedUsersReference = FirebaseDatabase.getInstance().getReference("User Recently Reached");
     private final DatabaseReference viewedPostsReference = FirebaseDatabase.getInstance().getReference("User Recently Viewed");
     private final DatabaseReference searchedPostsReference = FirebaseDatabase.getInstance().getReference("User Recently Searched");
@@ -861,7 +860,7 @@ public class Database {
                     }
                 }
 
-                viewsReference.addValueEventListener(new ValueEventListener() {
+                viewedPostsReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         viewsMap.clear();
