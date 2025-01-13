@@ -19,7 +19,7 @@ import com.example.realestatehub.R;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class PropertyPriceAndSize extends AppCompatActivity implements View.OnClickListener{
+public class PropertyPriceAndSize extends AppCompatActivity implements View.OnClickListener {
     private Button backButton;
     private Button continueButton;
     private EditText TotalSizeEditText;
@@ -27,7 +27,6 @@ public class PropertyPriceAndSize extends AppCompatActivity implements View.OnCl
     private EditText entryDateEditText;
     private Intent intent;
     protected ReadWritePostDetails readWritePostDetails = ReadWritePostDetails.getInstance();
-
 
 
     @Override
@@ -64,6 +63,7 @@ public class PropertyPriceAndSize extends AppCompatActivity implements View.OnCl
             }
         });
     }
+
     private void formatentryDateEditText(Editable editable) {
         String input = editable.toString();
         if (input.length() == 2 || input.length() == 5) {
@@ -77,14 +77,13 @@ public class PropertyPriceAndSize extends AppCompatActivity implements View.OnCl
         if (viewId == R.id.continueButton) {
             obtainData();
         } else if (viewId == R.id.backButton) {
-            intent = new Intent(this, PropertyFillInformation.class);
-            startActivity(intent);
-            finish();
-        } else if(viewId == R.id.entryDateEditText) {
+            onBackPressed();
+        } else if (viewId == R.id.entryDateEditText) {
             pickEntryDate();
         }
     }
 
+    @Override
     public void onBackPressed() {
         intent = new Intent(this, AddPostActivity.class);
         startActivity(intent);
@@ -109,8 +108,7 @@ public class PropertyPriceAndSize extends AppCompatActivity implements View.OnCl
         if (TextUtils.isEmpty(entryDate)) {
             entryDateEditText.setError("Entry date is required");
             entryDateEditText.requestFocus();
-        }
-        else {
+        } else {
             readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Total Size", TotalSize);
             readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Price", Price);
             readWritePostDetails.addPostInformation(readWritePostDetails.getAdID(), "Entry Date", entryDate);

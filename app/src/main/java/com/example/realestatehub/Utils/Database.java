@@ -33,12 +33,13 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Database {
+    private static Database instance;
     private FirebaseAuth auth;
     private FirebaseUser firebaseUser;
     private final DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("Registered Users");
     private final DatabaseReference postsReference = FirebaseDatabase.getInstance().getReference("Users Posts");
     private final DatabaseReference favoritesReference = FirebaseDatabase.getInstance().getReference("Users Favorites");
- 	private final DatabaseReference reachedUsersReference = FirebaseDatabase.getInstance().getReference("User Recently Reached");
+    private final DatabaseReference reachedUsersReference = FirebaseDatabase.getInstance().getReference("User Recently Reached");
     private final DatabaseReference viewedPostsReference = FirebaseDatabase.getInstance().getReference("User Recently Viewed");
     private final DatabaseReference searchedPostsReference = FirebaseDatabase.getInstance().getReference("User Recently Searched");
     private Context context;
@@ -85,13 +86,19 @@ public class Database {
     }
 
     public Database(Context context) {
-        this.context = context;
+        this.context = context.getApplicationContext();
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
         readWriteUserDetails = ReadWriteUserDetails.getInstance(context);
         readWritePostDetails = ReadWritePostDetails.getInstance();
     }
 
+    public static synchronized Database getInstance(Context context) {
+        if (instance == null) {
+            instance = new Database(context);
+        }
+        return instance;
+    }
 
     public ReadWriteUserDetails getReadWriteUserDetails() {
         return readWriteUserDetails;
@@ -257,8 +264,17 @@ public class Database {
      */
     public void checkVerification(GeneralCallback callback) {
         if (firebaseUser.isEmailVerified()) {
-            updateReadWriteUserDetails();
-            callback.onSuccess();
+            updateReadWriteUserDetails(new GeneralCallback() {
+                @Override
+                public void onSuccess() {
+                    callback.onSuccess();
+                }
+
+                @Override
+                public void onFailure(int errorCode, String errorMessage) {
+                    callback.onFailure(errorCode, errorMessage);
+                }
+            });
         } else {
             callback.onFailure(3, "Please verify your email");
             firebaseUser.sendEmailVerification();
@@ -268,8 +284,10 @@ public class Database {
 
     /**
      * <p>Update ReadWriteUserDetails
+     *
+     * @param callback callback
      */
-    private void updateReadWriteUserDetails() {
+    public void updateReadWriteUserDetails(GeneralCallback callback) {
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
         String uid = firebaseUser.getUid();
@@ -279,7 +297,6 @@ public class Database {
                 ReadWriteUserDetails userDetails = snapshot.getValue(ReadWriteUserDetails.class);
                 if (userDetails != null) {
                     readWriteUserDetails = ReadWriteUserDetails.getInstance(context);
-                    // Update the fields of the userDetails object
                     readWriteUserDetails.setFirstName(snapshot.child("firstName").getValue(String.class));
                     readWriteUserDetails.setLastName(snapshot.child("lastName").getValue(String.class));
                     readWriteUserDetails.setEmail(snapshot.child("email").getValue(String.class));
@@ -290,17 +307,21 @@ public class Database {
                     readWriteUserDetails.setPassword(snapshot.child("password").getValue(String.class));
                     readWriteUserDetails.setPurpose(snapshot.child("purpose").getValue(String.class));
                     readWriteUserDetails.setId(snapshot.child("id").getValue(String.class));
-                    // Save the updated userDetails object
                     readWriteUserDetails.saveUserDetails();
+
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure(0, "User details not found.");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(context, "Something Went Wrong!", Toast.LENGTH_SHORT).show();
+                callback.onFailure(0, "Something went wrong while fetching user details.");
             }
         });
     }
+
 
     /**
      * <p>Sign in for an existing Google user or Sign up new user
@@ -336,8 +357,17 @@ public class Database {
                         callback.onSuccess(true, map);
 
                     } else {
-                        updateReadWriteUserDetails();
-                        callback.onSuccess(false, null);
+                        updateReadWriteUserDetails(new GeneralCallback() {
+                            @Override
+                            public void onSuccess() {
+                                callback.onSuccess(false, null);
+                            }
+
+                            @Override
+                            public void onFailure(int errorCode, String errorMessage) {
+                                callback.onFailure(errorMessage);
+                            }
+                        });
                     }
                 } else {
                     callback.onFailure(task.getException().getMessage());
@@ -611,7 +641,6 @@ public class Database {
     private List<HashMap<String, String>> viewsMap = new ArrayList<>();
 
 
-
     /**
      * <p>Shows the favorite posts in FavoriteFragment
      *
@@ -810,14 +839,31 @@ public class Database {
                 });
     }
 
-    public boolean canDeletePost(String postId) {
+    public void canDeletePost(String postId, OnCheckCompleteListener listener) {
         String uid = firebaseUser.getUid();
-        if (postsReference.child(uid).child(postId) != null) {
-            return true;
-        } else {
-            return false;
-        }
+        String noSpace = postId.replace(" ", "");
+        postsReference.child(uid).child(noSpace).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    listener.onCheckComplete(true);
+                } else {
+                    listener.onCheckComplete(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle error
+                listener.onCheckComplete(false);
+            }
+        });
     }
+
+    public interface OnCheckCompleteListener {
+        void onCheckComplete(boolean canDelete);
+    }
+
 
     public void deletePost(String postId, GeneralCallback callback) {
         String uid = firebaseUser.getUid();
@@ -841,6 +887,7 @@ public class Database {
         usersReference.child(uid).removeValue();
         auth.getCurrentUser().delete();
     }
+
     public void readPostData(PostsCallback callback) {
 
         favoritesReference.addValueEventListener(new ValueEventListener() {
@@ -852,7 +899,7 @@ public class Database {
                         try {
                             String favMap = snapshot2.getKey();
                             if (favMap != null) {
-                                favoriteMap.add(favMap );
+                                favoriteMap.add(favMap);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -894,6 +941,39 @@ public class Database {
             }
         });
     }
+    public void incrementLikesCounter(String userId, String postId) {
+        DatabaseReference postRef = postsReference.child(userId).child(postId);
+
+        postRef.child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long currentLikes = snapshot.exists() ? snapshot.getValue(Long.class) : 0;
+                postRef.child("likes").setValue(currentLikes + 1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+    public void incrementViewsCounter(String userId, String postId) {
+        DatabaseReference postRef = postsReference.child(userId).child(postId);
+
+
+        postRef.child("views").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long currentViews = snapshot.exists() ? snapshot.getValue(Long.class) : 0;
+                postRef.child("views").setValue(currentViews + 1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+
 }
 
 

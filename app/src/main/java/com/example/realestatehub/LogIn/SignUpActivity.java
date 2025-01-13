@@ -72,7 +72,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initUI() {
-        database = new Database(this);
+        database = Database.getInstance(this);
 
         backButton = findViewById(R.id.backButton);
         continueButton = findViewById(R.id.continueButton);

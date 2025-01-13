@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +31,12 @@ public class HomeBottomNavigation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page); // Set the content view directly
+        database = Database.getInstance(this);
+
+        initUI();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         replaceFragment(new HomeFragment(bottomNavigationView));
-
-        initUI();
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
@@ -54,13 +56,21 @@ public class HomeBottomNavigation extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {}
+
     private void initUI() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         Language.loadLocale(this);
 
-        database = new Database(this);
+        // Clear the current menu to avoid duplicate items
+        bottomNavigationView.getMenu().clear();
+
+        // Inflate the default menu
+        bottomNavigationView.inflateMenu(R.menu.bottom_menu);
 
         // Find views using findViewById
+        Log.d("HomeBottomNavigation", "initUI: " + database.getReadWriteUserDetails().getPurpose() + " " + database.getReadWriteUserDetails().getFirstName());
         if (database.getReadWriteUserDetails().getPurpose().equals("Buyer")) {
             bottomNavigationView.getMenu().removeItem(R.id.add);
         } else if (database.getReadWriteUserDetails().getPurpose().equals("Seller")) {
@@ -84,6 +94,8 @@ public class HomeBottomNavigation extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeBottomNavigation.this, AddPostActivity.class);
+                intent.putExtra("Post Type", "rent");
+                intent.putExtra("Post Owner Id", database.getReadWriteUserDetails().getId());
                 dialog.dismiss();
                 startActivity(intent);
 
@@ -95,6 +107,8 @@ public class HomeBottomNavigation extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeBottomNavigation.this, AddPostActivity.class);
+                intent.putExtra("Post Type", "sell");
+                intent.putExtra("Post Owner Id", database.getReadWriteUserDetails().getId());
                 dialog.dismiss();
                 startActivity(intent);
 
@@ -115,6 +129,5 @@ public class HomeBottomNavigation extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
-
 
 }

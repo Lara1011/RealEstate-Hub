@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,7 @@ import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.RecentlySe
 import com.example.realestatehub.HomeFragments.ProfileFragmentLayouts.RecentlyViewedFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
@@ -46,6 +49,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         initUI();
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navigateToHomeFragment();
+            }
+        });
+
         return view;
     }
 
@@ -53,7 +64,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        database = new Database(getContext());
+        database = Database.getInstance(getContext());
         database.getFirebaseUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -64,6 +75,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+    }
+
+    private void navigateToHomeFragment() {
+        Log.e("FavoriteFragment", "Back Button Pressed");
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setSelectedItemId(R.id.home);
+        } else {
+            Toast.makeText(getContext(), "Navigation error", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void updateProfileUI() {
@@ -104,7 +125,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         LanguageLayout.setOnClickListener(this);
         LogoutViewedLayout.setOnClickListener(this);
 
-        database = new Database(getContext());
+        database = Database.getInstance(getContext());
 
         if (database.getReadWriteUserDetails().getPurpose().equals("Seller")) {
             RecentlyViewedLayout.setVisibility(View.GONE);

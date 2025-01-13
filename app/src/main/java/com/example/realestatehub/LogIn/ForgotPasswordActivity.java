@@ -56,7 +56,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         backButton.setOnClickListener(this);
         continueButton.setOnClickListener(this);
 
-        database = new Database(this);
+        database = Database.getInstance(this);
     }
 
     @Override

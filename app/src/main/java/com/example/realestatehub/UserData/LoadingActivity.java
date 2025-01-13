@@ -44,7 +44,7 @@ public class LoadingActivity extends AppCompatActivity {
         // Load and animate the GIF using Glide
         Glide.with(this).asGif().load(R.drawable.loading2).into(loadingImageView);
 
-        database = new Database(this);
+        database = Database.getInstance(this);
     }
 
     @Override

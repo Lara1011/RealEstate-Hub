@@ -24,7 +24,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if(position == 0)
+        if (position == 0)
             return 0;
         return 1;
     }
@@ -39,10 +39,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public PostAdapter(HashMap<String, HashMap<String, String>> postList) {
         HashMap<String, HashMap<String, String>> filteredMap = new HashMap<>();
-        int count=0;
+        int count = 0;
         for (String postId : postList.keySet()) {
-            if(count==0){
-                filteredMap.put(postId+" ", postList.get(postId));
+            if (count == 0) {
+                filteredMap.put(postId + " ", postList.get(postId));
                 count++;
             }
             filteredMap.put(postId, postList.get(postId));
@@ -60,10 +60,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         }
         HashMap<String, HashMap<String, String>> filteredMap1 = new HashMap<>();
-        int count=0;
+        int count = 0;
         for (String postId : filteredMap.keySet()) {
-            if(count==0){
-                filteredMap1.put(postId+" ", postList.get(postId));
+            if (count == 0) {
+                filteredMap1.put(postId + " ", postList.get(postId));
                 count++;
             }
             filteredMap1.put(postId, postList.get(postId));
@@ -74,10 +74,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == 0) {
+        if (viewType == 0) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item_layout_vertical, parent, false);
             return new ViewHolder(view, mListener);
-        }else{
+        } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item_layout, parent, false);
             return new ViewHolder(view, mListener);
         }
@@ -85,20 +85,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if(position == 0){
+        if (position == 0) {
             PaidAdAdapter innerAdapter = new PaidAdAdapter(postList); // Provide context and data list
             LinearLayoutManager layoutManager = new LinearLayoutManager(holder.recyclerView.getContext(), RecyclerView.HORIZONTAL, false);
             holder.recyclerView.setLayoutManager(layoutManager);
             holder.recyclerView.setAdapter(innerAdapter);
-        }
-        else {
+        } else {
             String postId = (String) freePostList.keySet().toArray()[position];
             HashMap<String, String> post = freePostList.get(postId);
 
             holder.nameTextView.setText(getSafeValue(post.get("Name")));
             if (post.get("userName") != null)
                 holder.userTextView.setText(getSafeValue("by " + post.get("userName")));
-
+            if (post.get("Post Type") != null)
+                holder.rentOrSellTextView.setText(getSafeValue(post.get("Post Type")));
             if (post.get("photoUrl") != null && !post.get("photoUrl").isEmpty()) {
                 Glide.with(holder.itemView.getContext())
                         .load(post.get("photoUrl"))
@@ -112,6 +112,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 Intent intent = new Intent(context, PostDetailsActivity.class);
                 intent.putExtra("Post Details", post);
                 intent.putExtra("Post Id", postId);
+                intent.putExtra("User Id", post.get("Post Owner Id"));
+
                 context.startActivity(intent);
             });
         }
@@ -124,12 +126,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTextView;
+        public TextView rentOrSellTextView;
         public TextView userTextView;
         public ImageView imageView;
         private RecyclerView recyclerView;
+
         public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
+            rentOrSellTextView = itemView.findViewById(R.id.rentOrSellTextView);
             userTextView = itemView.findViewById(R.id.userTextView);
             imageView = itemView.findViewById(R.id.imageView);
             //imageView.setClickable(true);

@@ -5,11 +5,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ import com.example.realestatehub.HomeFragments.ReadPostAdapter.PostAdapter;
 import com.example.realestatehub.HomeFragments.ReadPostAdapter.PostDetailsActivity;
 import com.example.realestatehub.R;
 import com.example.realestatehub.Utils.Database;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,7 +57,23 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         readUsersAndPosts();
         initSearch();
 
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navigateToHomeFragment();
+            }
+        });
         return view;
+    }
+
+    private void navigateToHomeFragment() {
+        Log.e("FavoriteFragment", "Back Button Pressed");
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setSelectedItemId(R.id.home);
+        } else {
+            Toast.makeText(getContext(), "Navigation error", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initUI() {
@@ -68,7 +87,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
         filterTextView.setOnClickListener(this);
 
-        database = new Database(getContext());
+        database = Database.getInstance(getContext());
     }
 
     private void initSearch() {

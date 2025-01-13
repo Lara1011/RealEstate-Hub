@@ -12,10 +12,12 @@ public class ReadWritePostDetails {
         postDetailsMap = new HashMap<>();
     }
 
-    public void addPost(String id, String name, String location, String streetName, String floor, String totalFloors, String homeNumber, String type, String view){
+    public void addPost(String id,String PostOwnerId, String postType, String name, String location, String streetName, String floor, String totalFloors, String homeNumber, String type, String view){
         if(!postDetailsMap.containsKey(id)){
             HashMap<String, String> detailsMap = new HashMap<>();
             detailsMap.put("Id", id);
+            detailsMap.put("Post Owner Id", PostOwnerId);
+            detailsMap.put("Post Type", postType);
             detailsMap.put("Name", name);
             detailsMap.put("Location", location);
             detailsMap.put("Street Name", streetName);

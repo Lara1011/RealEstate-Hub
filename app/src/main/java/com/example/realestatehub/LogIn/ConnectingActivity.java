@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
@@ -70,14 +71,11 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
         microsoftButton.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
 
-        database = new Database(this);
+        database = Database.getInstance(this);
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finishAffinity();
-    }
+    public void onBackPressed() {}
 
     @Override
     public void onClick(View v) {
@@ -118,9 +116,21 @@ public class ConnectingActivity extends AppCompatActivity implements View.OnClic
 
                 @Override
                 public void onSuccess() {
-                    intent = new Intent(ConnectingActivity.this, HomeBottomNavigation.class);
-                    startActivity(intent);
-                    finish();
+                    Log.d("ConnectingActivity", "Login successful. Updating user details...");
+                    database.updateReadWriteUserDetails(new Database.GeneralCallback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d("ConnectingActivity", "User details updated: " + database.getReadWriteUserDetails().getPurpose());
+                            Intent intent = new Intent(ConnectingActivity.this, HomeBottomNavigation.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void onFailure(int errorCode, String errorMessage) {
+                            Toast.makeText(ConnectingActivity.this, "Failed to update user details.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
 
                 @Override

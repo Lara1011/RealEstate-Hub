@@ -1,9 +1,11 @@
 package com.example.realestatehub.HomeFragments.ProfileFragmentLayouts;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.realestatehub.Utils.Database;
 import com.example.realestatehub.HomeFragments.ReadPostAdapter.PostAdapter;
 import com.example.realestatehub.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,21 +27,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class RecentlyViewedFragment extends Fragment {
+public class RecentlyViewedFragment extends Fragment implements View.OnClickListener {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private Button backButton;
     private Database database;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recently_viewed, container, false);
 
-        database = new Database(getContext());
+        database = Database.getInstance(getContext());
         progressBar = view.findViewById(R.id.progressBar);
         recyclerView = view.findViewById(R.id.recyclerView);
+        backButton = view.findViewById(R.id.backButton);
+        backButton.setOnClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         readUserData();
         return view;
+    }
+    private void navigateToProfileFragment() {
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setSelectedItemId(R.id.profile);
+        } else {
+            Toast.makeText(getContext(), "Navigation error", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showLoading() {
@@ -125,5 +139,12 @@ public class RecentlyViewedFragment extends Fragment {
         hideLoading();
         PostAdapter adapter = new PostAdapter(sortedRecentViewedPosts);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.backButton) {
+            navigateToProfileFragment();
+        }
     }
 }

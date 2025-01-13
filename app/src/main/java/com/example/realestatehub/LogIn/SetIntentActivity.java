@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.realestatehub.HomeFragments.UploadPost.AddPostActivity;
+import com.example.realestatehub.HomeFragments.UploadPost.PropertyFillInformation;
 import com.example.realestatehub.R;
 import com.example.realestatehub.Utils.Database;
 
@@ -22,6 +24,7 @@ public class SetIntentActivity extends AppCompatActivity implements View.OnClick
     private SwitchCompat sellerSwitch, buyerSwitch;
     private boolean fromGoogle = false;
     private Database database;
+    private Intent intent;
 
 
     @Override
@@ -34,6 +37,13 @@ public class SetIntentActivity extends AppCompatActivity implements View.OnClick
 
         setContentView(R.layout.activity1_set_intent);
         initUI();
+    }
+
+    @Override
+    public void onBackPressed() {
+        intent = new Intent(this, AddPostActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void initUI() {
@@ -53,7 +63,7 @@ public class SetIntentActivity extends AppCompatActivity implements View.OnClick
 
         Glide.with(this).asGif().load(R.drawable.making_deal).into(makingDealImageView);
 
-        database = new Database(this);
+        database = Database.getInstance(this);
     }
 
     @Override
@@ -72,7 +82,7 @@ public class SetIntentActivity extends AppCompatActivity implements View.OnClick
             database.setPurpose(fromGoogle, new Database.GeneralCallback() {
                 @Override
                 public void onSuccess() {
-                    Intent intent = new Intent(SetIntentActivity.this, ConnectingActivity.class);
+                    intent = new Intent(SetIntentActivity.this, ConnectingActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -87,6 +97,8 @@ public class SetIntentActivity extends AppCompatActivity implements View.OnClick
                 }
             });
 
+        } else if (v.getId() == R.id.backButton) {
+            onBackPressed();
         }
     }
 }

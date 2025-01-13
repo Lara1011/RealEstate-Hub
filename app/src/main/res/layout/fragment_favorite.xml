@@ -34,13 +34,6 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/backButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/icon_back" />
-
             <TextView
                 android:id="@+id/pageNametextView"
                 android:layout_width="match_parent"
@@ -61,7 +54,6 @@
             android:layout_marginBottom="30dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            tools:listitem="@layout/post_item_layout"
-            />
+            tools:listitem="@layout/post_item_layout" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </FrameLayout>

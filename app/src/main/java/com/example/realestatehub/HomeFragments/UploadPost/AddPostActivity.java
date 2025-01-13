@@ -124,6 +124,7 @@ public class AddPostActivity extends AppCompatActivity implements View.OnClickLi
         String homeNumber = homeNumberEditText.getText().toString();
         String propertyType = propertyTypeSpinner.getSelectedItem().toString();
         String view = viewSpinner.getSelectedItem().toString();
+        String postType = getIntent().getStringExtra("Post Type");
 
         if (propertyType.equals("Apartment") || propertyType.equals("Building") || propertyType.equals("Roof/Penthouse")) {
             if (TextUtils.isEmpty(propertyFloor)) {
@@ -135,8 +136,7 @@ public class AddPostActivity extends AppCompatActivity implements View.OnClickLi
                 propertyFloorEditText.setError("Total floors is required");
                 propertyFloorEditText.requestFocus();
             }
-        }
-        else if(propertyType.equals("House")){
+        } else if (propertyType.equals("House")) {
             if (TextUtils.isEmpty(totalFloors)) {
                 propertyFloorEditText.setError("Total floors is required");
                 propertyFloorEditText.requestFocus();
@@ -157,7 +157,8 @@ public class AddPostActivity extends AppCompatActivity implements View.OnClickLi
             streetNameTextView.setError("Street name of property is required");
             streetNameTextView.requestFocus();
         } else {
-            readWritePostDetails.addPost(readWritePostDetails.getAdID(), postName, propertyLocation, streetName, propertyFloor, totalFloors, homeNumber, propertyType, view);
+            String userID = getIntent().getStringExtra("Post Owner Id");
+            readWritePostDetails.addPost(readWritePostDetails.getAdID(), userID, postType, postName, propertyLocation, streetName, propertyFloor, totalFloors, homeNumber, propertyType, view);
             intent = new Intent(AddPostActivity.this, PropertyFillInformation.class);
             startActivity(intent);
             finish();

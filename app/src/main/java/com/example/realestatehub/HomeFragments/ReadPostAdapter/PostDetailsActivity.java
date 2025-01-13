@@ -15,103 +15,33 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.realestatehub.R;
 import com.example.realestatehub.Utils.Database;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
 
 public class PostDetailsActivity extends AppCompatActivity {
     private Database database;
     private boolean favoriteClicked = false;
-    private void addToFavoriteDB(String itemId) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Favorites");
-        HashMap<String, Object> favoriteMap = new HashMap<>();
-        favoriteMap.put("Post Id", itemId);
-        Map<String, Object> updateMap = new HashMap<>();
-        updateMap.put(itemId, favoriteMap);
-
-        reference.child(uid).updateChildren(updateMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                    }
-                });
-    }
-
-    private void addToRecentlyDB(String itemId) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Recently Viewed");
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentDate = dateFormat.format(calendar.getTime());
-
-        HashMap<String, Object> viewedItemMap = new HashMap<>();
-        viewedItemMap.put("Post Id", itemId);
-        viewedItemMap.put("Date", currentDate);
-        Map<String, Object> updateMap = new HashMap<>();
-        updateMap.put(itemId, viewedItemMap);
-
-        reference.child(uid).updateChildren(updateMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                    }
-                });
-    }
-
-    private void addToPurchasedDB(String itemId) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Recently Reached");
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentDate = dateFormat.format(calendar.getTime());
-
-        HashMap<String, Object> purchasedItemMap = new HashMap<>();
-        purchasedItemMap.put("Post Id", itemId);
-        purchasedItemMap.put("Date", currentDate);
-        Map<String, Object> updateMap = new HashMap<>();
-        updateMap.put(itemId, purchasedItemMap);
-
-        reference.child(uid).updateChildren(updateMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                    }
-                });
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_details);
-        database = new Database(this);
+        database = Database.getInstance(this);
         Intent intent = getIntent();
         if (intent != null) {
+            String userId = intent.getStringExtra("User Id"); // Post owner ID
+            String postId = intent.getStringExtra("Post Id").replace(" ", ""); // Post ID
             HashMap<String, Object> post = (HashMap<String, Object>) intent.getSerializableExtra("Post Details");
             if (post != null) {
-                addToRecentlyDB(getSafeValue(intent.getStringExtra("Post Id")));
+                // Increment views counter and add to recently viewed
+                incrementViewsCounter(userId, postId);
+                addToRecentlyDB(postId);
                 TextView priceTextView = findViewById(R.id.priceTextView);
                 TextView userNameTextView = findViewById(R.id.userNameTextView);
                 TextView phoneNumberTextView = findViewById(R.id.phoneNumberTextView);
@@ -132,39 +62,40 @@ public class PostDetailsActivity extends AppCompatActivity {
                 Button callButton = findViewById(R.id.callButton);
                 Button whatsappButton = findViewById(R.id.whatsappButton);
                 ImageView favoriteButton = findViewById(R.id.favoriteImageView);
-
-                if (database.getReadWriteUserDetails().getPurpose().contains("Seller")
-                        && database.canDeletePost(getSafeValue(intent.getStringExtra("Post Id")))) {
-                    likesTextView.setVisibility(View.VISIBLE);
-                    viewsTextView.setVisibility(View.VISIBLE);
-                }
-
                 Button deleteButton = findViewById(R.id.DeleteButton);
 
-
-
-                if(database.canDeletePost(getSafeValue(intent.getStringExtra("Post Id")))) {
-                    deleteButton.setVisibility(View.VISIBLE);
-                    deleteButton.setOnClickListener(new View.OnClickListener() {
+                if (database.getReadWriteUserDetails().getPurpose().contains("Seller")) {
+                    database.canDeletePost(getSafeValue(intent.getStringExtra("Post Id")), new Database.OnCheckCompleteListener() {
                         @Override
-                        public void onClick(View v) {
-                            database.deletePost(getSafeValue(intent.getStringExtra("Post Id")), new Database.GeneralCallback() {
-                                @Override
-                                public void onSuccess() {
-                                    Toast.makeText(PostDetailsActivity.this, "Post deleted successfully", Toast.LENGTH_SHORT).show();
-                                }
+                        public void onCheckComplete(boolean canDelete) {
+                            if (canDelete) {
+                                likesTextView.setVisibility(View.VISIBLE);
+                                viewsTextView.setVisibility(View.VISIBLE);
+                                deleteButton.setVisibility(View.VISIBLE);
+                                deleteButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        database.deletePost(getSafeValue(intent.getStringExtra("Post Id")), new Database.GeneralCallback() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Toast.makeText(PostDetailsActivity.this, "Post deleted successfully", Toast.LENGTH_SHORT).show();
+                                                finish();
+                                            }
 
-                                @Override
-                                public void onFailure(int errorCode, String errorMessage) {
-                                    if (errorCode == 0) {
-                                        Toast.makeText(PostDetailsActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                            @Override
+                                            public void onFailure(int errorCode, String errorMessage) {
+                                                if (errorCode == 0) {
+                                                    Toast.makeText(PostDetailsActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
                                     }
-                                }
-                            });
-                            finish();
+                                });
+                            }
                         }
                     });
                 }
+
                 priceTextView.setText("Price: " + getSafeValue(post.get("Price")));
                 userNameTextView.setText("User Name: " + getSafeValue(post.get("userName")));
                 phoneNumberTextView.setText("Phone Number: " + getSafeValue(post.get("phoneNumber")));
@@ -192,21 +123,24 @@ public class PostDetailsActivity extends AppCompatActivity {
                 }
 
 
-                favoriteButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        favoriteClicked = !favoriteClicked;
-                        if (favoriteClicked) {
-                            int count = Integer.parseInt(likesTextView.getText().toString().substring(13  ));
-                            likesTextView.setText("Total Likes: " + (count+1));
-                            favoriteButton.setImageResource(R.drawable.icon_favorite_filled);
-                        }else{
-                            int count = Integer.parseInt(likesTextView.getText().toString().substring(13  ));
-                            if (count != 0)
-                                likesTextView.setText("Total Likes: " + (count-1));
-                            favoriteButton.setImageResource(R.drawable.icon_favorite);
-                        }
-                        addToFavoriteDB(getSafeValue(intent.getStringExtra("Post Id")));
+                favoriteButton.setOnClickListener(view -> {
+                    favoriteClicked = !favoriteClicked;
+                    if (favoriteClicked) {
+                        int count = Integer.parseInt(likesTextView.getText().toString().substring(13));
+                        likesTextView.setText("Total Likes: " + (count + 1));
+                        favoriteButton.setImageResource(R.drawable.icon_favorite_filled);
+
+                        // Add to Favorites
+                        addToFavoriteDB(userId, postId, post);
+                        incrementLikesCounter(userId, postId);
+
+                    } else {
+                        int count = Integer.parseInt(likesTextView.getText().toString().substring(13));
+                        if (count != 0)
+                            likesTextView.setText("Total Likes: " + (count - 1));
+                        favoriteButton.setImageResource(R.drawable.icon_favorite);
+
+                        removeFromFavoriteDB(postId);
                     }
                 });
 
@@ -279,5 +213,91 @@ public class PostDetailsActivity extends AppCompatActivity {
             characteristics.append("Furniture, ");
         }
         return characteristics.toString();
+    }
+
+    private void addToFavoriteDB(String userId, String postId, HashMap<String, Object> postDetails) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Favorites");
+
+        HashMap<String, Object> favoriteData = new HashMap<>(postDetails);
+        favoriteData.put("User Id", userId);
+        favoriteData.put("Post Id", postId);
+
+        reference.child(uid).child(postId).setValue(favoriteData)
+                .addOnSuccessListener(aVoid -> Toast.makeText(PostDetailsActivity.this, "Added to Favorites", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(PostDetailsActivity.this, "Failed to Add to Favorites", Toast.LENGTH_SHORT).show());
+    }
+
+    private void removeFromFavoriteDB(String postId) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Favorites");
+
+        reference.child(uid).child(postId).removeValue()
+                .addOnSuccessListener(aVoid -> Toast.makeText(PostDetailsActivity.this, "Removed from Favorites", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(PostDetailsActivity.this, "Failed to Remove from Favorites", Toast.LENGTH_SHORT).show());
+    }
+
+    private void incrementLikesCounter(String userId, String postId) {
+        DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("Users Posts")
+                .child(userId).child(postId);
+
+        postRef.child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot) {
+                long currentLikes = snapshot.exists() ? snapshot.getValue(Long.class) : 0;
+                postRef.child("likes").setValue(currentLikes + 1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error) {
+                Toast.makeText(PostDetailsActivity.this, "Failed to update likes counter", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void incrementViewsCounter(String userId, String postId) {
+        DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("Users Posts")
+                .child(userId).child(postId);
+
+        postRef.child("views").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot) {
+                long currentViews = snapshot.exists() ? snapshot.getValue(Long.class) : 0;
+                postRef.child("views").setValue(currentViews + 1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error) {
+                Toast.makeText(PostDetailsActivity.this, "Failed to update views counter", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void addToRecentlyDB(String itemId) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Recently Viewed");
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentDate = dateFormat.format(calendar.getTime());
+
+        HashMap<String, Object> viewedItemMap = new HashMap<>();
+        viewedItemMap.put("Post Id", itemId);
+        viewedItemMap.put("Date", currentDate);
+
+        reference.child(uid).child(itemId).setValue(viewedItemMap);
+    }
+
+    private void addToPurchasedDB(String itemId) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Recently Reached");
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentDate = dateFormat.format(calendar.getTime());
+
+        HashMap<String, Object> purchasedItemMap = new HashMap<>();
+        purchasedItemMap.put("Post Id", itemId);
+        purchasedItemMap.put("Date", currentDate);
+
+        reference.child(uid).child(itemId).setValue(purchasedItemMap);
     }
 }

@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext())); // Set the layout manager
 
-        database = new Database(getContext());
+        database = Database.getInstance(getContext());
         // Method call to start loading user data from Firebase
         readUsersAndPosts();
         updateProfileUI();

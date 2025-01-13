@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".HomeFragments.HomeFragment">
+    tools:context=".HomeFragments.ProfileFragmentLayouts.RecentlyReachedFragment">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -35,6 +35,12 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/icon_back" />
 
             <TextView
                 android:layout_width="0dp"
@@ -47,15 +53,6 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/opensans_regular"
-                android:text="See All"
-                android:textColor="@color/blue"
-                android:textSize="16sp"
-                android:textStyle="bold" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.recyclerview.widget.RecyclerView

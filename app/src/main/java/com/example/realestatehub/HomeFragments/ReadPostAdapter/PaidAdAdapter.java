@@ -58,7 +58,8 @@ public class PaidAdAdapter extends RecyclerView.Adapter<PaidAdAdapter.ViewHolder
         holder.nameTextView.setText(getSafeValue(post.get("Name")));
         if (post.get("userName") != null)
             holder.userTextView.setText(getSafeValue("by " + post.get("userName")));
-
+        if (post.get("Post Type") != null)
+            holder.rentOrSellTextView.setText(getSafeValue(post.get("Post Type")));
         if (post.get("photoUrl") != null && !post.get("photoUrl").isEmpty()) {
             Glide.with(holder.itemView.getContext())
                     .load(post.get("photoUrl"))
@@ -72,6 +73,8 @@ public class PaidAdAdapter extends RecyclerView.Adapter<PaidAdAdapter.ViewHolder
             Intent intent = new Intent(context, PostDetailsActivity.class);
             intent.putExtra("Post Details", post);
             intent.putExtra("Post Id", postId);
+            intent.putExtra("User Id", post.get("Post Owner Id"));
+
             context.startActivity(intent);
         });
     }
@@ -83,12 +86,14 @@ public class PaidAdAdapter extends RecyclerView.Adapter<PaidAdAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTextView;
+        public TextView rentOrSellTextView;
         public TextView userTextView;
         public ImageView imageView;
 
         public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
+            rentOrSellTextView = itemView.findViewById(R.id.rentOrSellTextView);
             userTextView = itemView.findViewById(R.id.userTextView);
             imageView = itemView.findViewById(R.id.imageView);
             imageView.setClickable(true);

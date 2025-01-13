@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.example.realestatehub.LogIn.ConnectingActivity;
 import com.example.realestatehub.R;
 
 import com.example.realestatehub.Utils.Database;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
 public class InsideProfileFragment extends Fragment implements View.OnClickListener {
@@ -63,7 +65,7 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
         backButton.setOnClickListener(this);
         saveOrEditButton.setOnClickListener(this);
 
-        database = new Database(getContext());
+        database = Database.getInstance(getContext());
 
         if (database.getFirebaseUser() == null) {
             Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -90,6 +92,8 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
             Intent intent = new Intent(getContext(), ConnectingActivity.class);
             startActivity(intent);
             getActivity().finish();
+        } else if (v.getId() == R.id.backButton) {
+            navigateToProfileFragment();
         }
     }
 
@@ -148,6 +152,7 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
         });
 
     }
+
     private void updateProfileUI() {
         database.CheckCurrUserIfExists(new Database.GeneralCallback() {
             @Override
@@ -180,4 +185,14 @@ public class InsideProfileFragment extends Fragment implements View.OnClickListe
 
         database.pushUserDetailsToFirebase(firstName, lastName, email, birthday, phoneNumber, gender, address);
     }
+
+    private void navigateToProfileFragment() {
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setSelectedItemId(R.id.profile);
+        } else {
+            Toast.makeText(getContext(), "Navigation error", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
