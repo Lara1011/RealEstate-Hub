@@ -73,6 +73,7 @@ public class PaidAdAdapter extends RecyclerView.Adapter<PaidAdAdapter.ViewHolder
             Intent intent = new Intent(context, PostDetailsActivity.class);
             intent.putExtra("Post Details", post);
             intent.putExtra("Post Id", postId);
+            intent.putExtra("Post Name", getSafeValue(post.get("Name")));
             intent.putExtra("User Id", post.get("Post Owner Id"));
 
             context.startActivity(intent);

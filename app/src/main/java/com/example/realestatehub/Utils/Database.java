@@ -26,11 +26,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import com.onesignal.OneSignal;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.*;
 
 public class Database {
     private static Database instance;
@@ -195,7 +204,6 @@ public class Database {
                 writeUserDetails.setAddress(address);
                 writeUserDetails.setGender(gender);
                 writeUserDetails.setId(firebaseUser.getUid());
-
                 //Extracting User reference from Database from "Registered Users"
                 usersReference.child(firebaseUser.getUid()).setValue(writeUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -307,6 +315,8 @@ public class Database {
                     readWriteUserDetails.setPassword(snapshot.child("password").getValue(String.class));
                     readWriteUserDetails.setPurpose(snapshot.child("purpose").getValue(String.class));
                     readWriteUserDetails.setId(snapshot.child("id").getValue(String.class));
+                    readWriteUserDetails.setPlayerId(snapshot.child("playerId").getValue(String.class)); // Add this line
+                    savePlayerIdToFirebase();
                     readWriteUserDetails.saveUserDetails();
 
                     callback.onSuccess();
@@ -941,38 +951,96 @@ public class Database {
             }
         });
     }
-    public void incrementLikesCounter(String userId, String postId) {
-        DatabaseReference postRef = postsReference.child(userId).child(postId);
 
-        postRef.child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
+    public void savePlayerIdToFirebase() {
+        String playerId = OneSignal.getDeviceState().getUserId();
+        if (playerId != null && !playerId.isEmpty()) {
+            String uid = firebaseUser.getUid();
+            usersReference.child(uid).child("playerId").setValue(playerId)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            readWriteUserDetails.setPlayerId(playerId);
+                            Log.i("Database", "Player ID saved: " + playerId);
+                        } else {
+                            Log.e("Database", "Failed to save Player ID to Firebase.");
+                        }
+                    });
+        } else {
+            Log.e("Database", "Failed to fetch Player ID from OneSignal.");
+        }
+    }
+
+    public void sendNotificationToSeller(String sellerId, String message) {
+        usersReference.child(sellerId).child("playerId").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                long currentLikes = snapshot.exists() ? snapshot.getValue(Long.class) : 0;
-                postRef.child("likes").setValue(currentLikes + 1);
+                String playerId = snapshot.getValue(String.class);
+                if (playerId == null || playerId.isEmpty()) {
+                    Log.e("sendNotificationToSeller", "Player ID not found or invalid for seller ID: " + sellerId);
+                    return;
+                }
+
+                try {
+                    // Create the payload
+                    JSONObject notificationContent = new JSONObject();
+                    notificationContent.put("app_id", Config.ONESIGNAL_APP_ID);
+                    notificationContent.put("include_player_ids", new JSONArray().put(playerId));
+                    notificationContent.put("contents", new JSONObject().put("en", message));
+                    notificationContent.put("android_sound", "notification");
+                    notificationContent.put("small_icon", "logo_rounded");
+                    notificationContent.put("big_picture", "logo");
+
+                    JSONArray buttons = new JSONArray();
+                    buttons.put(new JSONObject()
+                            .put("id", "view")
+                            .put("text", "View Post")
+                            .put("icon", "ic_view"));
+                    buttons.put(new JSONObject()
+                            .put("id", "dismiss")
+                            .put("text", "Dismiss"));
+                    notificationContent.put("buttons", buttons);
+
+
+                    // Send the notification using OkHttp
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = RequestBody.create(
+                            MediaType.parse("application/json; charset=utf-8"),
+                            notificationContent.toString()
+                    );
+
+                    Request request = new Request.Builder()
+                            .url("https://onesignal.com/api/v1/notifications")
+                            .post(body)
+                            .addHeader("Authorization", "Basic " + Config.ONESIGNAL_REST_API_KEY)
+                            .addHeader("Content-Type", "application/json")
+                            .build();
+
+                    client.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            Log.e("sendNotificationToSeller", "Notification failed: " + e.getMessage());
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            if (response.isSuccessful()) {
+                                Log.i("sendNotificationToSeller", "Notification sent successfully: " + response.body().string());
+                            } else {
+                                Log.e("sendNotificationToSeller", "Notification failed: " + response.body().string());
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    Log.e("sendNotificationToSeller", "Failed to create notification payload: " + e.getMessage());
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("sendNotificationToSeller", "Failed to fetch Player ID: " + error.getMessage());
             }
         });
     }
-    public void incrementViewsCounter(String userId, String postId) {
-        DatabaseReference postRef = postsReference.child(userId).child(postId);
-
-
-        postRef.child("views").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                long currentViews = snapshot.exists() ? snapshot.getValue(Long.class) : 0;
-                postRef.child("views").setValue(currentViews + 1);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
-
 
 }
 

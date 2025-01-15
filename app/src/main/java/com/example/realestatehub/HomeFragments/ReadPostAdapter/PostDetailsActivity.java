@@ -16,6 +16,8 @@ import com.bumptech.glide.Glide;
 import com.example.realestatehub.R;
 import com.example.realestatehub.Utils.Database;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -37,10 +39,11 @@ public class PostDetailsActivity extends AppCompatActivity {
         if (intent != null) {
             String userId = intent.getStringExtra("User Id"); // Post owner ID
             String postId = intent.getStringExtra("Post Id").replace(" ", ""); // Post ID
+            String postName = intent.getStringExtra("Post Name"); // Post ID
             HashMap<String, Object> post = (HashMap<String, Object>) intent.getSerializableExtra("Post Details");
             if (post != null) {
                 // Increment views counter and add to recently viewed
-                incrementViewsCounter(userId, postId);
+                incrementViewsCounter(userId, postId, postName);
                 addToRecentlyDB(postId);
                 TextView priceTextView = findViewById(R.id.priceTextView);
                 TextView userNameTextView = findViewById(R.id.userNameTextView);
@@ -132,7 +135,7 @@ public class PostDetailsActivity extends AppCompatActivity {
 
                         // Add to Favorites
                         addToFavoriteDB(userId, postId, post);
-                        incrementLikesCounter(userId, postId);
+                        incrementLikesCounter(userId, postId, postName);
 
                     } else {
                         int count = Integer.parseInt(likesTextView.getText().toString().substring(13));
@@ -237,7 +240,7 @@ public class PostDetailsActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(PostDetailsActivity.this, "Failed to Remove from Favorites", Toast.LENGTH_SHORT).show());
     }
 
-    private void incrementLikesCounter(String userId, String postId) {
+    private void incrementLikesCounter(String userId, String postId, String postTitle) {
         DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("Users Posts")
                 .child(userId).child(postId);
 
@@ -246,6 +249,9 @@ public class PostDetailsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot) {
                 long currentLikes = snapshot.exists() ? snapshot.getValue(Long.class) : 0;
                 postRef.child("likes").setValue(currentLikes + 1);
+
+                String message = "Someone just liked your post: " + postTitle;
+                database.sendNotificationToSeller(userId, message);
             }
 
             @Override
@@ -255,23 +261,27 @@ public class PostDetailsActivity extends AppCompatActivity {
         });
     }
 
-    private void incrementViewsCounter(String userId, String postId) {
+    private void incrementViewsCounter(String userId, String postId, String postTitle) {
         DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("Users Posts")
                 .child(userId).child(postId);
 
         postRef.child("views").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 long currentViews = snapshot.exists() ? snapshot.getValue(Long.class) : 0;
                 postRef.child("views").setValue(currentViews + 1);
+
+                String message = "Someone just viewed your post: " + postTitle;
+                database.sendNotificationToSeller(userId, message);
             }
 
             @Override
-            public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(PostDetailsActivity.this, "Failed to update views counter", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     private void addToRecentlyDB(String itemId) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();

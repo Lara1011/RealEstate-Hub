@@ -15,6 +15,7 @@ public class ReadWriteUserDetails {
     private static final String KEY_GENDER = "gender";
     private static final String KEY_PURPOSE = "purpose";
     private static final String KEY_ID = "id";
+    private static final String KEY_PLAYER_ID = "player_id";
     private static ReadWriteUserDetails instance;
     private SharedPreferences sharedPreferences;
     private String firstName;
@@ -27,6 +28,7 @@ public class ReadWriteUserDetails {
     private String gender;
     private String purpose;
     private String id;
+    private String playerId;
     private Context context;
 
     private ReadWriteUserDetails() {
@@ -45,6 +47,8 @@ public class ReadWriteUserDetails {
         gender = sharedPreferences.getString(KEY_GENDER, "");
         purpose = sharedPreferences.getString(KEY_PURPOSE, "");
         id = sharedPreferences.getString(KEY_ID, "");
+        playerId = sharedPreferences.getString(KEY_PLAYER_ID, ""); // Add this line
+
     }
 
     public static synchronized ReadWriteUserDetails getInstance(Context context) {
@@ -66,6 +70,7 @@ public class ReadWriteUserDetails {
         editor.putString(KEY_GENDER, gender);
         editor.putString(KEY_PURPOSE, purpose);
         editor.putString(KEY_ID, id);
+        editor.putString(KEY_PLAYER_ID, playerId);
         editor.apply();
         Log.i("ReadWriteUserDetails", firstName);
         Log.i("ReadWriteUserDetails", lastName);
@@ -91,6 +96,14 @@ public class ReadWriteUserDetails {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
     }
 
     public String getFirstName() {

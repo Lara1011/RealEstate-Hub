@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "63950315535",
+    "firebase_url": "https://realestate-hub-2735d-default-rtdb.firebaseio.com",
     "project_id": "realestate-hub-2735d",
     "storage_bucket": "realestate-hub-2735d.appspot.com"
   },
@@ -12,7 +13,28 @@
           "package_name": "com.example.realestatehub"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "63950315535-9ir81hq8u3lgk8fuvhosltlbikmi3ep3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.realestatehub",
+            "certificate_hash": "a3152c3d54267c488ec7f0c54b447f6d2bfbe2d3"
+          }
+        },
+        {
+          "client_id": "63950315535-jmanmd8v9uporv95n1i7v6ocim88vtjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.realestatehub",
+            "certificate_hash": "242868995bfc90d71ea132783222f33fcb3f0072"
+          }
+        },
+        {
+          "client_id": "63950315535-c6fg3l7cu7h4bbgr921i7poherailqul.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCDukB8RrW56NHxsbR3QD7s7iJyQJzA4uo"
@@ -20,7 +42,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "63950315535-c6fg3l7cu7h4bbgr921i7poherailqul.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
