@@ -3,6 +3,7 @@ package com.example.realestatehub.HomeFragments;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,6 +20,12 @@ import com.example.realestatehub.HomeFragments.ReadPostAdapter.PostAdapter;
 import com.example.realestatehub.R;
 import com.example.realestatehub.Utils.Database;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -61,26 +68,28 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void updateFavoriteData() {
-        database.readUsersData(new Database.GeneralCallback() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference favoriteRef = FirebaseDatabase.getInstance().getReference("Users Favorites").child(uid);
+
+        favoriteRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onSuccess() {
-                database.updateFavoriteData(new Database.PostsCallback() {
-                    @Override
-                    public void onSuccess(HashMap<String, HashMap<String, String>> postList) {
-                        PostAdapter adapter = new PostAdapter(postList);
-                        recyclerView.setAdapter(adapter);
-                    }
-                    @Override
-                    public void onFailure(int errorCode, String errorMessage) {
-                        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
-                    }
-                });
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                HashMap<String, HashMap<String, String>> userFavorites = new HashMap<>();
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    String postId = postSnapshot.getKey();
+                    HashMap<String, String> postDetails = (HashMap<String, String>) postSnapshot.getValue();
+                    userFavorites.put(postId, postDetails);
+                }
+                PostAdapter adapter = new PostAdapter(userFavorites);
+                recyclerView.setAdapter(adapter);
             }
+
             @Override
-            public void onFailure(int errorCode, String errorMessage) {
-                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Failed to load favorites", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
 }

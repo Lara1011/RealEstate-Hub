@@ -43,7 +43,9 @@ public class PostDetailsActivity extends AppCompatActivity {
             HashMap<String, Object> post = (HashMap<String, Object>) intent.getSerializableExtra("Post Details");
             if (post != null) {
                 // Increment views counter and add to recently viewed
-                incrementViewsCounter(userId, postId, postName);
+                String currentUser = database.getFirebaseUser().getUid();
+                if (!currentUser.equals(userId))
+                    incrementViewsCounter(userId, postId, postName);
                 addToRecentlyDB(postId);
                 TextView priceTextView = findViewById(R.id.priceTextView);
                 TextView userNameTextView = findViewById(R.id.userNameTextView);
@@ -220,22 +222,22 @@ public class PostDetailsActivity extends AppCompatActivity {
 
     private void addToFavoriteDB(String userId, String postId, HashMap<String, Object> postDetails) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Favorites");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Favorites").child(uid);
 
         HashMap<String, Object> favoriteData = new HashMap<>(postDetails);
         favoriteData.put("User Id", userId);
         favoriteData.put("Post Id", postId);
 
-        reference.child(uid).child(postId).setValue(favoriteData)
+        reference.child(postId).setValue(favoriteData)
                 .addOnSuccessListener(aVoid -> Toast.makeText(PostDetailsActivity.this, "Added to Favorites", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(PostDetailsActivity.this, "Failed to Add to Favorites", Toast.LENGTH_SHORT).show());
     }
 
     private void removeFromFavoriteDB(String postId) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Favorites");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Favorites").child(uid);
 
-        reference.child(uid).child(postId).removeValue()
+        reference.child(postId).removeValue()
                 .addOnSuccessListener(aVoid -> Toast.makeText(PostDetailsActivity.this, "Removed from Favorites", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(PostDetailsActivity.this, "Failed to Remove from Favorites", Toast.LENGTH_SHORT).show());
     }
