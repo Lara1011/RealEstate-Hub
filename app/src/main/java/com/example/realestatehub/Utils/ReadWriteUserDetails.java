@@ -72,16 +72,16 @@ public class ReadWriteUserDetails {
         editor.putString(KEY_ID, id);
         editor.putString(KEY_PLAYER_ID, playerId);
         editor.apply();
-        Log.i("ReadWriteUserDetails", firstName);
-        Log.i("ReadWriteUserDetails", lastName);
-        Log.i("ReadWriteUserDetails", email);
-        Log.i("ReadWriteUserDetails", password);
-        Log.i("ReadWriteUserDetails", birthday);
-        Log.i("ReadWriteUserDetails", phoneNumber);
-        Log.i("ReadWriteUserDetails", address);
-        Log.i("ReadWriteUserDetails", gender);
-        Log.i("ReadWriteUserDetails", purpose);
-        Log.i("ReadWriteUserDetails", id);
+        Log.i("firstName", firstName);
+        Log.i("lastName", lastName);
+        Log.i("email", email);
+        Log.i("password", password);
+        Log.i("birthday", birthday);
+        Log.i("phoneNumber", phoneNumber);
+        Log.i("address", address);
+        Log.i("gender", gender);
+        Log.i("purpose", purpose);
+        Log.i("id", id);
     }
 
     public void clearUserDetails() {

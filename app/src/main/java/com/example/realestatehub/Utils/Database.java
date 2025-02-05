@@ -1042,6 +1042,9 @@ public class Database {
         });
     }
 
+    public void setFirebaseUser(FirebaseUser firebaseUser) {
+        this.firebaseUser = firebaseUser;
+    }
 }
 
 

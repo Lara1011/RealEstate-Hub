@@ -493,7 +493,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void findMinMax(String Child, String min, String max) {
+    public void findMinMax(String Child, String min, String max) {
         if (min.isEmpty()) {
             min = "0";
         }
@@ -567,6 +567,21 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void setDatabase(Database database) {
+        this.database = database;
+    }
+
+    public void setPostList(HashMap<String, HashMap<String, String>> postList) {
+        this.postList = postList;
+    }
+
+    public void setFilteredList(HashMap<String, HashMap<String, String>> filteredList) {
+        this.filteredList = filteredList;
+    }
+    public HashMap<String, HashMap<String, String>> getFilteredList() {
+        return filteredList;
     }
 }
 
