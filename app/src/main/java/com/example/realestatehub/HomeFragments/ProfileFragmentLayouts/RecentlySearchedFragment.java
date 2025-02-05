@@ -1,7 +1,6 @@
 package com.example.realestatehub.HomeFragments.ProfileFragmentLayouts;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -72,7 +70,7 @@ public class RecentlySearchedFragment extends Fragment implements View.OnClickLi
 
             @Override
             public void onSuccess(HashMap<String, HashMap<String, String>> recentReachedPosts) {
-                showRecentSearchPosts(recentReachedPosts);
+                sortAndShowRecentSearchPosts(recentReachedPosts);
             }
 
             @Override
@@ -83,7 +81,7 @@ public class RecentlySearchedFragment extends Fragment implements View.OnClickLi
         });
     }
 
-    private void showRecentSearchPosts(HashMap<String, HashMap<String, String>> recentSearchPosts) {
+    private void sortAndShowRecentSearchPosts(HashMap<String, HashMap<String, String>> recentSearchPosts) {
 
         List<HashMap.Entry<String, HashMap<String, String>>> list = new ArrayList<>(recentSearchPosts.entrySet());
         list.sort(new Comparator<HashMap.Entry<String, HashMap<String, String>>>() {

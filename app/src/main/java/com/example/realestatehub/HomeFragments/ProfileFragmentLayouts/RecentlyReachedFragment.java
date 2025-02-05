@@ -1,7 +1,6 @@
 package com.example.realestatehub.HomeFragments.ProfileFragmentLayouts;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +86,7 @@ public class RecentlyReachedFragment extends Fragment implements View.OnClickLis
         database.updateRecentPosts(new Database.RecentUpdateCallback() {
             @Override
             public void onSuccess(List<HashMap<String, String>> reachedItems) {
-                displayRecentReachedPosts(reachedItems);
+                fetchAndDisplayRecentReachedPosts(reachedItems);
             }
 
             @Override
@@ -99,12 +98,12 @@ public class RecentlyReachedFragment extends Fragment implements View.OnClickLis
 
     }
 
-    private void displayRecentReachedPosts(final List<HashMap<String, String>> reachedItems) {
+    private void fetchAndDisplayRecentReachedPosts(final List<HashMap<String, String>> reachedItems) {
         database.displayRecentPosts(reachedItems, new Database.RecentDisplayCallback() {
 
             @Override
             public void onSuccess(HashMap<String, HashMap<String, String>> recentReachedPosts) {
-                showRecentReachedPosts(recentReachedPosts);
+                sortAndShowRecentReachedPosts(recentReachedPosts);
             }
 
             @Override
@@ -116,7 +115,7 @@ public class RecentlyReachedFragment extends Fragment implements View.OnClickLis
 
     }
 
-    private void showRecentReachedPosts(HashMap<String, HashMap<String, String>> recentReachedPosts) {
+    private void sortAndShowRecentReachedPosts(HashMap<String, HashMap<String, String>> recentReachedPosts) {
 
         List<HashMap.Entry<String, HashMap<String, String>>> list = new ArrayList<>(recentReachedPosts.entrySet());
         list.sort(new Comparator<HashMap.Entry<String, HashMap<String, String>>>() {

@@ -1,6 +1,7 @@
 package com.example.realestatehub.HomeFragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,7 @@ public class HomeFragment extends Fragment {
                 userName.setText(String.format(database.getReadWriteUserDetails().getFirstName() + " " + database.getReadWriteUserDetails().getLastName()));
                 if (database.getFirebaseUser().getPhotoUrl() != null)
                     Picasso.get().load(database.getFirebaseUser().getPhotoUrl()).into(userImg);
-                else{
+                else {
                     userImg.setImageResource(R.drawable.icon_person);
                 }
             }
@@ -128,18 +129,16 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onFailure(int errorCode, String errorMessage) {
                         hideLoading(); // Hide the progress bar on error
-                        if (errorCode == 0) {
-                            Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();}
+                        Log.e("HomeFragment", errorCode + ": " + errorMessage);
                     }
                 });
             }
 
             @Override
             public void onFailure(int errorCode, String errorMessage) {
-                hideLoading(); // Hide the progress bar on error
-                if (errorCode == 0) {
-                    Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
-                }
+                hideLoading();
+                Log.e("HomeFragment", errorCode + ": " + errorMessage);
+
             }
         });
     }
