@@ -36,6 +36,6 @@ Real-Estate Hub is designed to invest, purchase, rent and post real estate prope
 
 ## Video and Screenshots
 
-- [Youtube link](https://youtu.be/wyLOITdP638?si=XTWL4j5lHobLzRo7)
+- [Youtube link](https://youtu.be/70EmCp3vwTs)
 
 ![all](https://github.com/Lara1011/RealEstate-Hub/blob/23ae5241533990340c10dedfad4d4be64575822b/screenshot/all.png)
