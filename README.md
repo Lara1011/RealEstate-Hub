@@ -31,6 +31,9 @@ Real-Estate Hub is designed to invest, purchase, rent and post real estate prope
 
   Seller can track posts(number of saved, number of views).
 
+- **Push Notifications**
+  Notify the seller whenever someone views/likes his post.
+
 ## Video and Screenshots
 
 - [Youtube link](https://youtu.be/wyLOITdP638?si=XTWL4j5lHobLzRo7)
